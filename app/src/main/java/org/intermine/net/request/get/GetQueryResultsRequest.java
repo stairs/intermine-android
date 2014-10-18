@@ -2,8 +2,6 @@ package org.intermine.net.request.get;
 
 import android.content.Context;
 
-import org.intermine.core.GenesDataList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ public abstract class GetQueryResultsRequest<T> extends JsonGetRequest<T> {
 
     public GetQueryResultsRequest(Class clazz, Context ctx, String url, Map<String, ?> params) {
         super(clazz, ctx, url, params);
-        setUrl(url + "/results?query={query}&format={format}&size={size}&start={start}");
+        setUrl(url + "/results?query={query}&format={format}&size={size}&start={start}&token=T1M4e9V2b2Mdm3S87eM9");
         mFormat = JSON_FORMAT;
         mSize = DEFAULT_RESULTS_SIZE;
         mStart = 0;

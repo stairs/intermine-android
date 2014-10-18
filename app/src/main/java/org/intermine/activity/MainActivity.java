@@ -15,18 +15,18 @@ import org.intermine.R;
 import org.intermine.core.Gene;
 import org.intermine.fragment.BrowseFragment;
 import org.intermine.fragment.FavoritesFragment;
-import org.intermine.fragment.SearchFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.InfoFragment;
+import org.intermine.fragment.ListsFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
+import org.intermine.fragment.SearchFragment;
 
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener {
+    protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
     private ViewGroup mMainContainer;
-
-    protected CharSequence mTitle;
 
     // --------------------------------------------------------------------------------------------
     // Activity Lifecycle
@@ -63,9 +63,12 @@ public class MainActivity extends Activity implements
                 fragment = BrowseFragment.newInstance();
                 break;
             case 2:
-                fragment = FavoritesFragment.newInstance();
+                fragment = ListsFragment.newInstance();
                 break;
             case 3:
+                fragment = FavoritesFragment.newInstance();
+                break;
+            case 4:
                 fragment = InfoFragment.newInstance();
                 break;
         }
