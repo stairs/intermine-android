@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common -->
+    <string name="app_name">InterMine</string>
+    <string name="gene_view">Gene View</string>
+    <string name="search">Search</string>
+    <string name="browse">Browse</string>
+    <string name="lists">Lists</string>
+    <string name="favorites">Favorites</string>
+    <string name="info">Info</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_send">Send email</string>
+    <string name="acction_add_2_favourites">Add to favourites</string>
+    <string name="action_settings">Settings</string>
+    <string name="search_hint">Enter gene name</string>
+    <string name="not_found">No results found.</string>
+    <string name="gene_added_to_favorites">The gene is added to favorites.</string>
+    <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
+
+    <!-- Gene Features -->
+    <string name="gene_standard_name">Standard Name</string>
+    <string name="gene_systematic_name">Systematic Name</string>
+    <string name="gene_description">Description</string>
+    <string name="gene_name_description">Name Description</string>
+    <string name="gene_chromosomal_location">Chromosomal Location</string>
+    <string name="gene_ontology_term">Ontology Term</string>
+
+    <string name="gene_name">Name</string>
+    <string name="gene_secondary_id">Secondary ID</string>
+    <string name="gene_organism_name">Organism Name</string>
+    <string name="gene_organism_short_name">Organism Short Name</string>
+    <string name="gene_primary_db_id">Primary DBID</string>
+    <string name="gene_symbol">Symbol</string>
+
+    <!-- Mines URLs -->
+    <string name="flymine_search_url">http://flymine.org/query/service/query</string>
+    <string name="ratmime_search_url">http://ratmine.mcw.edu/ratmine/service/query</string>
+    <string name="yeastmine_search_url">http://yeastmine.yeastgenome.org/yeastmine/service/query</string>
+    <string name="search_path">/results</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Info page -->
+    <string name="app_info">InterMine App version: 1.0\nContact Information:
+        <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite:
+        <a href="http://www.intermine.org">www.intermine.org</a></string>
+    <string name="app_copyright">© Copyright 2014, University of Cambridge.</string>
+    <string name="app_description">\t\tUse InterMine App to quickly find fundamental information about
+        genes and chromosomal features. Search gene names, gene descriptions, or browse the databases
+        to find information about your favorite gene, as well as more detailed information.</string>
+    <string name="info_content">InterMine is an open source data warehouse built specifically for
+        the integration and analysis of complex biological data. Developed by the Micklem lab at the
+        University of Cambridge, InterMine enables the creation of biological databases accessed by
+        sophisticated web query tools. Parsers are provided for integrating data from many common
+        biological data sources and formats, and there is a framework for adding your own data.
+        InterMine includes an attractive, user-friendly web interface that works \'out of the box\'
+        and can be easily customised for your specific needs, as well as a powerful, scriptable
+        web-service API to allow programmatic access to your data.</string>
+
+    <!-- Browse Categories -->
+
+    <string name="orf_verified_browse_category">ORF, Verified</string>
+    <string name="orf_uncharacterized_browse_category">ORF, Uncharacterized</string>
+    <string name="orf_dubious_browse_category">ORF, Dubious</string>
+    <string name="ncrna_browse_category">ncRNA</string>
+    <string name="rrna_browse_category">rRNA</string>
+    <string name="snrna_browse_category">snRNA</string>
+    <string name="snorna_browse_category">snoRNA</string>
+    <string name="trna_browse_category">tRNA</string>
+
+    <!-- Preferences -->
+    <string name="settings">Settings</string>
+    <string name="mines_preference">Mines</string>
+    <string name="mines_default_summary">All available</string>
+
+</resources>

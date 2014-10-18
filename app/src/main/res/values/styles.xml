@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="InterMine.Theme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Font styles -->
+
+    <style name="InterMine.Theme.Text" parent="@android:style/TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="InterMine.Theme.Text.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="InterMine.Theme.Text.Large">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="InterMine.Theme.Text.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InterMine.Theme.Text.Italic">
+        <item name="android:textStyle">italic</item>
+    </style>
+</resources>

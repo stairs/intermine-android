@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="org.intermine.fragment.GenesListFragment">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginTop="-6dp"
+        android:visibility="gone"
+        android:indeterminate="true"/>
+
+    <LinearLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_intermine_logo"/>
+
+        <TextView
+            style="@style/InterMine.Theme.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/app_description"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:visibility="gone"
+        android:id="@+id/genes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:footerDividersEnabled="false"/>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/not_found_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:paddingTop="30dp"
+            android:id="@+id/sad_cloud_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/sad_face"/>
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            style="@style/InterMine.Theme.Text.Large"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sad_cloud_image"
+            android:text="@string/not_found"/>
+    </RelativeLayout>
+
+    <org.intermine.view.ProgressView
+        android:visibility="gone"
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>
