@@ -20,15 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GenesListFragment extends BaseFragment {
-    private OnGeneSelectedListener mOnGeneSelectedListener;
-
     protected ListView mGenesListView;
-    private ProgressView mProgressView;
     protected View mNotFoundView;
-
     protected boolean mLoading;
-
     protected LoadOnScrollViewController mViewController;
+    private OnGeneSelectedListener mOnGeneSelectedListener;
+    private ProgressView mProgressView;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private GenesAdapter mGenesAdapter;
     private List<Gene> mGenes;
@@ -37,18 +34,14 @@ public abstract class GenesListFragment extends BaseFragment {
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    public static interface OnGeneSelectedListener {
-        void onGeneSelected(Gene gene);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     // --------------------------------------------------------------------------------------------
     // Lifecycle
     // --------------------------------------------------------------------------------------------
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +67,8 @@ public abstract class GenesListFragment extends BaseFragment {
             mNotFoundView = view.findViewById(R.id.not_found_results_container);
 
             mGenes = new ArrayList<Gene>();
-            mGenesAdapter = new GenesAdapter(getActivity(), mGenes);
+            mGenesAdapter = new GenesAdapter(getActivity());
+            mGenesAdapter.updateGenes(mGenes);
             mGenesListView.setAdapter(mGenesAdapter);
 
             mViewController = new LoadOnScrollViewController(getDataController(),
@@ -94,10 +88,6 @@ public abstract class GenesListFragment extends BaseFragment {
         }
     }
 
-    // --------------------------------------------------------------------------------------------
-    // Helper Methods
-    // --------------------------------------------------------------------------------------------
-
     protected void setProgress(boolean loading) {
         mLoading = loading;
 
@@ -109,6 +99,10 @@ public abstract class GenesListFragment extends BaseFragment {
             Views.setGone(mProgressView);
         }
     }
+
+    // --------------------------------------------------------------------------------------------
+    // Helper Methods
+    // --------------------------------------------------------------------------------------------
 
     protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
         if (null == mDataController) {
@@ -126,4 +120,8 @@ public abstract class GenesListFragment extends BaseFragment {
     }
 
     protected abstract LoadOnScrollViewController.LoadOnScrollDataController generateDataController();
+
+    public static interface OnGeneSelectedListener {
+        void onGeneSelected(Gene gene);
+    }
 }

@@ -131,7 +131,7 @@ public class ListsFragment extends BaseFragment {
         });
 
         mGenes = new ArrayList<List>();
-        mGenesAdapter = new GenesAdapter(getActivity(), mGenes);
+        mGenesAdapter = new GenesAdapter(getActivity());
         mGenesListView.setAdapter(mGenesAdapter);
 
         mViewController = new LoadOnScrollViewController(getDataController(), getActivity());
@@ -171,10 +171,17 @@ public class ListsFragment extends BaseFragment {
         SparseBooleanArray checkedItemIds = mGenesListView.getCheckedItemPositions();
         for (int i = 0; i < mGenesAdapter.getCount(); i++) {
             if (checkedItemIds.get(i)) {
-                genes.add(mGenesAdapter.getItem(i));
+                genes.add((Gene) mGenesAdapter.getItem(i));
             }
         }
         return genes;
+    }
+
+    protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
+        if (null == mDataController) {
+            mDataController = generateDataController();
+        }
+        return mDataController;
     }
 
 
@@ -186,13 +193,6 @@ public class ListsFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
-
-    protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
-        if (null == mDataController) {
-            mDataController = generateDataController();
-        }
-        return mDataController;
-    }
 
     protected LoadOnScrollViewController.LoadOnScrollDataController generateDataController() {
         return new LoadOnScrollViewController.LoadOnScrollDataController() {
@@ -261,13 +261,10 @@ public class ListsFragment extends BaseFragment {
             }
 
             if (null != result && !result.isEmpty()) {
-                mGenes.addAll(result);
-                mGenesAdapter.notifyDataSetChanged();
+                mGenesAdapter.updateGenes(result);
             }
 
-            if (!mGenes.isEmpty()) {
-                setProgress(false);
-            }
+            setProgress(false);
         }
     }
 }
