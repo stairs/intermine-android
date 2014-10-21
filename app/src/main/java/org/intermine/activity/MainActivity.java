@@ -18,6 +18,7 @@ import org.intermine.fragment.FavoritesFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.InfoFragment;
 import org.intermine.fragment.ListsFragment;
+import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 
@@ -69,6 +70,9 @@ public class MainActivity extends Activity implements
                 fragment = FavoritesFragment.newInstance();
                 break;
             case 4:
+                fragment = LogInFragment.newInstance();
+                break;
+            case 5:
                 fragment = InfoFragment.newInstance();
                 break;
         }
