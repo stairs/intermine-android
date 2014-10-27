@@ -1,6 +1,5 @@
 package org.intermine.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import org.intermine.fragment.PreferencesFragment;
@@ -8,7 +7,7 @@ import org.intermine.fragment.PreferencesFragment;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends BaseActivity {
     // --------------------------------------------------------------------------------------------
     // Activity Lifecycle
     // --------------------------------------------------------------------------------------------

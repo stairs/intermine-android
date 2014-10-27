@@ -1,7 +1,6 @@
 package org.intermine.fragment;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
@@ -11,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,6 +82,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
@@ -249,7 +251,11 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private ActionBar getActionBar() {
-        return getActivity().getActionBar();
+        return getActionBarActivity().getSupportActionBar();
+    }
+
+    private ActionBarActivity getActionBarActivity() {
+        return (ActionBarActivity) getActivity();
     }
 
     /**

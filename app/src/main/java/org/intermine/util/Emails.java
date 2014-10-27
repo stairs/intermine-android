@@ -54,7 +54,7 @@ public class Emails {
 
         if (!Strs.isNullOrEmpty(gene.getLocationStart()) &&
                 !Strs.isNullOrEmpty(gene.getLocationEnd())) {
-            builder.append("Chromosomal Location" + ": " + gene.getLocationStart()
+            builder.append("Chromosomal Location: " + gene.getLocationStart()
                     + " to " + gene.getLocationEnd());
         }
         return builder.toString();
@@ -62,8 +62,7 @@ public class Emails {
 
     private static void addRowIfNotEmpty(String title, String value, StringBuilder builder) {
         if (!Strs.isNullOrEmpty(value)) {
-            //TODO: refactore
-            builder.append(title + ": " + value + "\n");
+            builder.append(String.format("%s: %s\n", title, value));
         }
     }
 }

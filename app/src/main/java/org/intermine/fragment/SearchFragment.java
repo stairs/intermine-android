@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -21,7 +24,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -51,7 +53,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener,
-        MenuItem.OnActionExpandListener {
+        MenuItemCompat.OnActionExpandListener {
     private static final String QUERY_KEY = "query_key";
     protected ListView mGenesListView;
     protected View mNotFoundView;
@@ -222,9 +224,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             final SearchableInfo info = searchManager.getSearchableInfo(getActivity().getComponentName());
 
             final MenuItem searchItem = menu.findItem(R.id.search_action);
-            searchItem.setOnActionExpandListener(this);
+            MenuItemCompat.setOnActionExpandListener(searchItem, this);
 
-            mSearchView = (SearchView) searchItem.getActionView();
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setSearchableInfo(info);
             mSearchView.setOnQueryTextListener(this);
         }
@@ -232,7 +234,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        getActivity().getActionBar().setIcon(R.drawable.ic_launcher);
+        final ActionBarActivity activity = (ActionBarActivity) getActivity();
+        activity.getSupportActionBar().setIcon(R.drawable.ic_launcher);
         return true;
     }
 
@@ -302,6 +305,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
         // TODO: fix
         Views.setGone(mInfoContainer);
+
 
         if (loading) {
             Views.setVisible(mProgressView);

@@ -27,7 +27,6 @@
     <string name="gene_name_description">Name Description</string>
     <string name="gene_chromosomal_location">Chromosomal Location</string>
     <string name="gene_ontology_term">Ontology Term</string>
-
     <string name="gene_name">Name</string>
     <string name="gene_secondary_id">Secondary ID</string>
     <string name="gene_organism_name">Organism Name</string>
@@ -43,9 +42,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Info page -->
-    <string name="app_info">InterMine App version: 1.0\nContact Information:
-        <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite:
-        <a href="http://www.intermine.org">www.intermine.org</a></string>
+    <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>
     <string name="app_copyright">© Copyright 2014, University of Cambridge.</string>
     <string name="app_description">\t\tUse InterMine App to quickly find fundamental information about
         genes and chromosomal features. Search gene names, gene descriptions, or browse the databases
@@ -74,5 +71,7 @@
     <string name="settings">Settings</string>
     <string name="mines_preference">Mines</string>
     <string name="mines_default_summary">All available</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

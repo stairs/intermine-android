@@ -1,7 +1,5 @@
 package org.intermine.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -23,7 +21,7 @@ import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 
 
-public class MainActivity extends Activity implements
+public class MainActivity extends BaseActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener {
     protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
@@ -124,8 +122,8 @@ public class MainActivity extends Activity implements
     }
 
     public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }

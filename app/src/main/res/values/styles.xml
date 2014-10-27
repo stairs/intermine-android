@@ -1,12 +1,13 @@
 <resources>
 
-    <style name="InterMine.Theme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="InterMine.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--<item name="colorPrimary">@color/light_green</item>-->
+        <!--<item name="colorPrimaryDark">@color/dark_green</item>-->
     </style>
 
     <!-- Font styles -->
 
-    <style name="InterMine.Theme.Text" parent="@android:style/TextAppearance">
+    <style name="InterMine.Theme.Text">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/gray</item>
     </style>

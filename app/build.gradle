@@ -9,12 +9,12 @@ android {
             storePassword 'android'
         }
     }
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion "20.0.0"
     defaultConfig {
         applicationId "org.intermine"
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         signingConfig signingConfigs.debug
@@ -40,13 +40,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:19.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.roboguice:roboguice:2.0'
+    compile 'com.android.support:appcompat-v7:21.0.+'
     compile('com.octo.android.robospice:robospice-spring-android:1.4.14') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
     compile 'org.springframework.android:spring-android-core:1.0.0.RELEASE'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.google.android.gms:play-services:6.+'
+    compile 'com.google.android.gms:play-services:6.1.11'
 }
