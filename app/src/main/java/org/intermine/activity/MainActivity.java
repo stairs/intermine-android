@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import org.intermine.R;
+import org.intermine.adapter.ListsAdapter;
 import org.intermine.core.Gene;
 import org.intermine.fragment.BrowseFragment;
 import org.intermine.fragment.FavoritesFragment;
@@ -20,9 +21,12 @@ import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 
+import java.util.List;
+
 
 public class MainActivity extends BaseActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener {
+        NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener,
+        ListsFragment.OnListSelectedListener {
     protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
     private ViewGroup mMainContainer;
@@ -110,6 +114,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onGeneSelected(Gene gene) {
         GeneViewActivity.start(this, gene);
+    }
+
+    @Override
+    public void onListSelected(org.intermine.core.List list) {
+        ListActivity.start(this, list.getName());
     }
 
     // --------------------------------------------------------------------------------------------

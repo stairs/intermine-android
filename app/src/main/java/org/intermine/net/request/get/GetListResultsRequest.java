@@ -8,33 +8,41 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.intermine.R;
-import org.intermine.core.Gene;
-import org.intermine.core.GenesList;
+import org.intermine.core.ListItems;
 import org.intermine.util.Strs;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class GetListResultsRequest extends GetQueryResultsRequest<GenesList> {
+public class GetListResultsRequest extends GetQueryResultsRequest<ListItems> {
+    public static final String QUERY_PARAM = "query";
+
     private String mListName;
+    private String mQuery;
 
     public GetListResultsRequest(Context ctx, String listName) {
-        super(List.class, ctx, ctx.getString(R.string.flymine_search_url), null);
+        super(ListItems.class, ctx, null, null);
         mListName = listName;
-        setTemplate(ctx.getString(R.string.list_query));
+
+        String template = ctx.getString(R.string.list_query);
+        mQuery = String.format(template, mListName);
+
+        setOutWrapper("results");
     }
 
     @Override
-    protected String generateQuery(String template) {
-        return String.format(String.format(template, mListName));
+    protected String generateQuery() {
+        return mQuery;
     }
 
     @Override
-    public GenesList loadDataFromNetwork() throws Exception {
+    public ListItems loadDataFromNetwork() throws Exception {
         Map<String, ?> params = getUrlParams();
         String uri = getUrl();
         Gson mapper = getMapper();
@@ -55,29 +63,26 @@ public class GetListResultsRequest extends GetQueryResultsRequest<GenesList> {
                 String inner = mapper.toJson(rooted.get(getOutWrapper()));
 
                 List<String[]> values = mapper.fromJson(inner, listType);
-                return transform2Genes(values, mapper);
+                ListItems listItems = transform2Genes(values, mapper);
+
+                String columnHeaders = mapper.toJson(rooted.get("columnHeaders"));
+                String[] headers = mapper.fromJson(columnHeaders, String[].class);
+                listItems.setFields(Arrays.asList(headers));
+                return listItems;
             }
         }
         return null;
     }
 
-    private GenesList transform2Genes(List<String[]> list, Gson mapper) {
-        GenesList result = new GenesList();
+    private ListItems transform2Genes(List<String[]> list, Gson mapper) {
+        ListItems result = new ListItems();
 
         if (null != list && !list.isEmpty()) {
             for (String[] features : list) {
-                result.add(transform2Gene(features));
+                List<String> values = Arrays.asList(features);
+                result.add(values);
             }
         }
         return result;
-    }
-
-    private Gene transform2Gene(String[] features) {
-        Gene gene = new Gene();
-        gene.setSecondaryIdentifier(features[0]);
-        gene.setSymbol(features[1]);
-        gene.setPrimaryDBId(features[2]);
-        gene.setOrganismName(features[3]);
-        return gene;
     }
 }

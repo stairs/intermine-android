@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * Helper to work with URI/URL
  *
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
+ * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public class Uris {
     /**

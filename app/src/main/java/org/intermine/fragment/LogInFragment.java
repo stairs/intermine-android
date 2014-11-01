@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.auth.api.GoogleAuthApiClientImpl;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -29,6 +30,7 @@ import org.intermine.util.Strs;
 import org.intermine.util.Views;
 
 import java.io.IOException;
+import java.net.Authenticator;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -53,14 +55,49 @@ public class LogInFragment extends BaseFragment {
     // Inner classes
     // --------------------------------------------------------------------------------------------
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment, container, false);
+    class GoogleAuthenticationListener implements RequestListener<String> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setLoading(false);
+
+            Throwable ex = spiceException.getCause();
+
+            if (ex instanceof IOException) {
+                Log.e("IOException", ex.getMessage());
+            } else if (ex instanceof UserRecoverableAuthException) {
+                UserRecoverableAuthException authEx = (UserRecoverableAuthException) ex;
+                startActivityForResult(authEx.getIntent(), 1001);
+                Log.e("AuthException", authEx.toString());
+            } else if (ex instanceof GoogleAuthException) {
+                Log.e("GoogleAuthException", ex.toString());
+            }
+        }
+
+        @Override
+        public void onRequestSuccess(String token) {
+            setLoading(false);
+
+            if (!Strs.isNullOrEmpty(token)) {
+                SharedPreferences.Editor edit = pref.edit();
+
+                edit.putString("Access Token", token);
+                edit.commit();
+
+                Log.i("Token", "Access Token retrieved:" + token);
+                Toast.makeText(getActivity(), "Access Token is " + token, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.login_fragment, container, false);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -103,6 +140,10 @@ public class LogInFragment extends BaseFragment {
         ((MainActivity) activity).onSectionAttached(getString(R.string.log_in));
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Helper Methods
+    // --------------------------------------------------------------------------------------------
+
     private String[] getAccountNames() {
         AccountManager accountManager = AccountManager.get(getActivity());
         Account[] accounts = accountManager.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
@@ -121,41 +162,6 @@ public class LogInFragment extends BaseFragment {
         } else {
             Views.setVisible(mAccountsList);
             Views.setInvisible(mProgressBar);
-        }
-    }
-
-    class GoogleAuthenticationListener implements RequestListener<String> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setLoading(false);
-
-            Throwable ex = spiceException.getCause();
-
-            if (ex instanceof IOException) {
-                Log.e("IOException", ex.getMessage());
-            } else if (ex instanceof UserRecoverableAuthException) {
-                UserRecoverableAuthException authEx = (UserRecoverableAuthException) ex;
-                startActivityForResult(authEx.getIntent(), 1001);
-                Log.e("AuthException", authEx.toString());
-            } else if (ex instanceof GoogleAuthException) {
-                Log.e("GoogleAuthException", ex.toString());
-            }
-        }
-
-        @Override
-        public void onRequestSuccess(String token) {
-            setLoading(false);
-
-            if (!Strs.isNullOrEmpty(token)) {
-                SharedPreferences.Editor edit = pref.edit();
-
-                edit.putString("Access Token", token);
-                edit.commit();
-
-                Log.i("Token", "Access Token retrieved:" + token);
-                Toast.makeText(getActivity(), "Access Token is " + token, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 }

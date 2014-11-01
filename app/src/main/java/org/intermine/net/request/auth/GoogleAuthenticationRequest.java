@@ -18,6 +18,6 @@ public class GoogleAuthenticationRequest extends BaseRequest<String> {
 
     @Override
     public String loadDataFromNetwork() throws Exception {
-        return GoogleAuthUtil.getToken(getContext(), mEmail, "oauth2:https://www.googleapis.com/auth/tasks");
+        return GoogleAuthUtil.getToken(getContext(), mEmail,"https://accounts.google.com/o/oauth2/auth");// "oauth2:https://www.googleapis.com/auth/tasks");
     }
 }

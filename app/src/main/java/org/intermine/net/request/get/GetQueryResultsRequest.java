@@ -2,6 +2,8 @@ package org.intermine.net.request.get;
 
 import android.content.Context;
 
+import org.intermine.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,6 @@ public abstract class GetQueryResultsRequest<T> extends JsonGetRequest<T> {
 
     public GetQueryResultsRequest(Class clazz, Context ctx, String url, Map<String, ?> params) {
         super(clazz, ctx, url, params);
-        setUrl(url + "/results?query={query}&format={format}&size={size}&start={start}&token=T1M4e9V2b2Mdm3S87eM9");
         mFormat = JSON_FORMAT;
         mSize = DEFAULT_RESULTS_SIZE;
         mStart = 0;
@@ -34,14 +35,22 @@ public abstract class GetQueryResultsRequest<T> extends JsonGetRequest<T> {
     @Override
     public Map<String, ?> getUrlParams() {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(QUERY_PARAM, generateQuery(mTemplate));
+        params.put(QUERY_PARAM, generateQuery());
         params.put(FORMAT_PARAM, mFormat);
         params.put(SIZE_PARAM, String.valueOf(mSize));
         params.put(START_PARAM, String.valueOf(mStart));
         return params;
     }
 
-    abstract protected String generateQuery(String template);
+
+    @Override
+    public String getUrl() {
+        Context ctx = getContext();
+        return ctx.getString(R.string.flymine_url) + ctx.getString(R.string.search_path)
+                + "?query={query}&format={format}&size={size}&start={start}";
+    }
+
+    abstract protected String generateQuery();
 
     public String getTemplate() {
         return mTemplate;

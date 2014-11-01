@@ -55,7 +55,7 @@ public class GeneSearchResultsCountRequest extends JsonGetRequest<ResultsCount> 
 
     @Override
     public String getUrl() {
-        return getContext().getString(R.string.yeastmine_search_url) +
+        return getContext().getString(R.string.yeastmine_url) +
                 getContext().getString(R.string.search_path) +
                 "?query={query}&format={format}&size={size}&start={start}";
     }

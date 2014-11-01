@@ -1,16 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('/root/.android/debug.keystore')
-            storePassword 'android'
-        }
-    }
     compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "21.0.2"
     defaultConfig {
         applicationId "org.intermine"
         minSdkVersion 14
