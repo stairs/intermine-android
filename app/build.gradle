@@ -41,4 +41,5 @@ dependencies {
     compile 'org.springframework.android:spring-android-core:1.0.0.RELEASE'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.google.android.gms:play-services:6.1.11'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
 }

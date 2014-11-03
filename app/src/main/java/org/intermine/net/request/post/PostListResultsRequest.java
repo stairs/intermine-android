@@ -51,6 +51,7 @@ public class PostListResultsRequest extends PostRequest<ListItems> {
 
         String template = ctx.getString(R.string.list_query);
         mQuery = String.format(template, mListName);
+
         mStart = start;
         mSize = size;
 
@@ -68,9 +69,11 @@ public class PostListResultsRequest extends PostRequest<ListItems> {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add(FORMAT_PARAM, JSON);
         params.add(QUERY_PARAM, mQuery);
-        params.add(START_PARAM, Integer.toString(mStart));
-        params.add(SIZE_PARAM, Integer.toString(mSize));
 
+        if (mSize > 0){
+            params.add(START_PARAM, Integer.toString(mStart));
+            params.add(SIZE_PARAM, Integer.toString(mSize));
+        }
         return params;
     }
 

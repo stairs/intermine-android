@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.intermine.R;
+import org.intermine.core.ListItems;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +23,8 @@ public class ListAdapter extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    private List<String> mFields;
-    private List<List<String>> mListItems;
+    private List<String> mFeaturesName;
+    private List<List<String>> mFeatures;
 
     private String mTemplate;
 
@@ -29,29 +32,33 @@ public class ListAdapter extends BaseAdapter {
         mContext = ctx;
 
         mLayoutInflater = LayoutInflater.from(ctx);
+        mFeatures = new ArrayList<List<String>>();
     }
 
-    public void updateData(List<String> fields, List<List<String>> listItems) {
-        mFields = fields;
-        mListItems = listItems;
+    public void updateData(ListItems listItems) {
+        mFeaturesName = listItems.getFeaturesNames();
 
-        mTemplate = generateTemplate(fields);
+        if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
+            mFeatures.addAll(listItems.getFeatures());
+        }
+
+        mTemplate = generateTemplate(listItems.getFeaturesNames());
 
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (null != mListItems) {
-            return mListItems.size();
+        if (null != mFeatures) {
+            return mFeatures.size();
         }
         return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        if (null != mListItems) {
-            return mListItems.get(position);
+        if (null != mFeatures) {
+            return mFeatures.get(position);
         }
         return null;
     }
@@ -81,20 +88,19 @@ public class ListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    protected String generateTemplate(List<String> fields) {
-        if (!Collections.isNullOrEmpty(fields)) {
-            StringBuilder stringBuilder = new StringBuilder();
+    protected String generateTemplate(List<String> featuresNames) {
+        if (!Collections.isNullOrEmpty(featuresNames)) {
+            List<String> templateParts = Collections.newArrayList();
 
-            for (String field : fields) {
-                int dotIndex = field.indexOf(">");
+            for (String featureName : featuresNames) {
+                int dotIndex = featureName.indexOf(">");
 
                 if (dotIndex > -1) {
-                    field = field.substring(dotIndex + 2);
+                    featureName = featureName.substring(dotIndex + 2);
                 }
-                stringBuilder.append(field).append(": %s\n");
+                templateParts.add(featureName + ": %s");
             }
-            return stringBuilder.toString();
-
+            return StringUtils.join(templateParts, ", \n");
         }
         return Strs.EMPTY_STRING;
     }

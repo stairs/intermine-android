@@ -53,25 +53,29 @@ public class ListsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView title, description;
+        TextView title, description, size;
 
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(R.layout.lists_item, parent, false);
 
             title = (TextView) convertView.findViewById(R.id.list_title);
             description = (TextView) convertView.findViewById(R.id.list_description);
+            size = (TextView) convertView.findViewById(R.id.list_size);
 
             convertView.setTag(R.id.list_title, title);
             convertView.setTag(R.id.list_description, description);
+            convertView.setTag(R.id.list_size, size);
         } else {
             title = (TextView) convertView.getTag(R.id.list_title);
             description = (TextView) convertView.getTag(R.id.list_description);
+            size = (TextView) convertView.getTag(R.id.list_size);
         }
 
         List list = (List) getItem(position);
 
         title.setText(list.getTitle());
         description.setText(list.getDescription());
+        size.setText(Integer.toString(list.getSize()));
         return convertView;
     }
 }

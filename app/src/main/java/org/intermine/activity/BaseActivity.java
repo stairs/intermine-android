@@ -1,11 +1,15 @@
 package org.intermine.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import org.intermine.R;
 import org.intermine.service.RoboSpiceService;
 
 public class BaseActivity extends ActionBarActivity {
@@ -30,6 +34,29 @@ public class BaseActivity extends ActionBarActivity {
         } finally {
             super.onStop();
         }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Callback Mehods
+    // --------------------------------------------------------------------------------------------
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.global, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // --------------------------------------------------------------------------------------------
