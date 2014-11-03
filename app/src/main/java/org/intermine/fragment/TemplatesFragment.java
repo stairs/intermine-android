@@ -224,8 +224,8 @@ public class TemplatesFragment extends BaseFragment {
     }
 
     protected void performGetListResultsRequest(String listName) {
-        PostListResultsRequest request = new PostListResultsRequest(getActivity(), listName);
-        executeRequest(request, new ListResultsListener());
+//        PostListResultsRequest request = new PostListResultsRequest(getActivity(), listName);
+//        executeRequest(request, new ListResultsListener());
     }
 
     protected void setProgress(boolean loading) {

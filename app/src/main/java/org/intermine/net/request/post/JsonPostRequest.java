@@ -44,7 +44,7 @@ public class JsonPostRequest<T, V> extends BaseRequest<T> {
     @Override
     public HttpHeaders getHeaders() {
         HttpHeaders headers = super.getHeaders();
-        headers.setContentType(new MediaType(CONTENT_TYPE, CONTENT_SUBTYPE));
+        headers.setContentType(new MediaType(CONTENT_TYPE, "x-www-form-urlencoded"));
 
         return headers;
     }

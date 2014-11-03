@@ -18,7 +18,6 @@ import org.intermine.core.Gene;
 import org.intermine.core.ListItems;
 import org.intermine.fragment.ApiPager;
 import org.intermine.net.request.get.GeneSearchRequest;
-import org.intermine.net.request.get.GetListResultsRequest;
 import org.intermine.net.request.post.PostListResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
@@ -32,7 +31,7 @@ import java.util.List;
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class ListActivity extends BaseActivity {
-    public static final String LIST_NAME_KEY = "list_name_key";
+    public static final String LIST_KEY = "list_key";
 
     protected ListView mListView;
     private ProgressView mProgressView;
@@ -45,7 +44,7 @@ public class ListActivity extends BaseActivity {
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private ApiPager mPager;
 
-    private String mListName;
+    private org.intermine.core.List mList;
 
     protected boolean mLoading;
 
@@ -53,9 +52,9 @@ public class ListActivity extends BaseActivity {
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, String listName) {
+    public static void start(Context context, org.intermine.core.List list) {
         Intent intent = new Intent(context, ListActivity.class);
-        intent.putExtra(LIST_NAME_KEY, listName);
+        intent.putExtra(LIST_KEY, list);
         context.startActivity(intent);
     }
 
@@ -76,15 +75,11 @@ public class ListActivity extends BaseActivity {
             // first page load
             if (null == mPager) {
                 mListItems.clear();
-                mPager = new ApiPager(0, 0, GeneSearchRequest.DEFAULT_SIZE);
+                mPager = new ApiPager(mList.getSize(), 0, GeneSearchRequest.DEFAULT_SIZE);
             }
 
-            if (0 == mPager.getCurrentPage()) {
-                mPager = new ApiPager(mPager.getTotal() + result.size(), 0, GeneSearchRequest.DEFAULT_SIZE);
-            }
-
-            if (!Collections.isNullOrEmpty(result)) {
-                mListAdapter.updateData(result.getFields(), result);
+            if (!Collections.isNullOrEmpty(result.getFeaturesNames())) {
+                mListAdapter.updateData(result.getFeaturesNames(), result.getFeatures());
             }
 
             setProgress(false);
@@ -99,7 +94,7 @@ public class ListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
 
-        mListName = getIntent().getStringExtra(LIST_NAME_KEY);
+        mList = getIntent().getParcelableExtra(LIST_KEY);
 
         mProgressView = (ProgressView) findViewById(R.id.progress_view);
         mNotFoundView = findViewById(R.id.not_found_results_container);
@@ -114,9 +109,11 @@ public class ListActivity extends BaseActivity {
         mListView.setOnScrollListener(mViewController);
         mListView.addFooterView(mViewController.getFooterView());
 
-        if (!Strs.isNullOrEmpty(mListName)) {
+        if (null != mList) {
+            setTitle(mList.getTitle());
+
             setProgress(true);
-            performGetListResultsRequest(mListName);
+            performGetListResultsRequest(mList.getName(), 0, 15);
         }
     }
 
@@ -143,8 +140,6 @@ public class ListActivity extends BaseActivity {
         }
         return mDataController;
     }
-
-
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
@@ -170,12 +165,11 @@ public class ListActivity extends BaseActivity {
             @Override
             public void loadMore() {
                 if (mPager == null) {
-                    performGetListResultsRequest(mListName);
+                    performGetListResultsRequest(mList.getName(), 0, 15);
                 } else {
                     mPager = mPager.next();
-                    performGetListResultsRequest(mListName);
-//                    performGetListResultsRequest("bla", GeneSearchRequest.JSON_FORMAT,
-//                            mPager.getCurrentPage() * mPager.getPerPage());
+                    performGetListResultsRequest(mList.getName(),
+                            mPager.getCurrentPage() * mPager.getPerPage(), 15);
                 }
                 mViewController.onStartLoad();
                 mLoading = true;
@@ -183,8 +177,8 @@ public class ListActivity extends BaseActivity {
         };
     }
 
-    protected void performGetListResultsRequest(String listName) {
-        GetListResultsRequest request = new GetListResultsRequest(this, listName);
+    protected void performGetListResultsRequest(String listName, int start, int size) {
+        PostListResultsRequest request = new PostListResultsRequest(this, listName, start, size);
         executeRequest(request, new ListResultsListener());
     }
 

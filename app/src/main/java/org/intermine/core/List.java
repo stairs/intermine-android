@@ -1,11 +1,14 @@
 package org.intermine.core;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class List {
+public class List implements Parcelable {
     @SerializedName("title")
     private String mTitle;
     @SerializedName("name")
@@ -16,6 +19,18 @@ public class List {
     private String mType;
     @SerializedName("size")
     private int mSize;
+
+    public List() {
+
+    }
+
+    public List(Parcel parcel) {
+        mTitle = parcel.readString();
+        mName = parcel.readString();
+        mDescription = parcel.readString();
+        mType = parcel.readString();
+        mSize = parcel.readInt();
+    }
 
     public String getTitle() {
         return mTitle;
@@ -94,4 +109,31 @@ public class List {
                 ", mSize=" + mSize +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mName);
+        dest.writeString(mDescription);
+        dest.writeString(mType);
+        dest.writeInt(mSize);
+    }
+
+    public static final Creator<List> CREATOR = new Creator<List>() {
+
+        @Override
+        public List createFromParcel(Parcel source) {
+            return new List(source);
+        }
+
+        @Override
+        public List[] newArray(int size) {
+            return new List[size];
+        }
+    };
 }

@@ -1,14 +1,3 @@
 <resources>
- <string name="list_query"><![CDATA[
-     <query model=\"genomic\" view=\"Gene.secondaryIdentifier Gene.symbol Gene.primaryIdentifier
-        Gene.organism.name\" longDescription=\"\" sortOrder=\"Gene.secondaryIdentifier asc\">
-        <constraint path=\"Gene\" op=\"IN\" value=\"%s\"/>
-     </query>
-     ]]></string>
-     <string name="list_query1"><![CDATA[
-     <query model="genomic" view="Gene.secondaryIdentifier Gene.symbol Gene.primaryIdentifier
-        Gene.organism.name" longDescription="" sortOrder="Gene.secondaryIdentifier asc">
-        <constraint path="Gene" op="IN" value="%s"/>
-     </query>
-     ]]></string>
+    <string name="list_query"><![CDATA[<query model=\"genomic\" view=\"Gene.secondaryIdentifier Gene.symbol Gene.primaryIdentifier Gene.organism.name\" longDescription=\"\" sortOrder=\"Gene.secondaryIdentifier asc\"><constraint path=\"Gene\" op=\"IN\" value=\"%s\"/></query>]]></string>
 </resources>

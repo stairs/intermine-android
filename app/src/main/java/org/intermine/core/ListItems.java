@@ -1,19 +1,32 @@
 package org.intermine.core;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class ListItems extends ArrayList<List<String>> {
-    private List<String> mFields;
+public class ListItems {
+    @SerializedName("columnHeaders")
+    private List<String> mFeaturesNames;
+    @SerializedName("results")
+    private List<List<String>> mFeatures;
 
-    public List<String> getFields() {
-        return mFields;
+    public List<String> getFeaturesNames() {
+        return mFeaturesNames;
     }
 
-    public void setFields(List<String> fields) {
-        mFields = fields;
+    public void setFeaturesNames(List<String> featuresNames) {
+        mFeaturesNames = featuresNames;
+    }
+
+    public List<List<String>> getFeatures() {
+        return mFeatures;
+    }
+
+    public void setFeatures(List<List<String>> features) {
+        mFeatures = features;
     }
 }

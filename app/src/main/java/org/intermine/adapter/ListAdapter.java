@@ -82,7 +82,7 @@ public class ListAdapter extends BaseAdapter {
     }
 
     protected String generateTemplate(List<String> fields) {
-        if (!Collections.isEmpty(fields)) {
+        if (!Collections.isNullOrEmpty(fields)) {
             StringBuilder stringBuilder = new StringBuilder();
 
             for (String field : fields) {

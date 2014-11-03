@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onListSelected(org.intermine.core.List list) {
-        ListActivity.start(this, list.getName());
+        ListActivity.start(this, list);
     }
 
     // --------------------------------------------------------------------------------------------
