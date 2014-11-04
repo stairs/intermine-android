@@ -61,7 +61,6 @@ public class ListsFragment extends BaseFragment {
             setProgress(false);
             mAdapter.setLists(lists);
             mAdapter.notifyDataSetChanged();
-            Log.i(TAG, lists.toString());
         }
     }
 

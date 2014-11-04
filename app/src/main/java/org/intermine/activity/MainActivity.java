@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import org.intermine.R;
 import org.intermine.adapter.ListsAdapter;
 import org.intermine.core.Gene;
+import org.intermine.core.Template;
 import org.intermine.fragment.BrowseFragment;
 import org.intermine.fragment.FavoritesFragment;
 import org.intermine.fragment.GenesListFragment;
@@ -20,13 +21,14 @@ import org.intermine.fragment.ListsFragment;
 import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
+import org.intermine.fragment.TemplatesFragment;
 
 import java.util.List;
 
 
 public class MainActivity extends BaseActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener,
-        ListsFragment.OnListSelectedListener {
+        ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
     protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
     private ViewGroup mMainContainer;
@@ -63,7 +65,7 @@ public class MainActivity extends BaseActivity implements
                 fragment = SearchFragment.newInstance();
                 break;
             case 1:
-                fragment = BrowseFragment.newInstance();
+                fragment = TemplatesFragment.newInstance();
                 break;
             case 2:
                 fragment = ListsFragment.newInstance();
@@ -107,6 +109,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onListSelected(org.intermine.core.List list) {
         ListActivity.start(this, list);
+    }
+
+    @Override
+    public void onTemplateSelected(Template template) {
+
     }
 
     // --------------------------------------------------------------------------------------------

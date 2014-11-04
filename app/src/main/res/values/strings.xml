@@ -7,6 +7,7 @@
     <string name="search">Search</string>
     <string name="browse">Browse</string>
     <string name="lists">Lists</string>
+    <string name="templates">Templates</string>
     <string name="favorites">Favorites</string>
     <string name="info">Info</string>
     <string name="log_in">Log in</string>
@@ -42,7 +43,6 @@
     <string name="search_path">/query/results</string>
     <string name="lists_path">/lists</string>
     <string name="templates_path">/templates</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>

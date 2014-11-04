@@ -4,7 +4,7 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.retry.RetryPolicy;
 
 /**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
+ * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class NoRetryPolicy implements RetryPolicy {
     @Override

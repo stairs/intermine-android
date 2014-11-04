@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/activatedBackgroundIndicator"
+                android:padding="10dp">
+
+    <TextView
+        android:id="@+id/template_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        style="@style/InterMine.Theme.Text.Small.Bold"/>
+
+    <TextView
+        android:id="@+id/template_description"
+        android:layout_below="@id/template_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"/>
+
+</RelativeLayout>
