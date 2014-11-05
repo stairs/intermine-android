@@ -1,8 +1,9 @@
 <resources>
 
-    <style name="InterMine.Theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/light_green</item>
-        <item name="colorPrimaryDark">@color/dark_green</item>
+    <style name="InterMine.Theme" parent="android:Theme.Material">
+        <!--<item name="textViewStyle">@android:style/Widget.TextView</item>-->
+        <!--<item name="colorPrimary">@color/light_green</item>-->
+        <!--<item name="colorPrimaryDark">@color/dark_green</item>-->
     </style>
 
     <!-- Font styles -->

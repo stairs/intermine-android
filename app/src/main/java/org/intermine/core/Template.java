@@ -10,6 +10,7 @@ public class Template {
     private String mTitle;
     @SerializedName("description")
     private String mDescription;
+    private java.util.List<String> mColumns;
 
     public String getTitle() {
         return mTitle;

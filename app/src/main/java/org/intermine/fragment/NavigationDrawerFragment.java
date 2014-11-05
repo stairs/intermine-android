@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -82,7 +82,14 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        return mDrawerListView;
+    }
 
+    // --------------------------------------------------------------------------------------------
+    // Callbacks
+    // --------------------------------------------------------------------------------------------
+
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, boolean displayDrawerIcon) {
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
@@ -96,14 +103,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.info)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
-    }
 
-    // --------------------------------------------------------------------------------------------
-    // Callbacks
-    // --------------------------------------------------------------------------------------------
-
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, boolean displayDrawerIcon) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerIconRequried = displayDrawerIcon;
@@ -117,7 +117,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),
                 mDrawerLayout,
-                R.drawable.ic_drawer,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         ) {
