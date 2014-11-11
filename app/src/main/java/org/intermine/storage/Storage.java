@@ -4,8 +4,9 @@ package org.intermine.storage;
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public interface Storage {
-    public final static String PROJECT_COEFFICIENT_KEY = "first_start_key";
+    public final static String USER_TOKEN_KEY = "user_token_key_";
 
-    float getProjectCoefficient(String projectId);
-    void setProjectCoefficient(String projectId, float coefficient);
+    String getUserToken(String mineName);
+
+    void setUserToken(String mineName, String token);
 }
