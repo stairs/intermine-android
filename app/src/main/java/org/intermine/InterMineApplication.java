@@ -18,6 +18,8 @@ public class InterMineApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mStorage = new BaseStorage(preferences);
     }

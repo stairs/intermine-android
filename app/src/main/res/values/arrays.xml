@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="default_mines">
-        <item>http://flymine.org/query/service</item>
+        <item>http://www.flymine.org/query/service</item>
         <item>http://www.mousemine.org/mousemine/service</item>
-        <item>http://ratmine.mcw.edu/ratmine/service</item>
-        <item>http://yeastmine.yeastgenome.org/yeastmine/service</item>
+        <item>http://www.ratmine.mcw.edu/ratmine/service</item>
+        <item>http://www.yeastmine.yeastgenome.org/yeastmine/service</item>
     </string-array>
 
     <string-array name="mines_names">
@@ -14,9 +14,9 @@
         <item>YeastMine</item>
     </string-array>
     <string-array name="mines_urls">
-        <item>http://flymine.org/query/service</item>
+        <item>http://www.flymine.org/query/service</item>
         <item>http://www.mousemine.org/mousemine/service</item>
-        <item>http://ratmine.mcw.edu/ratmine/service</item>
-        <item>http://yeastmine.yeastgenome.org/yeastmine/service</item>
+        <item>http://www.ratmine.mcw.edu/ratmine/service</item>
+        <item>http://www.yeastmine.yeastgenome.org/yeastmine/service</item>
     </string-array>
 </resources>

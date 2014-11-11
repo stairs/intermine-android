@@ -20,6 +20,9 @@
     <string name="not_found">No results found.</string>
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
     <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_button_label">Login</string>
 
     <!-- Gene Features -->
     <string name="gene_standard_name">Standard Name</string>
@@ -43,6 +46,8 @@
     <string name="search_path">/query/results</string>
     <string name="lists_path">/lists</string>
     <string name="templates_path">/templates</string>
+    <string name="template_results_path">/template/results</string>
+    <string name="get_token_path">/user/tokens</string>
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>
