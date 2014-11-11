@@ -21,7 +21,7 @@ public class InterMineApplication extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mStorage = new BaseStorage(preferences);
+        mStorage = new BaseStorage(this, preferences);
     }
 
     public Storage getStorage() {

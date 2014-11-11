@@ -17,17 +17,25 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
+import org.intermine.adapter.MinesAdapter;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.storage.Storage;
+import org.intermine.util.Mines;
 import org.intermine.util.Views;
+
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class LogInFragment extends BaseFragment {
+    private static final String TAG = LogInFragment.class.getSimpleName();
+
     @InjectView(R.id.mine_spinner)
     Spinner mMinesSpinner;
 
@@ -42,6 +50,8 @@ public class LogInFragment extends BaseFragment {
 
     @InjectView(R.id.progress_bar)
     ProgressBar mProgressBar;
+
+    private String mMineName;
 
     public LogInFragment() {
     }
@@ -59,7 +69,7 @@ public class LogInFragment extends BaseFragment {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
             setLoading(false);
-            Log.e("ddd", spiceException.toString());
+            Log.e(TAG, spiceException.toString());
         }
 
         @Override
@@ -68,7 +78,7 @@ public class LogInFragment extends BaseFragment {
 
             InterMineApplication app = (InterMineApplication) getActivity().getApplication();
             Storage storage = app.getStorage();
-            storage.setUserToken("", token);
+            storage.setUserToken(mMineName, token);
         }
     }
 
@@ -87,13 +97,10 @@ public class LogInFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setLoading(true);
-                requestUserToken();
-            }
-        });
+        MinesAdapter adapter = new MinesAdapter(getActivity());
+        mMinesSpinner.setAdapter(adapter);
+        Set<String> mineNames = getStorage().getMineNames();
+        adapter.updateMines(mineNames);
     }
 
     @Override
@@ -103,17 +110,31 @@ public class LogInFragment extends BaseFragment {
         ((MainActivity) activity).onSectionAttached(getString(R.string.log_in));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
+    @OnClick(R.id.login_button)
     protected void requestUserToken() {
+        setLoading(true);
+
         String username = mLogin.getText().toString();
         String password = mPassword.getText().toString();
 
-        GetUserTokenRequest tokenRequest = new GetUserTokenRequest(getActivity(), R.string.flymine_url,
-                username, password);
+        GetUserTokenRequest tokenRequest = new GetUserTokenRequest(getActivity(),
+                Mines.getMineBaseUrl(getActivity(), mMineName), username, password);
         executeRequest(tokenRequest, new GetPermTokenRequestListener());
+    }
+
+    @OnItemSelected(R.id.mine_spinner)
+    protected void setMineBaseUrl() {
+        mMineName = mMinesSpinner.getSelectedItem().toString();
     }
 
     private void setLoading(boolean loading) {

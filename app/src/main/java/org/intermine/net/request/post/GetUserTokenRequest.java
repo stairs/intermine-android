@@ -23,12 +23,12 @@ public class GetUserTokenRequest extends PostBaseAuthorizationRequest<String> {
 
     private String mMineBaseUrl;
 
-    public GetUserTokenRequest(Context ctx, int mine, String username, String password) {
+    public GetUserTokenRequest(Context ctx, String mineBaseUrl, String username, String password) {
         super(String.class, ctx, null, null, null);
         setUsername(username);
         setPassword(password);
 
-        mMineBaseUrl = getContext().getString(mine);
+        mMineBaseUrl = mineBaseUrl;
     }
 
     @Override

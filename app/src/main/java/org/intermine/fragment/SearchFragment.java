@@ -37,6 +37,7 @@ import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
 import org.intermine.net.request.db.AddGenesToFavoritesRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
+import org.intermine.storage.Storage;
 import org.intermine.util.Emails;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
@@ -280,7 +281,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
             String[] defaultMinesList = getResources().getStringArray(R.array.default_mines);
             Set<String> defaultMinesSet = new HashSet<String>(Arrays.asList(defaultMinesList));
-            Set<String> selectedMinesUrls = sharedPref.getStringSet(PreferencesFragment.KEY_PREF_MINES, defaultMinesSet);
+            Set<String> selectedMinesUrls = sharedPref.getStringSet(Storage.MINE_NAMES_KEY, defaultMinesSet);
 
             mSelectedMines = findMinesNamesByUrls(selectedMinesUrls);
 

@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 
 import org.intermine.R;
 import org.intermine.activity.SettingsActivity;
+import org.intermine.storage.Storage;
 import org.intermine.util.Strs;
 
 import java.util.Arrays;
@@ -20,7 +21,6 @@ import java.util.Set;
  */
 public class PreferencesFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-    public static final String KEY_PREF_MINES = "pref_mines";
     public static final String COMMA = ", ";
 
     private Preference mMinesPreference;
@@ -42,11 +42,10 @@ public class PreferencesFragment extends PreferenceFragment
         mMinesNames = getResources().getStringArray(R.array.mines_names);
         mMinesUrls = getResources().getStringArray(R.array.mines_urls);
         mDefaultMinesUrls = getResources().getStringArray(R.array.default_mines);
-        mDefaultMinesUrlsSet = new HashSet<String>(Arrays.asList(mDefaultMinesUrls));
-
+        mDefaultMinesUrlsSet = new HashSet<>(Arrays.asList(mDefaultMinesUrls));
 
         addPreferencesFromResource(R.xml.preferences);
-        mMinesPreference = findPreference(KEY_PREF_MINES);
+        mMinesPreference = findPreference(Storage.MINE_NAMES_KEY);
     }
 
     @Override
@@ -67,8 +66,6 @@ public class PreferencesFragment extends PreferenceFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mMinesPreference.setSummary(generateMinesSummary(getSelectedMinesNames(sharedPref)));
     }
@@ -79,11 +76,11 @@ public class PreferencesFragment extends PreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (KEY_PREF_MINES.equals(key)) {
+        if (Storage.MINE_NAMES_KEY.equals(key)) {
             Set<String> mines = getSelectedMinesNames(sharedPreferences);
 
             if (mines.isEmpty()) {
-                sharedPreferences.edit().putStringSet(KEY_PREF_MINES, mDefaultMinesUrlsSet).apply();
+                sharedPreferences.edit().putStringSet(Storage.MINE_NAMES_KEY, mDefaultMinesUrlsSet).apply();
                 mines = getSelectedMinesNames(sharedPreferences);
             }
 
@@ -100,7 +97,7 @@ public class PreferencesFragment extends PreferenceFragment
     }
 
     private Set<String> getSelectedMinesNames(SharedPreferences sharedPreferences) {
-        Set<String> minesUrls = sharedPreferences.getStringSet(KEY_PREF_MINES, mDefaultMinesUrlsSet);
+        Set<String> minesUrls = sharedPreferences.getStringSet(Storage.MINE_NAMES_KEY, mDefaultMinesUrlsSet);
         return findMinesNamesByUrls(minesUrls);
     }
 

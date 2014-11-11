@@ -28,13 +28,12 @@
             android:src="@drawable/ic_intermine_logo"/>
 
         <TextView
-            style="@style/InterMine.Theme.Text"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/app_description"/>
-
     </LinearLayout>
 
     <ListView

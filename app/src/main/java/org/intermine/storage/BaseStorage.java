@@ -19,7 +19,7 @@ public class BaseStorage implements Storage {
 
     private Set<String> mDefaultMineNames;
 
-    public BaseStorage(SharedPreferences preferences, Context ctx) {
+    public BaseStorage(Context ctx, SharedPreferences preferences) {
         this.mPreferences = preferences;
         mContext = ctx;
 
