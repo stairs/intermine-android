@@ -59,7 +59,7 @@ public class ServerErrorHandler implements ResponseErrorHandler {
 //                    httpMsg = Strs.nullToEmpty(writer.toString());
 //
 //                    ErrorMessageEntity errorMessage =
-//                            mMapper.fromJson(httpMsg, ErrorMessageEntity.class);
+//                            mMapper.fromJson(httpMsg, ErrorMessageEntity.model);
 //
 //                    if (null != errorMessage && !Strs.isNullOrEmpty(errorMessage.getError())) {
 //                        httpMsg = errorMessage.getError();
@@ -73,14 +73,14 @@ public class ServerErrorHandler implements ResponseErrorHandler {
 //                if (null != contentType && APPLICATION_JSON_VALUE.equals(contentType.toString())) {
 //                    if (HttpStatus.BAD_REQUEST == response.getStatusCode()) {
 //                        ErrorMessageEntity errorMessage =
-//                                mMapper.fromJson(httpMsg, ErrorMessageEntity.class);
+//                                mMapper.fromJson(httpMsg, ErrorMessageEntity.model);
 //
 //                        if (null != errorMessage && !Strs.isNullOrEmpty(errorMessage.getError())) {
 //                            httpMsg = errorMessage.getError() + ERROR_SUFFIX;
 //                        }
 //                    } else if (HttpStatus.INTERNAL_SERVER_ERROR == response.getStatusCode()) {
 //                        CardBindingErrorEntity errorMessage =
-//                                mMapper.fromJson(httpMsg, CardBindingErrorEntity.class);
+//                                mMapper.fromJson(httpMsg, CardBindingErrorEntity.model);
 //
 //                        if (null != errorMessage) {
 //                            httpMsg = errorMessage.getStatusCode() + ERROR_SUFFIX;

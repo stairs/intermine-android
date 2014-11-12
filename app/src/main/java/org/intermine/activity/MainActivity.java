@@ -2,19 +2,20 @@ package org.intermine.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
+
 import org.intermine.R;
-import org.intermine.adapter.ListsAdapter;
 import org.intermine.core.Gene;
-import org.intermine.core.Template;
-import org.intermine.fragment.BrowseFragment;
+import org.intermine.core.ListItems;
+import org.intermine.core.templates.Template;
 import org.intermine.fragment.FavoritesFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.InfoFragment;
@@ -23,8 +24,7 @@ import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 import org.intermine.fragment.TemplatesFragment;
-
-import java.util.List;
+import org.intermine.net.request.get.GetTemplateResultsRequest;
 
 
 public class MainActivity extends BaseActivity implements
@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onTemplateSelected(Template template) {
-
+        TemplateActivity.start(this, template);
     }
 
     // --------------------------------------------------------------------------------------------

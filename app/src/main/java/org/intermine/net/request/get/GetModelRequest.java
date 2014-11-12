@@ -2,11 +2,10 @@ package org.intermine.net.request.get;
 
 import android.content.Context;
 
-import com.google.common.collect.Maps;
-
 import org.intermine.R;
 import org.intermine.core.model.Model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +26,7 @@ public class GetModelRequest extends JsonGetRequest<Model> {
 
     @Override
     public Map<String, ?> getUrlParams() {
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.put(FORMAT_PARAM, CONTENT_SUBTYPE);
         return params;
     }

@@ -23,6 +23,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login_button_label">Login</string>
+    <string name="loading_label">Loading models...</string>
 
     <!-- Gene Features -->
     <string name="gene_standard_name">Standard Name</string>

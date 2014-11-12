@@ -15,6 +15,8 @@ public class Model {
     @SerializedName("classes")
     private Map<String, ClassDescriptor> mClasses;
 
+    private String mMineName;
+
     public String getName() {
         return mName;
     }
@@ -29,5 +31,13 @@ public class Model {
 
     public void setClasses(Map<String, ClassDescriptor> classes) {
         mClasses = classes;
+    }
+
+    public String getMineName() {
+        return mMineName;
+    }
+
+    public void setMineName(String mineName) {
+        mMineName = mineName;
     }
 }

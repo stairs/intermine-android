@@ -3,6 +3,7 @@ package org.intermine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,7 +15,9 @@ import org.intermine.R;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
+import org.intermine.core.templates.Template;
 import org.intermine.fragment.ApiPager;
+import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.net.request.post.PostListResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;
@@ -24,7 +27,7 @@ import org.intermine.view.ProgressView;
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class TemplateActivity extends BaseActivity {
-    public static final String LIST_KEY = "list_key";
+    public static final String TEMPLATE_KEY = "template_key";
 
     public static final int ITEMS_PER_PAGE = 15;
 
@@ -38,7 +41,7 @@ public class TemplateActivity extends BaseActivity {
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private ApiPager mPager;
 
-    private org.intermine.core.List mList;
+    private Template mTemplate;
 
     protected boolean mLoading;
 
@@ -46,9 +49,9 @@ public class TemplateActivity extends BaseActivity {
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, org.intermine.core.List list) {
+    public static void start(Context context, Template template) {
         Intent intent = new Intent(context, TemplateActivity.class);
-        intent.putExtra(LIST_KEY, list);
+        intent.putExtra(TEMPLATE_KEY, template);
         context.startActivity(intent);
     }
 
@@ -56,7 +59,7 @@ public class TemplateActivity extends BaseActivity {
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    public class ListResultsListener implements RequestListener<ListItems> {
+    public class TemplateResultsListener implements RequestListener<ListItems> {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
@@ -87,7 +90,7 @@ public class TemplateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
 
-        mList = getIntent().getParcelableExtra(LIST_KEY);
+        mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
 
         mProgressView = (ProgressView) findViewById(R.id.progress_view);
         mNotFoundView = findViewById(R.id.not_found_results_container);
@@ -101,14 +104,14 @@ public class TemplateActivity extends BaseActivity {
         mListView.setOnScrollListener(mViewController);
         mListView.addFooterView(mViewController.getFooterView());
 
-        if (null != mList) {
-            setTitle(mList.getTitle());
+        if (null != mTemplate) {
+            setTitle(mTemplate.getTitle());
             setProgress(true);
 
             if (null == mPager) {
-                mPager = new ApiPager(mList.getSize(), 0, ITEMS_PER_PAGE);
+                mPager = new ApiPager(100, 0, ITEMS_PER_PAGE);
             }
-            performGetListResultsRequest();
+            requestTemplateResults();
         }
     }
 
@@ -148,7 +151,7 @@ public class TemplateActivity extends BaseActivity {
             @Override
             public void loadMore() {
                 mPager = mPager.next();
-                performGetListResultsRequest();
+                requestTemplateResults();
 
                 mViewController.onStartLoad();
                 mLoading = true;
@@ -156,10 +159,11 @@ public class TemplateActivity extends BaseActivity {
         };
     }
 
-    protected void performGetListResultsRequest() {
-        PostListResultsRequest request = new PostListResultsRequest(this, mList.getName(),
-                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
-        executeRequest(request, new ListResultsListener());
+    protected void requestTemplateResults() {
+        GetTemplateResultsRequest request = new GetTemplateResultsRequest(this, mTemplate);
+        executeRequest(request, new TemplateResultsListener());
+//        PostListResultsRequest request = new PostListResultsRequest(this, mList.getName(),
+//                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
     }
 
     protected void setProgress(boolean loading) {

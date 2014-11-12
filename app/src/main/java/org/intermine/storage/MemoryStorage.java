@@ -28,7 +28,12 @@ public class MemoryStorage extends BaseStorage {
     }
 
     @Override
-    public void setMineModel(String mineName, Model model) {
+    public Map<String, Model> getMineToModelMap() {
+        return mMineToModelMap;
+    }
+
+    @Override
+    public void addMineModel(String mineName, Model model) {
         if (null == mMineToModelMap) {
             mMineToModelMap = Collections.newHashMap();
         }

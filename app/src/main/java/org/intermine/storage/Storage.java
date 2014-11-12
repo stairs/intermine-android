@@ -2,6 +2,8 @@ package org.intermine.storage;
 
 import org.intermine.core.model.Model;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,5 +23,7 @@ public interface Storage {
 
     Model getMineModel(String mineName);
 
-    void setMineModel(String mineName, Model model);
+    Map<String, Model> getMineToModelMap();
+
+    void addMineModel(String mineName, Model model);
 }

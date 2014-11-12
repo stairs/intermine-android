@@ -1,6 +1,7 @@
 package org.intermine.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,15 +10,28 @@ import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.service.RoboSpiceService;
+import org.intermine.storage.Storage;
 
 public class BaseActivity extends ActionBarActivity {
     private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
+    private Storage mStorage;
+
     // --------------------------------------------------------------------------------------------
     // Lifecycle
     // --------------------------------------------------------------------------------------------
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        InterMineApplication app = (InterMineApplication) getApplication();
+        mStorage = app.getStorage();
+    }
 
     @Override
     protected void onStart() {
@@ -65,5 +79,9 @@ public class BaseActivity extends ActionBarActivity {
 
     protected void executeRequest(SpiceRequest request, RequestListener listener) {
         mSpiceManager.execute(request, listener);
+    }
+
+    public Storage getStorage() {
+        return mStorage;
     }
 }

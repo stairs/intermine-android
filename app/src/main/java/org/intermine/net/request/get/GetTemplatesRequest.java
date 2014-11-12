@@ -1,11 +1,18 @@
 package org.intermine.net.request.get;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.intermine.R;
-import org.intermine.core.Template;
+import org.intermine.core.templates.Template;
+import org.intermine.template.TemplateQuery;
 import org.intermine.util.Collections;
+import org.springframework.http.MediaType;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
