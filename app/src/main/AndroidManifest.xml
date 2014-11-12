@@ -36,7 +36,9 @@
             android:parentActivityName=".activity.MainActivity"/>
         <activity
             android:name=".activity.ListActivity"
-            android:label="@string/templates"
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity
+            android:name=".activity.TemplateActivity"
             android:parentActivityName=".activity.MainActivity"/>
         <activity
             android:name=".activity.SettingsActivity"

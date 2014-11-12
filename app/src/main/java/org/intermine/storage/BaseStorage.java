@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
-public class BaseStorage implements Storage {
+public abstract class BaseStorage implements Storage {
     private SharedPreferences mPreferences;
     private Context mContext;
 
