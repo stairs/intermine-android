@@ -4,17 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.ViewGroup;
 
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
-
 import org.intermine.R;
 import org.intermine.core.Gene;
-import org.intermine.core.ListItems;
 import org.intermine.core.templates.Template;
 import org.intermine.fragment.FavoritesFragment;
 import org.intermine.fragment.GenesListFragment;
@@ -24,7 +20,6 @@ import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 import org.intermine.fragment.TemplatesFragment;
-import org.intermine.net.request.get.GetTemplateResultsRequest;
 
 
 public class MainActivity extends BaseActivity implements
@@ -94,7 +89,6 @@ public class MainActivity extends BaseActivity implements
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
             return true;
         }
@@ -130,8 +124,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void restoreActionBar() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }

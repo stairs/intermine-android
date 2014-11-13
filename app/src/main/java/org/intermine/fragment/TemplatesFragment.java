@@ -18,14 +18,8 @@ import org.intermine.adapter.TemplatesAdapter;
 import org.intermine.core.templates.Template;
 import org.intermine.net.request.get.GetTemplatesRequest;
 import org.intermine.net.request.get.GetTemplatesRequest.Templates;
-import org.intermine.pathquery.PathQuery;
-import org.intermine.template.TemplateQuery;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
 public class TemplatesFragment extends BaseFragment {
     protected ListView mTemplates;

@@ -328,7 +328,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            String[] defaultMinesList = getResources().getStringArray(R.array.default_mines);
+            String[] defaultMinesList = getResources().getStringArray(R.array.mines_names);
             Set<String> defaultMinesSet = new HashSet<String>(Arrays.asList(defaultMinesList));
             Set<String> selectedMinesUrls = sharedPref.getStringSet(Storage.MINE_NAMES_KEY, defaultMinesSet);
 

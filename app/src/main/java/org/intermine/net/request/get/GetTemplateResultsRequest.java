@@ -4,15 +4,11 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.ListItems;
-import org.intermine.core.templates.constraint.Constraint;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
-import org.intermine.pathquery.PathConstraint;
-import org.intermine.template.SwitchOffAbility;
-import org.intermine.template.TemplateQuery;
+import org.intermine.core.templates.constraint.Constraint;
 import org.intermine.util.Collections;
 import org.intermine.util.Uris;
-import org.intermine.webservice.client.services.ModelService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +19,6 @@ import java.util.Map;
  */
 public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
     private Template mTemplate;
-    private ModelService ms;
 
     public GetTemplateResultsRequest(Context ctx, Template template) {
         super(ListItems.class, ctx, null, null);
@@ -50,26 +45,26 @@ public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
         return ctx.getString(R.string.flymine_url) + ctx.getString(R.string.template_results_path);
     }
 
-    private List<TemplateParameter> getParametersFor(TemplateQuery template) {
-        List<TemplateParameter> params = new ArrayList<TemplateParameter>();
-
-        for (PathConstraint pc : template.getEditableConstraints()) {
-            if (template.getSwitchOffAbility(pc) != SwitchOffAbility.OFF) {
-                TemplateParameter tp;
-                String path = pc.getPath();
-                String op = pc.getOp().toString();
-
-                String code = template.getConstraints().get(pc);
-                if (PathConstraint.getValues(pc) != null) {
-                    tp = new TemplateParameter(path, op, PathConstraint.getValues(pc), code);
-                } else {
-                    tp = new TemplateParameter(path, op, PathConstraint.getValue(pc), PathConstraint.getExtraValue(pc), code);
-                }
-                params.add(tp);
-            }
-        }
-        return params;
-    }
+//    private List<TemplateParameter> getParametersFor(TemplateQuery template) {
+//        List<TemplateParameter> params = new ArrayList<TemplateParameter>();
+//
+//        for (PathConstraint pc : template.getEditableConstraints()) {
+//            if (template.getSwitchOffAbility(pc) != SwitchOffAbility.OFF) {
+//                TemplateParameter tp;
+//                String path = pc.getPath();
+//                String op = pc.getOp().toString();
+//
+//                String code = template.getConstraints().get(pc);
+//                if (PathConstraint.getValues(pc) != null) {
+//                    tp = new TemplateParameter(path, op, PathConstraint.getValues(pc), code);
+//                } else {
+//                    tp = new TemplateParameter(path, op, PathConstraint.getValue(pc), PathConstraint.getExtraValue(pc), code);
+//                }
+//                params.add(tp);
+//            }
+//        }
+//        return params;
+//    }
 
     private List<TemplateParameter> getParametersFor(Template template) {
         List<TemplateParameter> params = new ArrayList<>();
@@ -139,16 +134,4 @@ public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
 //                template.getTitle(), template.getComment(), pathQuery);
 //        return templateQuery;
 //    }
-
-    /**
-     * Return a new ModelService for retrieving the data model.
-     *
-     * @return model service
-     */
-    public ModelService getModelService() {
-        if (ms == null) {
-            ms = new ModelService(getContext().getString(R.string.flymine_url), "InterMine-WS-Client-Java-2.0");
-        }
-        return ms;
-    }
 }

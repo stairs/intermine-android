@@ -2,10 +2,10 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <MultiSelectListPreference
-        android:key="pref_mines"
+        android:key="mine_names_key"
         android:title="@string/mines_preference"
         android:summary="@string/mines_default_summary"
-        android:defaultValue="@array/default_mines"
+        android:defaultValue="@array/mines_names"
         android:entries="@array/mines_names"
-        android:entryValues="@array/mines_urls"/>
+        android:entryValues="@array/mines_names"/>
 </PreferenceScreen>
