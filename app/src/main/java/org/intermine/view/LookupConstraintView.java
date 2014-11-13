@@ -14,7 +14,7 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class LookupConstraintView extends RelativeLayout {
+public class LookupConstraintView extends RelativeLayout implements ConstraintView {
     @InjectView(R.id.lookup_value)
     EditText mValue;
 
@@ -42,5 +42,10 @@ public class LookupConstraintView extends RelativeLayout {
 
     public String getValue() {
         return mValue.getText().toString();
+    }
+
+    @Override
+    public String getOperation() {
+        return ConstraintOperation.LOOKUP.toString();
     }
 }

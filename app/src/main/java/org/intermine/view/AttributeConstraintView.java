@@ -17,7 +17,7 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class AttributeConstraintView extends RelativeLayout {
+public class AttributeConstraintView extends RelativeLayout implements ConstraintView {
     @InjectView(R.id.operations_spinner)
     Spinner mOperationsSpinner;
 
@@ -54,7 +54,7 @@ public class AttributeConstraintView extends RelativeLayout {
         return mValue.getText().toString();
     }
 
-    public ConstraintOperation getOperation() {
-        return (ConstraintOperation) mOperationsSpinner.getSelectedItem();
+    public String getOperation() {
+        return (String) mOperationsSpinner.getSelectedItem();
     }
 }

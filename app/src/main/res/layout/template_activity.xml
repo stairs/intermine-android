@@ -7,13 +7,14 @@
 
     <TextView
         android:id="@+id/template_description"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/default_toolbar"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/constraints_container"
+        android:layout_below="@id/template_description"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

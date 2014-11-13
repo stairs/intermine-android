@@ -4,8 +4,11 @@
                 android:layout_height="match_parent"
                 tools:context="org.intermine.fragment.GenesListFragment">
 
+    <include layout="@layout/default_toolbar"/>
+
     <ListView
         android:id="@+id/list"
+        android:layout_below="@id/default_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:footerDividersEnabled="false"/>

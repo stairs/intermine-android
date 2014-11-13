@@ -3,6 +3,7 @@ package org.intermine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -86,6 +87,10 @@ public class ListActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mList = getIntent().getParcelableExtra(LIST_KEY);
 

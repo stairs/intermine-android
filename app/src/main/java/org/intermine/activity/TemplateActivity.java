@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import org.intermine.core.templates.constraint.ConstraintOperation;
 import org.intermine.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.util.Collections;
 import org.intermine.view.AttributeConstraintView;
+import org.intermine.view.ConstraintView;
 import org.intermine.view.LookupConstraintView;
 
 import java.util.List;
@@ -64,6 +66,7 @@ public class TemplateActivity extends BaseActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
         mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
@@ -82,6 +85,18 @@ public class TemplateActivity extends BaseActivity {
 
     @OnClick(R.id.show_results)
     protected void showTemplatesResults() {
+        List<Constraint> queryConstraints = Collections.newArrayList();
+
+        for (int i = 0; i < mContainer.getChildCount(); i++) {
+            View view = mContainer.getChildAt(i);
+            ConstraintView constraintView = (ConstraintView) view;
+            Constraint constraint = (Constraint) view.getTag();
+            constraint.setOp(constraintView.getValue());
+            constraint.setValue(constraintView.getValue());
+            queryConstraints.add(constraint);
+        }
+        mTemplate.setConstraints(queryConstraints);
+
         TemplateResultsActivity.start(this, mTemplate);
     }
 
@@ -90,20 +105,23 @@ public class TemplateActivity extends BaseActivity {
     // --------------------------------------------------------------------------------------------
 
     protected void processConstraints(List<Constraint> constraints) {
-        List<Constraint> editableConstraints = Collections.newArrayList();
-
         Model model = getStorage().getMineModel(mMineName);
 
         for (Constraint constraint : constraints) {
             if (!SwitchOffAbility.OFF.equals(constraint.getSwitched())) {
-                ConstraintOperation operation = ConstraintOperation.valueOf(constraint.getOp());
+                ConstraintOperation operation = ConstraintOperation.valueByName(constraint.getOp());
 
+                View view = null;
                 if (ConstraintOperation.LOOKUP.equals(operation)) {
-                    LookupConstraintView view = new LookupConstraintView(this, constraint.getValue());
+                    view = new LookupConstraintView(this, constraint.getValue());
                     mContainer.addView(view);
                 } else if (PathConstraintAttribute.VALID_OPS.contains(operation)) {
-                    AttributeConstraintView view = new AttributeConstraintView(this, constraint.getValue());
+                    view = new AttributeConstraintView(this, constraint.getValue());
                     mContainer.addView(view);
+                }
+
+                if (null != view) {
+                    view.setTag(constraint);
                 }
 
                 Log.e("ddd", constraint.getPath());
