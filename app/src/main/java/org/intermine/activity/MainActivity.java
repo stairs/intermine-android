@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onTemplateSelected(Template template) {
-        TemplateActivity.start(this, template);
+        TemplateActivity.start(this, template, null);
     }
 
     // --------------------------------------------------------------------------------------------

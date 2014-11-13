@@ -1,30 +1,22 @@
 package org.intermine.net.request.get;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.intermine.R;
 import org.intermine.core.ListItems;
-import org.intermine.core.templates.Condition;
+import org.intermine.core.templates.constraint.Constraint;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.pathquery.PathConstraint;
-import org.intermine.pathquery.PathQuery;
 import org.intermine.template.SwitchOffAbility;
 import org.intermine.template.TemplateQuery;
 import org.intermine.util.Collections;
-import org.intermine.metadata.Model;
 import org.intermine.util.Uris;
 import org.intermine.webservice.client.services.ModelService;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.intermine.net.request.get.GetTemplatesRequest.Templates;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -82,7 +74,7 @@ public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
     private List<TemplateParameter> getParametersFor(Template template) {
         List<TemplateParameter> params = new ArrayList<>();
 
-        for (Condition condition : template.getConditions()) {
+        for (Constraint condition : template.getConstraints()) {
             if (!condition.getSwitched().equals(org.intermine.core.templates.SwitchOffAbility.OFF.name())) {
                 TemplateParameter tp;
                 String path = condition.getPath();

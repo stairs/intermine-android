@@ -66,8 +66,8 @@ public class StartActivity extends BaseActivity {
     // --------------------------------------------------------------------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onStart() {
+        super.onStart();
 
         if (null == getStorage().getMineToModelMap()) {
             setContentView(R.layout.start_activity);
@@ -88,6 +88,7 @@ public class StartActivity extends BaseActivity {
             }, 1000);
         }
     }
+
 
     // --------------------------------------------------------------------------------------------
     // Helper Methods

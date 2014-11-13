@@ -19,33 +19,33 @@ import butterknife.ButterKnife;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class MinesAdapter extends BaseAdapter {
+public class SimpleAdapter<T> extends BaseAdapter {
     private Context mContext;
-    private List<String> mMineNames;
+    private List<T> mTitles;
 
-    public MinesAdapter(Context context) {
+    public SimpleAdapter(Context context) {
         mContext = context;
     }
 
-    public void updateMines(Collection<String> mineNames) {
-        mMineNames = new ArrayList<>(mineNames);
+    public void updateData(Collection<T> data) {
+        mTitles = new ArrayList<>(data);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (Collections.isNullOrEmpty(mMineNames)) {
+        if (Collections.isNullOrEmpty(mTitles)) {
             return 0;
         }
-        return mMineNames.size();
+        return mTitles.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if (Collections.isNullOrEmpty(mMineNames)) {
+        if (Collections.isNullOrEmpty(mTitles)) {
             return null;
         }
-        return mMineNames.get(position);
+        return mTitles.get(position);
     }
 
     @Override
@@ -59,16 +59,16 @@ public class MinesAdapter extends BaseAdapter {
 
         if (null == convertView) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.mine_spinner_item, parent, false);
+            convertView = inflater.inflate(R.layout.simple_spinner_item, parent, false);
 
-            textView = ButterKnife.findById(convertView, R.id.mine_name);
-            convertView.setTag(R.id.mine_name, textView);
+            textView = ButterKnife.findById(convertView, R.id.title);
+            convertView.setTag(R.id.title, textView);
         } else {
-            textView = (TextView) convertView.getTag(R.id.mine_name);
+            textView = (TextView) convertView.getTag(R.id.title);
         }
 
-        String mineName = mMineNames.get(position);
-        textView.setText(mineName);
+        T title = mTitles.get(position);
+        textView.setText(title.toString());
         return convertView;
     }
 }

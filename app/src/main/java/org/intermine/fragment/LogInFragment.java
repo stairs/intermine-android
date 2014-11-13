@@ -17,7 +17,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
-import org.intermine.adapter.MinesAdapter;
+import org.intermine.adapter.SimpleAdapter;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.storage.Storage;
 import org.intermine.util.Mines;
@@ -97,10 +97,10 @@ public class LogInFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MinesAdapter adapter = new MinesAdapter(getActivity());
+        SimpleAdapter adapter = new SimpleAdapter(getActivity());
         mMinesSpinner.setAdapter(adapter);
         Set<String> mineNames = getStorage().getMineNames();
-        adapter.updateMines(mineNames);
+        adapter.updateData(mineNames);
     }
 
     @Override

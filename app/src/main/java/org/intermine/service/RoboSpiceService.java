@@ -42,6 +42,11 @@ public class RoboSpiceService extends SpringAndroidSpiceService {
     }
 
     @Override
+    public int getCoreThreadCount() {
+        return super.getCoreThreadCount();
+    }
+
+    @Override
     public CacheManager createCacheManager(Application application) throws CacheCreationException {
         return new CacheManager();
     }

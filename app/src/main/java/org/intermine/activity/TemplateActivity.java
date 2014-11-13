@@ -3,84 +3,55 @@ package org.intermine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.intermine.R;
-import org.intermine.adapter.ListAdapter;
-import org.intermine.controller.LoadOnScrollViewController;
-import org.intermine.core.ListItems;
+import org.intermine.core.model.Model;
+import org.intermine.core.templates.SwitchOffAbility;
 import org.intermine.core.templates.Template;
-import org.intermine.fragment.ApiPager;
-import org.intermine.net.request.get.GetTemplateResultsRequest;
-import org.intermine.net.request.post.PostListResultsRequest;
+import org.intermine.core.templates.constraint.Constraint;
+import org.intermine.core.templates.constraint.ConstraintOperation;
+import org.intermine.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.util.Collections;
-import org.intermine.util.Views;
-import org.intermine.view.ProgressView;
+import org.intermine.view.AttributeConstraintView;
+import org.intermine.view.LookupConstraintView;
+
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class TemplateActivity extends BaseActivity {
     public static final String TEMPLATE_KEY = "template_key";
+    public static final String MINE_NAME_KEY = "mine_name_key";
 
-    public static final int ITEMS_PER_PAGE = 15;
+    @InjectView(R.id.constraints_container)
+    ViewGroup mContainer;
 
-    protected ListView mListView;
-    private ProgressView mProgressView;
-    protected View mNotFoundView;
-
-    private ListAdapter mListAdapter;
-
-    protected LoadOnScrollViewController mViewController;
-    private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
-    private ApiPager mPager;
+    @InjectView(R.id.template_description)
+    TextView mTemplateDescription;
 
     private Template mTemplate;
-
-    protected boolean mLoading;
+    private String mMineName;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, Template template) {
+    public static void start(Context context, Template template, String mineName) {
         Intent intent = new Intent(context, TemplateActivity.class);
         intent.putExtra(TEMPLATE_KEY, template);
+        intent.putExtra(MINE_NAME_KEY, mineName);
         context.startActivity(intent);
     }
 
-    // --------------------------------------------------------------------------------------------
-    // Inner Classes
-    // --------------------------------------------------------------------------------------------
-
-    public class TemplateResultsListener implements RequestListener<ListItems> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            Toast.makeText(TemplateActivity.this, spiceException.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onRequestSuccess(ListItems result) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.updateData(result);
-            } else {
-                Views.setVisible(mNotFoundView);
-            }
-        }
-    }
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -88,93 +59,60 @@ public class TemplateActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
+        setContentView(R.layout.template_activity);
+        ButterKnife.inject(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
+        setSupportActionBar(toolbar);
 
         mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
-
-        mProgressView = (ProgressView) findViewById(R.id.progress_view);
-        mNotFoundView = findViewById(R.id.not_found_results_container);
-
-        mListView = (ListView) findViewById(R.id.list);
-
-        mListAdapter = new ListAdapter(this);
-        mListView.setAdapter(mListAdapter);
-
-        mViewController = new LoadOnScrollViewController(getDataController(), this);
-        mListView.setOnScrollListener(mViewController);
-        mListView.addFooterView(mViewController.getFooterView());
+        mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
 
         if (null != mTemplate) {
             setTitle(mTemplate.getTitle());
-            setProgress(true);
+            mTemplate.setDescription(mTemplate.getDescription());
 
-            if (null == mPager) {
-                mPager = new ApiPager(100, 0, ITEMS_PER_PAGE);
-            }
-            requestTemplateResults();
+            processConstraints(mTemplate.getConstraints());
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
-        if (null == mDataController) {
-            mDataController = generateDataController();
-        }
-        return mDataController;
-    }
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
 
+    @OnClick(R.id.show_results)
+    protected void showTemplatesResults() {
+        TemplateResultsActivity.start(this, mTemplate);
+    }
 
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
-    protected LoadOnScrollViewController.LoadOnScrollDataController generateDataController() {
-        return new LoadOnScrollViewController.LoadOnScrollDataController() {
+    protected void processConstraints(List<Constraint> constraints) {
+        List<Constraint> editableConstraints = Collections.newArrayList();
 
-            @Override
-            public boolean hasMore() {
-                return mPager == null || mPager.hasMorePages();
+        Model model = getStorage().getMineModel(mMineName);
+
+        for (Constraint constraint : constraints) {
+            if (!SwitchOffAbility.OFF.equals(constraint.getSwitched())) {
+                ConstraintOperation operation = ConstraintOperation.valueOf(constraint.getOp());
+
+                if (ConstraintOperation.LOOKUP.equals(operation)) {
+                    LookupConstraintView view = new LookupConstraintView(this, constraint.getValue());
+                    mContainer.addView(view);
+                } else if (PathConstraintAttribute.VALID_OPS.contains(operation)) {
+                    AttributeConstraintView view = new AttributeConstraintView(this, constraint.getValue());
+                    mContainer.addView(view);
+                }
+
+                Log.e("ddd", constraint.getPath());
             }
-
-            @Override
-            public boolean isLoading() {
-                return mLoading;
-            }
-
-            @Override
-            public void loadMore() {
-                mPager = mPager.next();
-                requestTemplateResults();
-
-                mViewController.onStartLoad();
-                mLoading = true;
-            }
-        };
-    }
-
-    protected void requestTemplateResults() {
-        GetTemplateResultsRequest request = new GetTemplateResultsRequest(this, mTemplate);
-        executeRequest(request, new TemplateResultsListener());
-//        PostListResultsRequest request = new PostListResultsRequest(this, mList.getName(),
-//                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
-    }
-
-    protected void setProgress(boolean loading) {
-        mLoading = loading;
-
-        if (loading) {
-            Views.setVisible(mProgressView);
-            Views.setGone(mListView, mNotFoundView);
-        } else {
-            Views.setVisible(mListView);
-            Views.setGone(mProgressView);
         }
     }
+
+    private final String[] INTEGRAL_TYPES = {"int", "Integer", "long", "Long"};
+    private final String[] FRACTIONAL_TYPES = {"double", "Double", "float", "Float"};
+    private final String[] NUMERIC_TYPES = {"int", "Integer", "long", "Long", "double", "Double", "float", "Float"};
+    private final String[] BOOLEAN_TYPES = {"boolean", "Boolean"};
 }

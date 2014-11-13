@@ -24,6 +24,8 @@
     <string name="password">Password</string>
     <string name="login_button_label">Login</string>
     <string name="loading_label">Loading models...</string>
+    <string name="lookup_constraint">Lookup</string>
+    <string name="show_results">Show Results</string>
 
     <!-- Gene Features -->
     <string name="gene_standard_name">Standard Name</string>

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.intermine.R;
-import org.intermine.core.Template;
+import org.intermine.core.templates.Template;
 
 import java.util.ArrayList;
 import java.util.Collection;
