@@ -90,9 +90,9 @@ public class MainActivity extends BaseActivity implements
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             restoreActionBar();
-            return true;
+            return super.onCreateOptionsMenu(menu);
         }
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     public void onSectionAttached(String title) {

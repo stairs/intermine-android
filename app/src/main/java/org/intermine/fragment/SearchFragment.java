@@ -283,8 +283,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
             inflater.inflate(R.menu.gene_search_menu, menu);
 
@@ -297,6 +295,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setSearchableInfo(info);
             mSearchView.setOnQueryTextListener(this);
+            super.onCreateOptionsMenu(menu, inflater);
         }
     }
 
@@ -306,7 +305,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         activity.getSupportActionBar().setIcon(R.drawable.ic_launcher);
         return true;
     }
-
 
     // --------------------------------------------------------------------------------------------
     // Callbacks
