@@ -39,6 +39,7 @@ import org.intermine.net.request.db.AddGenesToFavoritesRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.storage.Storage;
 import org.intermine.util.Emails;
+import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
@@ -53,26 +54,38 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener,
-        MenuItemCompat.OnActionExpandListener {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
+
+    @InjectView(R.id.genes)
     protected ListView mGenesListView;
+
+    @InjectView(R.id.not_found_results_container)
     protected View mNotFoundView;
+
+    @InjectView(R.id.info_container)
+    protected View mInfoContainer;
+
+    @InjectView(R.id.progress_view)
+    protected ProgressView mProgressView;
+
+    @InjectView(R.id.progress_bar)
+    protected ProgressBar mProgressBar;
+
+    private SearchView mSearchView;
+
+
     protected boolean mLoading;
     protected LoadOnScrollViewController mViewController;
     private String mQuery = "";
     private GenesListFragment.OnGeneSelectedListener mOnGeneSelectedListener;
-    private View mInfoContainer;
-    private ProgressView mProgressView;
-    private SearchView mSearchView;
-    private ProgressBar mProgressBar;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private GenesAdapter mGenesAdapter;
     private List<Gene> mGenes;
 
-    private String[] mMinesNames;
-    private String[] mMinesUrls;
-    private Map<String, String> mSelectedMines;
     private Map<String, Integer> mMine2ResultsCount = new HashMap<String, Integer>();
 
     private CountDownLatch mCountDownLatch;
@@ -177,14 +190,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(getActivity(), view);
 
-
-        mInfoContainer = view.findViewById(R.id.info_container);
-        mProgressView = (ProgressView) view.findViewById(R.id.progress_view);
-        mNotFoundView = view.findViewById(R.id.not_found_results_container);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-
-        mGenesListView = (ListView) view.findViewById(R.id.genes);
         mGenesListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         mGenesListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
@@ -233,7 +240,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             }
         });
 
-        mGenes = new ArrayList<Gene>();
+        mGenes = new ArrayList<>();
         mGenesAdapter = new GenesAdapter(getActivity());
         mGenesAdapter.updateGenes(mGenes);
         mGenesListView.setAdapter(mGenesAdapter);
@@ -251,9 +258,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
                 }
             }
         });
-
-        mMinesUrls = getResources().getStringArray(R.array.mines_urls);
-        mMinesNames = getResources().getStringArray(R.array.mines_names);
 
         if (null != savedInstanceState) {
             mQuery = savedInstanceState.getString(QUERY_KEY);
@@ -290,8 +294,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             final SearchableInfo info = searchManager.getSearchableInfo(getActivity().getComponentName());
 
             final MenuItem searchItem = menu.findItem(R.id.search_action);
-            MenuItemCompat.setOnActionExpandListener(searchItem, this);
-
             mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setSearchableInfo(info);
             mSearchView.setOnQueryTextListener(this);
@@ -299,21 +301,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     }
 
-    @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
-        final ActionBarActivity activity = (ActionBarActivity) getActivity();
-        activity.getSupportActionBar().setIcon(R.drawable.ic_launcher);
-        return true;
-    }
-
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
-
-    @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
-        return true;
-    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -323,14 +313,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             if (null != mSearchView) {
                 mSearchView.clearFocus();
             }
-
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            String[] defaultMinesList = getResources().getStringArray(R.array.mines_names);
-            Set<String> defaultMinesSet = new HashSet<String>(Arrays.asList(defaultMinesList));
-            Set<String> selectedMinesUrls = sharedPref.getStringSet(Storage.MINE_NAMES_KEY, defaultMinesSet);
-
-            mSelectedMines = findMinesNamesByUrls(selectedMinesUrls);
 
             mPager = null;
             setProgress(true);
@@ -411,35 +393,19 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         };
     }
 
-    private Map<String, String> findMinesNamesByUrls(Set<String> selectedMinesUrls) {
-        Map<String, String> minesNames = new HashMap<String, String>();
-        for (String mineUrl : selectedMinesUrls) {
-            String mineName = findMineNameByUrl(mineUrl);
-            minesNames.put(mineName, mineUrl);
-        }
-        return minesNames;
-    }
-
-    private String findMineNameByUrl(String url) {
-        for (int i = 0; i < mMinesUrls.length; i++) {
-            if (url.equals(mMinesUrls[i])) {
-                return mMinesNames[i];
-            }
-        }
-        return null;
-    }
-
     private void performSearchRequests(String query, String format, int start) {
-        mCountDownLatch = new CountDownLatch(mSelectedMines.size());
+        Set<String> selectedMines = getStorage().getMineNames();
+
+        mCountDownLatch = new CountDownLatch(selectedMines.size());
         new OnSearchRequestsFinishedAsyncTask().execute();
 
-        for (Map.Entry<String, String> entry : mSelectedMines.entrySet()) {
-            Integer count = mMine2ResultsCount.get(entry.getKey());
+        for (String mine : selectedMines) {
+            Integer count = mMine2ResultsCount.get(mine);
 
             if (0 == start || (null != count &&
                     (mPager.getCurrentPage() + 1) * mPager.getPerPage() < count)) {
                 GeneSearchRequest request = new GeneSearchRequest(getActivity(),
-                        entry.getValue(), query, entry.getKey(), format, start);
+                        Mines.getMineBaseUrl(getActivity(), mine), query, mine, format, start);
                 executeRequest(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();
