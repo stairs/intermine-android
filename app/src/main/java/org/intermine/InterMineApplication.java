@@ -5,15 +5,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import org.intermine.storage.BaseStorage;
+import org.intermine.module.AppModule;
 import org.intermine.storage.MemoryStorage;
 import org.intermine.storage.Storage;
+
+import dagger.ObjectGraph;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class InterMineApplication extends Application {
-    private Storage mStorage;
+    /**
+     * Dagger object graph.
+     */
+    private ObjectGraph objectGraph;
 
     @Override
     public void onCreate() {
@@ -21,11 +26,14 @@ public class InterMineApplication extends Application {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mStorage = new MemoryStorage(this, preferences);
+        objectGraph = ObjectGraph.create(new AppModule(this));
     }
 
-    public Storage getStorage() {
-        return mStorage;
+    public void inject(Object object) {
+        objectGraph.inject(object);
+    }
+
+    public static InterMineApplication get(Context context) {
+        return (InterMineApplication) context.getApplicationContext();
     }
 }

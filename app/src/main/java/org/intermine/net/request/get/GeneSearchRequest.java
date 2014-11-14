@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
 import org.intermine.json.GeneSearchResultDeserializer;
+import org.intermine.net.request.JsonGetRequest;
 
 import java.util.HashMap;
 import java.util.Map;

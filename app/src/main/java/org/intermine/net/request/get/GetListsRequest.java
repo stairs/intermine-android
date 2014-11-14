@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.List;
+import org.intermine.net.request.JsonGetRequest;
 import org.intermine.util.Collections;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package org.intermine.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,8 @@ import org.intermine.util.Mines;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+
+import javax.inject.Inject;
 
 
 public class StartActivity extends BaseActivity {

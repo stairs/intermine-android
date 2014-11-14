@@ -10,17 +10,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 /**
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public abstract class BaseStorage implements Storage {
-    private SharedPreferences mPreferences;
+    @Inject
+    SharedPreferences mPreferences;
     private Context mContext;
 
     private Set<String> mDefaultMineNames;
 
-    public BaseStorage(Context ctx, SharedPreferences preferences) {
-        this.mPreferences = preferences;
+    public BaseStorage(Context ctx) {
         mContext = ctx;
 
         String[] mineNamesArr = ctx.getResources().getStringArray(R.array.mines_names);

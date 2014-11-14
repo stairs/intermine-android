@@ -11,23 +11,25 @@ import org.intermine.InterMineApplication;
 import org.intermine.service.RoboSpiceService;
 import org.intermine.storage.Storage;
 
+import javax.inject.Inject;
+
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class BaseFragment extends Fragment {
     protected SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
-    private Storage mStorage;
+
+    @Inject
+    Storage mStorage;
 
     // --------------------------------------------------------------------------------------------
     // Lifecycle
     // --------------------------------------------------------------------------------------------
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        InterMineApplication app = (InterMineApplication) getActivity().getApplication();
-        mStorage = app.getStorage();
+        InterMineApplication app = InterMineApplication.get(getActivity());
+        app.inject(this);
     }
 
     @Override

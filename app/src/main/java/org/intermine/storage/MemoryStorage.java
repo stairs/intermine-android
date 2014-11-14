@@ -1,8 +1,6 @@
 package org.intermine.storage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.widget.BaseAdapter;
 
 import org.intermine.core.model.Model;
 import org.intermine.util.Collections;
@@ -15,8 +13,8 @@ import java.util.Map;
 public class MemoryStorage extends BaseStorage {
     private Map<String, Model> mMineToModelMap;
 
-    public MemoryStorage(Context ctx, SharedPreferences preferences) {
-        super(ctx, preferences);
+    public MemoryStorage(Context ctx) {
+        super(ctx);
     }
 
     @Override

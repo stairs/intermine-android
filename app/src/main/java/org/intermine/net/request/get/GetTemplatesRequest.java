@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.templates.Template;
+import org.intermine.net.request.JsonGetRequest;
 import org.intermine.util.Collections;
 
 import java.util.HashMap;

@@ -76,9 +76,7 @@ public class LogInFragment extends BaseFragment {
         public void onRequestSuccess(String token) {
             setLoading(false);
 
-            InterMineApplication app = (InterMineApplication) getActivity().getApplication();
-            Storage storage = app.getStorage();
-            storage.setUserToken(mMineName, token);
+            getStorage().setUserToken(mMineName, token);
         }
     }
 

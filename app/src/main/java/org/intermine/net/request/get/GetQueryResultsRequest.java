@@ -3,6 +3,7 @@ package org.intermine.net.request.get;
 import android.content.Context;
 
 import org.intermine.R;
+import org.intermine.net.request.JsonGetRequest;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -86,5 +86,6 @@
     <string name="mines_default_summary">All available</string>
     <string name="title_activity_base">BaseActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
 
 </resources>

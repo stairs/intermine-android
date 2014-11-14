@@ -12,7 +12,7 @@ import org.intermine.activity.MainActivity;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.GenesList;
 import org.intermine.net.request.db.FavoritesCountRequest;
-import org.intermine.net.request.db.FavoritesRequest;
+import org.intermine.net.request.get.GetGeneFavoritesRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.util.Views;
 
@@ -113,7 +113,7 @@ public class FavoritesFragment extends GenesListFragment {
     }
 
     private void fetchFavorites(int from, int count) {
-        FavoritesRequest request = new FavoritesRequest(getActivity(), from, count);
+        GetGeneFavoritesRequest request = new GetGeneFavoritesRequest(getActivity(), from, count);
         mSpiceManager.execute(request, new FavoritesRequestListener());
     }
 

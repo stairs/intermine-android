@@ -13,12 +13,16 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.service.RoboSpiceService;
+import org.intermine.storage.MemoryStorage;
 import org.intermine.storage.Storage;
+
+import javax.inject.Inject;
 
 public class BaseActivity extends ActionBarActivity {
     private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
-    private Storage mStorage;
+    @Inject
+    Storage mStorage;
 
     // --------------------------------------------------------------------------------------------
     // Lifecycle
@@ -28,9 +32,8 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        InterMineApplication app = (InterMineApplication) getApplication();
-        mStorage = app.getStorage();
+        InterMineApplication app = InterMineApplication.get(this);
+        app.inject(this);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     // --------------------------------------------------------------------------------------------
-    // Callback Mehods
+    // Callback Methods
     // --------------------------------------------------------------------------------------------
 
     @Override

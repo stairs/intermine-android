@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
@@ -21,7 +23,8 @@ public class PreferencesFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String COMMA = ", ";
 
-    private Storage mStorage;
+    @Inject
+    Storage mStorage;
     private MultiSelectListPreference mMinesPreference;
 
     private Set<String> mMineNames;
@@ -58,9 +61,6 @@ public class PreferencesFragment extends PreferenceFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        InterMineApplication app = (InterMineApplication) getActivity().getApplication();
-        mStorage = app.getStorage();
 
         mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
     }

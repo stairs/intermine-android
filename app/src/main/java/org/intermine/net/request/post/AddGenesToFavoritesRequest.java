@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
+import org.intermine.net.request.PostAuthRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class AddGenesToFavoritesRequest extends AuthorizedPostRequest<Void> {
+public class AddGenesToFavoritesRequest extends PostAuthRequest<Void> {
     private static final String GENES_FAVORITES_PARAM = "org.intermine.android.favorites.gene";
     private String mMineBaseUrl;
     private List<Gene> mGenes;

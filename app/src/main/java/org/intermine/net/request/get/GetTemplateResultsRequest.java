@@ -7,6 +7,7 @@ import org.intermine.core.ListItems;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.core.templates.constraint.Constraint;
+import org.intermine.net.request.JsonGetRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Uris;
 

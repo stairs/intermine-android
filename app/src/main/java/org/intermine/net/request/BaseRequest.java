@@ -5,9 +5,11 @@ import android.content.Context;
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
 import org.apache.http.client.HttpClient;
+import org.intermine.InterMineApplication;
 import org.intermine.net.DefaultRetryPolicy;
 import org.intermine.net.HttpUtils;
 import org.intermine.net.ServerErrorHandler;
+import org.intermine.storage.Storage;
 import org.springframework.http.ContentCodingType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -22,6 +24,7 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
     public final static String CONTENT_ENCODING = "UTF-8";
 
     private Context mContext;
+    private Storage mStorage;
     private String mUrl;
     private Map<String, ?> mUrlParams;
 
@@ -31,6 +34,9 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
         setContext(ctx);
         setUrl(url);
         setUrlParams(params);
+
+        InterMineApplication app = InterMineApplication.get(ctx);
+        app.inject(this);
 
         setRetryPolicy(new DefaultRetryPolicy());
     }
@@ -77,5 +83,9 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
 
     public void setUrlParams(Map<String, ?> urlParams) {
         mUrlParams = urlParams;
+    }
+
+    public Storage getStorage() {
+        return mStorage;
     }
 }
