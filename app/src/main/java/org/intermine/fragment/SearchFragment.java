@@ -33,8 +33,8 @@ import org.intermine.adapter.GenesAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
-import org.intermine.net.request.post.AddGenesToFavoritesRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
+import org.intermine.net.request.post.AddGenesToFavoritesRequest;
 import org.intermine.util.Emails;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
@@ -186,18 +186,16 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            List<Gene> selectedGenes = getSelectedGenes();
-
             switch (item.getItemId()) {
                 case R.id.favourites:
-                    SpiceRequest req = new AddGenesToFavoritesRequest(getActivity(), selectedGenes);
-                    executeRequest(req, null);
+                    Map<String, List<Gene>> selectedGenes = getMineToSelectedGenesMap();
+                    addGenesToFavorites(selectedGenes);
                     Toast.makeText(getActivity(), R.string.genes_added_to_favorites,
                             Toast.LENGTH_LONG).show();
                     mode.finish();
                     return true;
                 case R.id.email:
-                    Intent intent = Emails.generateIntentToSendEmails(selectedGenes);
+                    Intent intent = Emails.generateIntentToSendEmails(getSelectedGenes());
                     startActivity(intent);
                     mode.finish();
                     return true;
@@ -337,15 +335,36 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     protected List<Gene> getSelectedGenes() {
-        List<Gene> genes = new ArrayList<Gene>();
+        List<Gene> genes = org.intermine.util.Collections.newArrayList();
+        SparseBooleanArray checkedItemIds = mGenesListView.getCheckedItemPositions();
+
+        for (int i = 0; i < mGenesAdapter.getCount(); i++) {
+            if (checkedItemIds.get(i)) {
+                Gene gene = (Gene) mGenesAdapter.getItem(i);
+                genes.add(gene);
+            }
+        }
+        return genes;
+    }
+
+    protected Map<String, List<Gene>> getMineToSelectedGenesMap() {
+        Map<String, List<Gene>> mineToSelectedGenesMap = org.intermine.util.Collections.newHashMap();
 
         SparseBooleanArray checkedItemIds = mGenesListView.getCheckedItemPositions();
         for (int i = 0; i < mGenesAdapter.getCount(); i++) {
             if (checkedItemIds.get(i)) {
-                genes.add((Gene) mGenesAdapter.getItem(i));
+                Gene gene = (Gene) mGenesAdapter.getItem(i);
+
+                List<Gene> genes = mineToSelectedGenesMap.get(gene.getMine());
+
+                if (null == genes) {
+                    genes = org.intermine.util.Collections.newArrayList();
+                    mineToSelectedGenesMap.put(gene.getMine(), genes);
+                }
+                genes.add(gene);
             }
         }
-        return genes;
+        return mineToSelectedGenesMap;
     }
 
     protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
@@ -399,6 +418,19 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
                 executeRequest(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();
+            }
+        }
+    }
+
+    protected void addGenesToFavorites(Map<String, List<Gene>> mineToGenesMap) {
+        for (String mine : mineToGenesMap.keySet()) {
+            String token = getStorage().getUserToken(mine);
+
+            if (!Strs.isNullOrEmpty(token)) {
+                String mineBaseUrl = Mines.getMineBaseUrl(getActivity(), mine);
+                SpiceRequest req = new AddGenesToFavoritesRequest(getActivity(), mineBaseUrl,
+                        mineToGenesMap.get(mine), token);
+                executeRequest(req, null);
             }
         }
     }
