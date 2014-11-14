@@ -2,43 +2,101 @@ package org.intermine.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.GenesAdapter;
+import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
+import org.intermine.core.ListItems;
+import org.intermine.net.request.post.PostListResultsRequest;
+import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GenesListFragment extends BaseFragment {
-    protected ListView mGenesListView;
+import butterknife.InjectView;
+
+public class GenesListFragment extends BaseFragment {
+    public static final int ITEMS_PER_PAGE = 15;
+
+    @InjectView(R.id.list)
+    protected ListView mListView;
+
+    @InjectView(R.id.not_found_results_container)
     protected View mNotFoundView;
-    protected boolean mLoading;
+
+    @InjectView(R.id.info_container)
+    protected View mInfoContainer;
+
+    @InjectView(R.id.progress_view)
+    protected ProgressView mProgressView;
+
+    @InjectView(R.id.progress_bar)
+    protected ProgressBar mProgressBar;
+
+    private ListAdapter mListAdapter;
+
     protected LoadOnScrollViewController mViewController;
-    private OnGeneSelectedListener mOnGeneSelectedListener;
-    private ProgressView mProgressView;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
-    private GenesAdapter mGenesAdapter;
-    private List<Gene> mGenes;
+    private ApiPager mPager;
+
+    private OnGeneSelectedListener mListener;
+
+    private org.intermine.core.List mList;
+
+    protected boolean mLoading;
+
+    public static GenesListFragment newInstance(org.intermine.core.List list) {
+        GenesListFragment fragment = new GenesListFragment();
+        fragment.setList(list);
+        return fragment;
+    }
 
     // --------------------------------------------------------------------------------------------
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public interface OnGeneSelectedListener {
+        void onGeneSelected(Gene gene);
     }
 
+    public class ListResultsListener implements RequestListener<ListItems> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Toast.makeText(getActivity(), spiceException.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onRequestSuccess(ListItems result) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
+                mListAdapter.updateData(result);
+            } else {
+                Views.setVisible(mNotFoundView);
+            }
+        }
+    }
     // --------------------------------------------------------------------------------------------
     // Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -52,51 +110,27 @@ public abstract class GenesListFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mOnGeneSelectedListener = (OnGeneSelectedListener) activity;
-
-        ((MainActivity) activity).onSectionAttached(getString(R.string.search));
+        mListener = (OnGeneSelectedListener) activity;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (null == savedInstanceState) {
-            mGenesListView = (ListView) view.findViewById(R.id.genes);
-            mProgressView = (ProgressView) view.findViewById(R.id.progress_view);
-            mNotFoundView = view.findViewById(R.id.not_found_results_container);
+        mListAdapter = new ListAdapter(getActivity());
+        mListView.setAdapter(mListAdapter);
 
-            mGenes = new ArrayList<Gene>();
-            mGenesAdapter = new GenesAdapter(getActivity());
-            mGenesAdapter.updateGenes(mGenes);
-            mGenesListView.setAdapter(mGenesAdapter);
+        mViewController = new LoadOnScrollViewController(getDataController(), getActivity());
+        mListView.setOnScrollListener(mViewController);
+        mListView.addFooterView(mViewController.getFooterView());
 
-            mViewController = new LoadOnScrollViewController(getDataController(),
-                    GenesListFragment.this.getActivity());
-            mGenesListView.setOnScrollListener(mViewController);
-            mGenesListView.addFooterView(mViewController.getFooterView());
+        if (null != mList) {
+            setProgress(true);
 
-            mGenesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (null != mOnGeneSelectedListener) {
-                        Gene gene = (Gene) parent.getItemAtPosition(position);
-                        mOnGeneSelectedListener.onGeneSelected(gene);
-                    }
-                }
-            });
-        }
-    }
-
-    protected void setProgress(boolean loading) {
-        mLoading = loading;
-
-        if (loading) {
-            Views.setVisible(mProgressView);
-            Views.setGone(mGenesListView);
-        } else {
-            Views.setVisible(mGenesListView);
-            Views.setGone(mProgressView);
+            if (null == mPager) {
+                mPager = new ApiPager(mList.getSize(), 0, ITEMS_PER_PAGE);
+            }
+            performGetListResultsRequest();
         }
     }
 
@@ -111,17 +145,49 @@ public abstract class GenesListFragment extends BaseFragment {
         return mDataController;
     }
 
-    protected void notifyDataChanged() {
-        mGenesAdapter.notifyDataSetChanged();
+    protected LoadOnScrollViewController.LoadOnScrollDataController generateDataController() {
+        return new LoadOnScrollViewController.LoadOnScrollDataController() {
+
+            @Override
+            public boolean hasMore() {
+                return mPager == null || mPager.hasMorePages();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return mLoading;
+            }
+
+            @Override
+            public void loadMore() {
+                mPager = mPager.next();
+                performGetListResultsRequest();
+
+                mViewController.onStartLoad();
+                mLoading = true;
+            }
+        };
     }
 
-    public List<Gene> getGenes() {
-        return mGenes;
+    protected void performGetListResultsRequest() {
+        PostListResultsRequest request = new PostListResultsRequest(getActivity(), mList.getName(),
+                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
+        executeRequest(request, new ListResultsListener());
     }
 
-    protected abstract LoadOnScrollViewController.LoadOnScrollDataController generateDataController();
+    protected void setProgress(boolean loading) {
+        mLoading = loading;
 
-    public static interface OnGeneSelectedListener {
-        void onGeneSelected(Gene gene);
+        if (loading) {
+            Views.setVisible(mProgressView);
+            Views.setGone(mListView, mNotFoundView);
+        } else {
+            Views.setVisible(mListView);
+            Views.setGone(mProgressView);
+        }
+    }
+
+    public void setList(org.intermine.core.List list) {
+        mList = list;
     }
 }

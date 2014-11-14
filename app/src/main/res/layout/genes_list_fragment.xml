@@ -5,39 +5,39 @@
                 tools:context=".fragment.GenesListFragment">
 
     <ListView
-        android:id="@+id/genes"
+        android:id="@+id/list"
+        android:layout_below="@id/default_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:footerDividersEnabled="false"/>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/not_found_results_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:paddingTop="30dp"
             android:id="@+id/sad_cloud_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"
             android:src="@drawable/sad_face"/>
 
         <TextView
-            android:layout_centerHorizontal="true"
             style="@style/InterMine.Theme.Text.Large"
-            android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sad_cloud_image"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
             android:text="@string/not_found"/>
     </RelativeLayout>
 
     <org.intermine.view.ProgressView
-        android:visibility="gone"
         android:id="@+id/progress_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </RelativeLayout>

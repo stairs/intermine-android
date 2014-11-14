@@ -99,6 +99,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
+    public interface OnGeneSelectedListener {
+        void onGeneSelected(Gene gene);
+    }
 
     private class GeneSearchRequestListener implements RequestListener<GenesList> {
 
@@ -423,13 +426,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     protected void addGenesToFavorites(Map<String, List<Gene>> mineToGenesMap) {
+        String geneFavoritesListName = getString(R.string.gene_favorites_list_name);
+
         for (String mine : mineToGenesMap.keySet()) {
             String token = getStorage().getUserToken(mine);
 
             if (!Strs.isNullOrEmpty(token)) {
-                String mineBaseUrl = Mines.getMineBaseUrl(getActivity(), mine);
-                SpiceRequest req = new AppendGenesToListRequest(getActivity(), mineBaseUrl,
-                        mineToGenesMap.get(mine), token);
+                SpiceRequest req = new AppendGenesToListRequest(getActivity(), mine,
+                        geneFavoritesListName, mineToGenesMap.get(mine));
                 executeRequest(req, null);
             }
         }

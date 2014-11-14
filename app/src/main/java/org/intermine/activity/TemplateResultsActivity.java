@@ -87,7 +87,7 @@ public class TemplateResultsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
+        setContentView(R.layout.genes_list_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);

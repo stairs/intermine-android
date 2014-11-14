@@ -3,6 +3,7 @@ package org.intermine.net.request.post;
 import android.content.Context;
 
 import org.intermine.R;
+import org.intermine.core.Gene;
 import org.intermine.net.request.PostAuthRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
@@ -27,12 +28,12 @@ public class CreateGenesList extends PostAuthRequest<Void> {
     private static final String LIST_TYPE_VALUE = "Gene";
 
     private String mListName;
-    private List<String> mGeneIds;
+    private List<Gene> mGenes;
 
-    public CreateGenesList(Context ctx, String mineName, String listName, List<String> ids) {
+    public CreateGenesList(Context ctx, String mineName, String listName, List<Gene> genes) {
         super(Void.class, ctx, null, null, null, mineName);
         mListName = listName;
-        mGeneIds = ids;
+        mGenes = genes;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class CreateGenesList extends PostAuthRequest<Void> {
         HttpHeaders headers = getHeaders();
         String uriString = getUrl();
         Map<String, ?> params = getUrlParams();
-        String post = Strs.join(mGeneIds, ", ");
+        String post = generateBody();
 
         HttpEntity<?> req;
         if (null != post) {
@@ -76,5 +77,14 @@ public class CreateGenesList extends PostAuthRequest<Void> {
 
         res = rtp.exchange(uri, POST, req, String.class);
         return null;
+    }
+
+    protected String generateBody() {
+        List<String> genesIds = Collections.newArrayList();
+
+        for (Gene gene : mGenes) {
+            genesIds.add(gene.getPrimaryDBId());
+        }
+        return Strs.join(genesIds, ", ");
     }
 }

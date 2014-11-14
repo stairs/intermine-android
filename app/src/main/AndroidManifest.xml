@@ -38,7 +38,7 @@
             android:label="@string/gene_view"
             android:parentActivityName=".activity.MainActivity"/>
         <activity
-            android:name=".activity.ListActivity"
+            android:name=".activity.GenesListActivity"
             android:parentActivityName=".activity.MainActivity"/>
         <activity
             android:name=".activity.TemplateActivity"

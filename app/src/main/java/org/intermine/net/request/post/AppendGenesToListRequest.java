@@ -14,8 +14,8 @@ import java.util.List;
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class AppendGenesToListRequest extends CreateGenesList {
-    public AppendGenesToListRequest(Context ctx, String mineName, String listName, List<String> ids) {
-        super(ctx, mineName, listName, ids);
+    public AppendGenesToListRequest(Context ctx, String mineName, String listName, List<Gene> genes) {
+        super(ctx, mineName, listName, genes);
     }
 
     @Override

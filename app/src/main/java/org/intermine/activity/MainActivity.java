@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
+import org.intermine.core.List;
 import org.intermine.core.templates.Template;
-import org.intermine.fragment.FavoritesFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.InfoFragment;
 import org.intermine.fragment.ListsFragment;
@@ -23,7 +23,7 @@ import org.intermine.fragment.TemplatesFragment;
 
 
 public class MainActivity extends BaseActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks, GenesListFragment.OnGeneSelectedListener,
+        NavigationDrawerFragment.NavigationDrawerCallbacks, SearchFragment.OnGeneSelectedListener,
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
     protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
@@ -70,7 +70,9 @@ public class MainActivity extends BaseActivity implements
                 fragment = ListsFragment.newInstance();
                 break;
             case 3:
-                fragment = FavoritesFragment.newInstance();
+                List list = new List();
+                list.setName(getString(R.string.gene_favorites_list_name));
+                fragment = GenesListFragment.newInstance(list);
                 break;
             case 4:
                 fragment = LogInFragment.newInstance();
@@ -106,7 +108,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onListSelected(org.intermine.core.List list) {
-        ListActivity.start(this, list);
+        GenesListActivity.start(this, list);
     }
 
     @Override
