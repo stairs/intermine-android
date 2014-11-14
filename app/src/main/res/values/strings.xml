@@ -48,6 +48,7 @@
 
     <string name="search_path">/query/results</string>
     <string name="lists_path">/lists</string>
+    <string name="append_to_lists_path">/lists/append</string>
     <string name="templates_path">/templates</string>
     <string name="template_results_path">/template/results</string>
     <string name="get_token_path">/user/tokens</string>

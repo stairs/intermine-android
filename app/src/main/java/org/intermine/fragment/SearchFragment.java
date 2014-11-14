@@ -34,7 +34,7 @@ import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
 import org.intermine.net.request.get.GeneSearchRequest;
-import org.intermine.net.request.post.AddGenesToFavoritesRequest;
+import org.intermine.net.request.post.AppendGenesToListRequest;
 import org.intermine.util.Emails;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
@@ -428,7 +428,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
             if (!Strs.isNullOrEmpty(token)) {
                 String mineBaseUrl = Mines.getMineBaseUrl(getActivity(), mine);
-                SpiceRequest req = new AddGenesToFavoritesRequest(getActivity(), mineBaseUrl,
+                SpiceRequest req = new AppendGenesToListRequest(getActivity(), mineBaseUrl,
                         mineToGenesMap.get(mine), token);
                 executeRequest(req, null);
             }
