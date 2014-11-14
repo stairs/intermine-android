@@ -52,6 +52,7 @@
     <string name="template_results_path">/template/results</string>
     <string name="get_token_path">/user/tokens</string>
     <string name="model_path">/model</string>
+    <string name="user_preferences_path">/user/preferences</string>
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>

@@ -5,12 +5,9 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -21,12 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
@@ -35,9 +33,8 @@ import org.intermine.adapter.GenesAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
-import org.intermine.net.request.db.AddGenesToFavoritesRequest;
+import org.intermine.net.request.post.AddGenesToFavoritesRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
-import org.intermine.storage.Storage;
 import org.intermine.util.Emails;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
@@ -45,10 +42,8 @@ import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +51,7 @@ import java.util.concurrent.CountDownLatch;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
@@ -77,7 +73,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     private SearchView mSearchView;
 
-
     protected boolean mLoading;
     protected LoadOnScrollViewController mViewController;
     private String mQuery = "";
@@ -86,7 +81,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private GenesAdapter mGenesAdapter;
     private List<Gene> mGenes;
 
-    private Map<String, Integer> mMine2ResultsCount = new HashMap<String, Integer>();
+    private Map<String, Integer> mMine2ResultsCount = new HashMap<>();
 
     private CountDownLatch mCountDownLatch;
 
@@ -171,6 +166,50 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             setProgress(false);
         }
     }
+
+    private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
+        @Override
+        public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater menuInflater = mode.getMenuInflater();
+            menuInflater.inflate(R.menu.context, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            List<Gene> selectedGenes = getSelectedGenes();
+
+            switch (item.getItemId()) {
+                case R.id.favourites:
+                    SpiceRequest req = new AddGenesToFavoritesRequest(getActivity(), selectedGenes);
+                    executeRequest(req, null);
+                    Toast.makeText(getActivity(), R.string.genes_added_to_favorites,
+                            Toast.LENGTH_LONG).show();
+                    mode.finish();
+                    return true;
+                case R.id.email:
+                    Intent intent = Emails.generateIntentToSendEmails(selectedGenes);
+                    startActivity(intent);
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+        }
+    };
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -182,63 +221,18 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.search_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        View view = inflater.inflate(R.layout.search_fragment, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(getActivity(), view);
 
         mGenesListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mGenesListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                MenuInflater menuInflater = mode.getMenuInflater();
-                menuInflater.inflate(R.menu.context, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                List<Gene> selectedGenes = getSelectedGenes();
-
-                switch (item.getItemId()) {
-                    case R.id.favourites:
-                        //TODO: refactore
-                        executeRequest(new AddGenesToFavoritesRequest(
-                                getActivity(), selectedGenes), null);
-                        Toast.makeText(getActivity(),
-                                R.string.genes_added_to_favorites, Toast.LENGTH_LONG).show();
-                        mode.finish();
-                        return true;
-                    case R.id.email:
-                        Intent intent = Emails.generateIntentToSendEmails(selectedGenes);
-                        startActivity(intent);
-                        mode.finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-
-            }
-        });
+        mGenesListView.setMultiChoiceModeListener(mMultiListener);
 
         mGenes = new ArrayList<>();
         mGenesAdapter = new GenesAdapter(getActivity());
@@ -248,16 +242,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         mViewController = new LoadOnScrollViewController(getDataController(), getActivity());
         mGenesListView.setOnScrollListener(mViewController);
         mGenesListView.addFooterView(mViewController.getFooterView());
-
-        mGenesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (null != mOnGeneSelectedListener) {
-                    Gene gene = (Gene) parent.getItemAtPosition(position);
-                    mOnGeneSelectedListener.onGeneSelected(gene);
-                }
-            }
-        });
 
         if (null != savedInstanceState) {
             mQuery = savedInstanceState.getString(QUERY_KEY);
@@ -285,6 +269,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Callbacks
+    // --------------------------------------------------------------------------------------------
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
@@ -300,10 +288,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
-
-    // --------------------------------------------------------------------------------------------
-    // Callbacks
-    // --------------------------------------------------------------------------------------------
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -321,6 +305,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         return true;
     }
 
+    @OnItemClick(R.id.genes)
+    public void onGeneSelected(int position) {
+        if (null != mOnGeneSelectedListener) {
+            Gene gene = (Gene) mGenesAdapter.getItem(position);
+            mOnGeneSelectedListener.onGeneSelected(gene);
+        }
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
@@ -332,10 +324,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     protected void setProgress(boolean loading) {
         mLoading = loading;
-
         // TODO: fix
         Views.setGone(mInfoContainer);
-
 
         if (loading) {
             Views.setVisible(mProgressView);
