@@ -16,17 +16,11 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public class HttpUtils {
     public static HttpClient getNewHttpClient() {
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
-
-            SSLSocketFactory sf = new EasySSLSocketFactory(trustStore);
-            sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
             HttpParams params = new BasicHttpParams();
 
@@ -35,7 +29,6 @@ public class HttpUtils {
 
             SchemeRegistry registry = new SchemeRegistry();
             registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-            registry.register(new Scheme("https", sf, 443));
 
             ClientConnectionManager manager = new ThreadSafeClientConnManager(params, registry);
 

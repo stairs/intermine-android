@@ -4,9 +4,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestClientException;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public class HttpNetworkException extends RestClientException {
     private static final long serialVersionUID = 3249097104680843270L;
 

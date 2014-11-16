@@ -10,19 +10,24 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
-import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.SimpleAdapter;
 import org.intermine.net.request.post.GetUserTokenRequest;
-import org.intermine.storage.Storage;
+import org.intermine.util.Collections;
 import org.intermine.util.Mines;
+import org.intermine.util.Strs;
 import org.intermine.util.Views;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -39,6 +44,9 @@ public class LogInFragment extends BaseFragment {
     @InjectView(R.id.mine_spinner)
     Spinner mMinesSpinner;
 
+    @InjectView(R.id.creds_container)
+    ViewGroup mCredsContainer;
+
     @InjectView(R.id.login)
     TextView mLogin;
 
@@ -50,6 +58,16 @@ public class LogInFragment extends BaseFragment {
 
     @InjectView(R.id.progress_bar)
     ProgressBar mProgressBar;
+
+    @InjectView(R.id.authorized_for_mines_label)
+    TextView mAuthorizedForMinesLabel;
+
+    @InjectView(R.id.logged_in_for_all_mines_label)
+    TextView mLoggedInForAllMines;
+
+    private SimpleAdapter<String> mAdapter;
+
+    private String mAuthorizedForMines;
 
     private String mMineName;
 
@@ -69,7 +87,22 @@ public class LogInFragment extends BaseFragment {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
             setLoading(false);
+
+            Throwable ex = spiceException.getCause();
             Log.e(TAG, spiceException.toString());
+
+            mPassword.setText("");
+            mLogin.requestFocus();
+
+            if (ex instanceof HttpStatusCodeException) {
+                HttpStatusCodeException httpException = (HttpStatusCodeException) ex;
+
+                if (HttpStatus.UNAUTHORIZED.equals(httpException.getStatusCode())) {
+                    Toast.makeText(getActivity(), R.string.incorrect_creds, Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+            Toast.makeText(getActivity(), R.string.default_error_message, Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -77,6 +110,9 @@ public class LogInFragment extends BaseFragment {
             setLoading(false);
 
             getStorage().setUserToken(mMineName, token);
+
+            cleanCredsFields();
+            initLogInContainer(getStorage().getMineNames());
         }
     }
 
@@ -95,11 +131,19 @@ public class LogInFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SimpleAdapter adapter = new SimpleAdapter(getActivity());
-        mMinesSpinner.setAdapter(adapter);
+        mAdapter = new SimpleAdapter(getActivity());
+        mMinesSpinner.setAdapter(mAdapter);
+
+        mAuthorizedForMines = getString(R.string.authorized_for_mines_label);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         Set<String> mineNames = getStorage().getMineNames();
-        adapter.updateData(mineNames);
+        mAdapter.updateData(mineNames);
+        initLogInContainer(mineNames);
     }
 
     @Override
@@ -136,6 +180,37 @@ public class LogInFragment extends BaseFragment {
         mMineName = mMinesSpinner.getSelectedItem().toString();
     }
 
+    protected void initLogInContainer(Set<String> mineNames) {
+        List<String> minesToLogin = Collections.newArrayList();
+        for (String mine : mineNames) {
+            String token = mStorage.getUserToken(mine);
+
+            if (Strs.isNullOrEmpty(token)) {
+                minesToLogin.add(mine);
+            }
+        }
+
+        if (minesToLogin.isEmpty()) {
+            Views.setGone(mMinesSpinner, mCredsContainer);
+            Views.setVisible(mLoggedInForAllMines);
+        } else {
+            Views.setVisible(mMinesSpinner, mCredsContainer);
+            Views.setGone(mLoggedInForAllMines);
+            mAdapter.updateData(minesToLogin);
+        }
+
+        Set<String> loggedInMines = new HashSet<>(mineNames);
+        loggedInMines.removeAll(minesToLogin);
+
+        if (!loggedInMines.isEmpty()) {
+            Views.setVisible(mAuthorizedForMinesLabel);
+            String mines = Strs.join(loggedInMines, ", ");
+            mAuthorizedForMinesLabel.setText(mAuthorizedForMines + " " + mines);
+        } else {
+            Views.setGone(mAuthorizedForMinesLabel);
+        }
+    }
+
     private void setLoading(boolean loading) {
         if (loading) {
             Views.setVisible(mProgressBar);
@@ -144,5 +219,11 @@ public class LogInFragment extends BaseFragment {
             Views.setVisible(mSubmit);
             Views.setInvisible(mProgressBar);
         }
+    }
+
+    protected void cleanCredsFields() {
+        mLogin.setText("");
+        mPassword.setText("");
+        mLogin.requestFocus();
     }
 }

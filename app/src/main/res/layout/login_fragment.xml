@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-    android:id="@+id/info_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content"/>
 
     <RelativeLayout
+        android:id="@+id/creds_container"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -59,4 +59,19 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/logged_in_for_all_mines_label"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:text="@string/logged_in_for_all_mines_label"/>
+
+    <TextView
+        android:padding="15dp"
+        android:id="@+id/authorized_for_mines_label"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

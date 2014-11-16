@@ -20,9 +20,6 @@
     <string name="not_found">No results found.</string>
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
     <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="login_button_label">Login</string>
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">Lookup</string>
     <string name="show_results">Show Results</string>
@@ -88,5 +85,16 @@
     <string name="title_activity_base">BaseActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
+
+    <!-- Authorization -->
+    <string name="authorized_for_mines_label">You are authorized for mines:</string>
+    <string name="logged_in_for_all_mines_label">You\'ve successfully logged in for all mines!</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_button_label">Login</string>
+    <string name="incorrect_creds">Invalid username/password combination. Please, try again.</string>
+
+    <!-- Errors -->
+    <string name="default_error_message">Internal error happened. Please, try again later.</string>
 
 </resources>
