@@ -9,11 +9,12 @@ import org.intermine.R;
 import org.intermine.core.Gene;
 import org.intermine.core.List;
 import org.intermine.fragment.GenesListFragment;
+import org.intermine.listener.OnGeneSelectedListener;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class GenesListActivity extends BaseActivity implements GenesListFragment.OnGeneSelectedListener {
+public class GenesListActivity extends BaseActivity implements OnGeneSelectedListener {
     public static final String LIST_KEY = "list_key";
 
     // --------------------------------------------------------------------------------------------

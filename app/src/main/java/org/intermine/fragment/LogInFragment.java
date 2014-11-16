@@ -97,6 +97,7 @@ public class LogInFragment extends BaseFragment {
 
         SimpleAdapter adapter = new SimpleAdapter(getActivity());
         mMinesSpinner.setAdapter(adapter);
+
         Set<String> mineNames = getStorage().getMineNames();
         adapter.updateData(mineNames);
     }

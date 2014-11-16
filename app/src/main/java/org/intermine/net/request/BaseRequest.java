@@ -17,14 +17,17 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 /**
  * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
  */
 public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
     public final static String CONTENT_ENCODING = "UTF-8";
 
+    @Inject
+    Storage mStorage;
     private Context mContext;
-    private Storage mStorage;
     private String mUrl;
     private Map<String, ?> mUrlParams;
 

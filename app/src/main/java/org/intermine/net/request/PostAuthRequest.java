@@ -2,7 +2,6 @@ package org.intermine.net.request;
 
 import android.content.Context;
 
-import org.intermine.net.request.post.PostRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
@@ -25,7 +24,7 @@ public abstract class PostAuthRequest<T> extends PostRequest<T> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
+    public Map<String, String> getUrlParams() {
         Map<String, String> params = Collections.newHashMap();
         String token = getStorage().getUserToken(mMineName);
 

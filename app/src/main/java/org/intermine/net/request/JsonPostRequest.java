@@ -1,4 +1,4 @@
-package org.intermine.net.request.post;
+package org.intermine.net.request;
 
 import android.content.Context;
 

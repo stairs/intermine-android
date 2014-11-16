@@ -3,6 +3,7 @@ package org.intermine.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.util.Strs;
 
@@ -18,12 +19,16 @@ import javax.inject.Inject;
 public abstract class BaseStorage implements Storage {
     @Inject
     SharedPreferences mPreferences;
+
     private Context mContext;
 
     private Set<String> mDefaultMineNames;
 
     public BaseStorage(Context ctx) {
         mContext = ctx;
+
+        InterMineApplication app = InterMineApplication.get(ctx);
+        app.inject(this);
 
         String[] mineNamesArr = ctx.getResources().getStringArray(R.array.mines_names);
         mDefaultMineNames = new HashSet<>(Arrays.asList(mineNamesArr));

@@ -49,8 +49,8 @@ public class CreateGenesList extends PostAuthRequest<Void> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
-        Map<String, String> params = Collections.newHashMap();
+    public Map<String, String> getUrlParams() {
+        Map<String, String> params = super.getUrlParams();
         params.put(LIST_NAME_PARAM, mListName);
         params.put(LIST_TYPE_PARAM, LIST_TYPE_VALUE);
         return params;

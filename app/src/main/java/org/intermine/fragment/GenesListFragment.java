@@ -2,33 +2,26 @@ package org.intermine.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
-import org.intermine.activity.MainActivity;
-import org.intermine.adapter.GenesAdapter;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
-import org.intermine.core.Gene;
 import org.intermine.core.ListItems;
-import org.intermine.net.request.post.PostListResultsRequest;
+import org.intermine.listener.OnGeneSelectedListener;
+import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class GenesListFragment extends BaseFragment {
@@ -40,14 +33,8 @@ public class GenesListFragment extends BaseFragment {
     @InjectView(R.id.not_found_results_container)
     protected View mNotFoundView;
 
-    @InjectView(R.id.info_container)
-    protected View mInfoContainer;
-
     @InjectView(R.id.progress_view)
     protected ProgressView mProgressView;
-
-    @InjectView(R.id.progress_bar)
-    protected ProgressBar mProgressBar;
 
     private ListAdapter mListAdapter;
 
@@ -70,10 +57,6 @@ public class GenesListFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
     // Inner Classes
     // --------------------------------------------------------------------------------------------
-
-    public interface OnGeneSelectedListener {
-        void onGeneSelected(Gene gene);
-    }
 
     public class ListResultsListener implements RequestListener<ListItems> {
 
@@ -104,7 +87,9 @@ public class GenesListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.genes_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.genes_list_fragment, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
@@ -170,8 +155,8 @@ public class GenesListFragment extends BaseFragment {
     }
 
     protected void performGetListResultsRequest() {
-        PostListResultsRequest request = new PostListResultsRequest(getActivity(), mList.getName(),
-                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
+        FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), "FlyMine",
+                mList.getName(), mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
         executeRequest(request, new ListResultsListener());
     }
 

@@ -33,6 +33,7 @@ import org.intermine.adapter.GenesAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
+import org.intermine.listener.OnGeneSelectedListener;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.net.request.post.AppendGenesToListRequest;
 import org.intermine.util.Emails;
@@ -76,7 +77,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     protected boolean mLoading;
     protected LoadOnScrollViewController mViewController;
     private String mQuery = "";
-    private GenesListFragment.OnGeneSelectedListener mOnGeneSelectedListener;
+    private OnGeneSelectedListener mListener;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private GenesAdapter mGenesAdapter;
     private List<Gene> mGenes;
@@ -98,11 +99,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     // --------------------------------------------------------------------------------------------
     // Inner Classes
     // --------------------------------------------------------------------------------------------
-
-    public interface OnGeneSelectedListener {
-        void onGeneSelected(Gene gene);
-    }
-
     private class GeneSearchRequestListener implements RequestListener<GenesList> {
 
         @Override
@@ -119,7 +115,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             if (null == mPager) {
                 mGenes.clear();
                 mPager = new ApiPager(0, 0, GeneSearchRequest.DEFAULT_SIZE);
-                mMine2ResultsCount = new HashMap<String, Integer>();
+                mMine2ResultsCount = new HashMap<>();
             }
 
             if (0 == mPager.getCurrentPage()) {
@@ -256,7 +252,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mOnGeneSelectedListener = (GenesListFragment.OnGeneSelectedListener) activity;
+        mListener = (OnGeneSelectedListener) activity;
 
         ((MainActivity) activity).onSectionAttached(getString(R.string.search));
     }
@@ -308,9 +304,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @OnItemClick(R.id.genes)
     public void onGeneSelected(int position) {
-        if (null != mOnGeneSelectedListener) {
+        if (null != mListener) {
             Gene gene = (Gene) mGenesAdapter.getItem(position);
-            mOnGeneSelectedListener.onGeneSelected(gene);
+            mListener.onGeneSelected(gene);
         }
     }
 

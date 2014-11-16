@@ -2,6 +2,7 @@ package org.intermine.net.request.post;
 
 import android.content.Context;
 
+import org.intermine.net.request.PostRequest;
 import org.springframework.http.HttpBasicAuthentication;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;

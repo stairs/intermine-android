@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.ViewGroup;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
@@ -20,14 +19,15 @@ import org.intermine.fragment.LogInFragment;
 import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.SearchFragment;
 import org.intermine.fragment.TemplatesFragment;
+import org.intermine.listener.OnGeneSelectedListener;
 
 
 public class MainActivity extends BaseActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks, SearchFragment.OnGeneSelectedListener,
+        NavigationDrawerFragment.NavigationDrawerCallbacks, OnGeneSelectedListener,
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
-    protected CharSequence mTitle;
     private NavigationDrawerFragment mNavigationDrawer;
-    private ViewGroup mMainContainer;
+
+    protected CharSequence mTitle;
 
     // --------------------------------------------------------------------------------------------
     // Activity Lifecycle
@@ -121,7 +121,6 @@ public class MainActivity extends BaseActivity implements
     // --------------------------------------------------------------------------------------------
 
     protected void populateContentFragment(Fragment fragment) {
-        mMainContainer = (ViewGroup) findViewById(R.id.main_container);
         getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
     }
 

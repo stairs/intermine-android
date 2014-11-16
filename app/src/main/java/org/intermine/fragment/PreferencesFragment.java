@@ -25,6 +25,7 @@ public class PreferencesFragment extends PreferenceFragment
 
     @Inject
     Storage mStorage;
+
     private MultiSelectListPreference mMinesPreference;
 
     private Set<String> mMineNames;
@@ -39,6 +40,9 @@ public class PreferencesFragment extends PreferenceFragment
 
         String[] minesArray = getResources().getStringArray(R.array.mines_names);
         mMineNames = new HashSet<>(Arrays.asList(minesArray));
+
+        InterMineApplication app = InterMineApplication.get(getActivity());
+        app.inject(this);
 
         addPreferencesFromResource(R.xml.preferences);
         mMinesPreference = (MultiSelectListPreference) findPreference(Storage.MINE_NAMES_KEY);
@@ -76,7 +80,7 @@ public class PreferencesFragment extends PreferenceFragment
             Set<String> mines = mStorage.getMineNames();
 
             if (mines.isEmpty()) {
-                mStorage.setMineNames(new HashSet<String>(mMineNames));
+                mStorage.setMineNames(new HashSet<>(mMineNames));
                 mines = mMineNames;
                 mMinesPreference.setValues(mines);
             }
