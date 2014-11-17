@@ -17,6 +17,8 @@ public interface Storage {
 
     void setUserToken(String mineName, String token);
 
+    Map<String, String> getMineToUserTokenMap();
+
     Set<String> getMineNames();
 
     void setMineNames(Set<String> mineNames);

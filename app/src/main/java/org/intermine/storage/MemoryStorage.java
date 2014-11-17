@@ -4,8 +4,10 @@ import android.content.Context;
 
 import org.intermine.core.model.Model;
 import org.intermine.util.Collections;
+import org.intermine.util.Strs;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -36,5 +38,20 @@ public class MemoryStorage extends BaseStorage {
             mMineToModelMap = Collections.newHashMap();
         }
         mMineToModelMap.put(mineName, model);
+    }
+
+    @Override
+    public Map<String, String> getMineToUserTokenMap() {
+        Set<String> mines = getMineNames();
+        Map<String, String> result = Collections.newHashMap();
+
+        for (String mine : mines) {
+            String token = getUserToken(mine);
+
+            if (!Strs.isNullOrEmpty(token)) {
+                result.put(mine, token);
+            }
+        }
+        return result;
     }
 }
