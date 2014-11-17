@@ -28,19 +28,26 @@ import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.activity.BaseActivity;
 import org.intermine.activity.MainActivity;
+import org.intermine.adapter.ApiPager;
 import org.intermine.adapter.GenesAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
+import org.intermine.listener.GetListsListener;
 import org.intermine.listener.OnGeneSelectedListener;
 import org.intermine.net.request.get.GeneSearchRequest;
+import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.net.request.post.AppendGenesToListRequest;
+import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.util.Emails;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +94,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private CountDownLatch mCountDownLatch;
 
     private ApiPager mPager;
+
+    private String mGeneFavoritesListName;
 
     public SearchFragment() {
     }
@@ -188,7 +197,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             switch (item.getItemId()) {
                 case R.id.favourites:
                     Map<String, List<Gene>> selectedGenes = getMineToSelectedGenesMap();
-                    addGenesToFavorites(selectedGenes);
+                    checkFavoritesListExists(selectedGenes);
                     Toast.makeText(getActivity(), R.string.genes_added_to_favorites,
                             Toast.LENGTH_LONG).show();
                     mode.finish();
@@ -214,7 +223,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
+
+        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
     }
 
     @Override
@@ -274,17 +286,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
             inflater.inflate(R.menu.gene_search_menu, menu);
-
-            final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-            final SearchableInfo info = searchManager.getSearchableInfo(getActivity().getComponentName());
-
-            final MenuItem searchItem = menu.findItem(R.id.search_action);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            mSearchView.setSearchableInfo(info);
+            mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
             mSearchView.setOnQueryTextListener(this);
+            mSearchView.setQueryHint(getString(R.string.search_hint));
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
+
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -421,16 +430,15 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     }
 
-    protected void addGenesToFavorites(Map<String, List<Gene>> mineToGenesMap) {
-        String geneFavoritesListName = getString(R.string.gene_favorites_list_name);
-
+    protected void checkFavoritesListExists(Map<String, List<Gene>> mineToGenesMap) {
         for (String mine : mineToGenesMap.keySet()) {
             String token = getStorage().getUserToken(mine);
 
             if (!Strs.isNullOrEmpty(token)) {
-                SpiceRequest req = new AppendGenesToListRequest(getActivity(), mine,
-                        geneFavoritesListName, mineToGenesMap.get(mine));
-                executeRequest(req, null);
+                GetListsRequest request = new GetListsRequest(getActivity(), mine,
+                        mGeneFavoritesListName);
+                executeRequest(request, new GetListsListener((BaseActivity) getActivity(),
+                        mine, mineToGenesMap.get(mine)));
             }
         }
     }

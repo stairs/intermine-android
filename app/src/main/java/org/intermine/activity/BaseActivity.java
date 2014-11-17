@@ -80,7 +80,7 @@ public class BaseActivity extends ActionBarActivity {
     // Helper Mehods
     // --------------------------------------------------------------------------------------------
 
-    protected void executeRequest(SpiceRequest request, RequestListener listener) {
+    public void executeRequest(SpiceRequest request, RequestListener listener) {
         mSpiceManager.execute(request, listener);
     }
 

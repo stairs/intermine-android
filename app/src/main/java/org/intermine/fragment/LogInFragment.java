@@ -18,6 +18,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.SimpleAdapter;
+import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Mines;

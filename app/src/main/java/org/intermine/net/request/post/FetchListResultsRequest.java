@@ -42,8 +42,7 @@ public class FetchListResultsRequest extends PostAuthRequest<ListItems> {
 
     @Override
     public String getUrl() {
-        Context ctx = getContext();
-        return ctx.getString(R.string.flymine_url) + ctx.getString(R.string.search_path);
+        return getBaseUrl() + getContext().getString(R.string.search_path);
     }
 
     @Override

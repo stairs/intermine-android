@@ -82,8 +82,10 @@ public class CreateGenesList extends PostAuthRequest<Void> {
     protected String generateBody() {
         List<String> genesIds = Collections.newArrayList();
 
-        for (Gene gene : mGenes) {
-            genesIds.add(gene.getPrimaryDBId());
+        if (!Collections.isNullOrEmpty(mGenes)) {
+            for (Gene gene : mGenes) {
+                genesIds.add(gene.getPrimaryDBId());
+            }
         }
         return Strs.join(genesIds, ", ");
     }

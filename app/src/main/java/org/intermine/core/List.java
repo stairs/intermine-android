@@ -11,12 +11,16 @@ import com.google.gson.annotations.SerializedName;
 public class List implements Parcelable {
     @SerializedName("title")
     private String mTitle;
+
     @SerializedName("name")
     private String mName;
+
     @SerializedName("description")
     private String mDescription;
+
     @SerializedName("type")
     private String mType;
+
     @SerializedName("size")
     private int mSize;
 

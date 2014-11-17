@@ -49,7 +49,7 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
         if (null != list) {
             setTitle(list.getTitle());
 
-            GenesListFragment fragment = GenesListFragment.newInstance(list);
+            GenesListFragment fragment = GenesListFragment.newInstance(list, "FlyMine");
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }

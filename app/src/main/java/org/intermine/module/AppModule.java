@@ -13,11 +13,15 @@ import org.intermine.activity.SettingsActivity;
 import org.intermine.activity.StartActivity;
 import org.intermine.activity.TemplateActivity;
 import org.intermine.activity.TemplateResultsActivity;
+import org.intermine.adapter.ExpandableMenuListAdapter;
 import org.intermine.fragment.BaseFragment;
 import org.intermine.fragment.GenesListFragment;
+import org.intermine.fragment.ListsFragment;
 import org.intermine.fragment.LogInFragment;
+import org.intermine.fragment.NavigationDrawerFragment;
 import org.intermine.fragment.PreferencesFragment;
 import org.intermine.fragment.SearchFragment;
+import org.intermine.fragment.TemplatesFragment;
 import org.intermine.net.request.BaseRequest;
 import org.intermine.net.request.PostAuthRequest;
 import org.intermine.net.request.get.GeneSearchRequest;
@@ -28,12 +32,11 @@ import org.intermine.net.request.get.GetQueryResultsRequest;
 import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.net.request.get.GetTemplatesRequest;
 import org.intermine.net.request.post.AppendGenesToListRequest;
+import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.net.request.post.PostBaseAuthorizationRequest;
 import org.intermine.storage.MemoryStorage;
-
-import java.util.prefs.Preferences;
 
 import javax.inject.Singleton;
 
@@ -57,23 +60,27 @@ import dagger.Provides;
                 MainActivity.class,
                 GenesListActivity.class,
                 BaseFragment.class,
+                ListsFragment.class,
                 SearchFragment.class,
                 GenesListFragment.class,
+                TemplatesFragment.class,
                 LogInFragment.class,
                 PreferencesFragment.class,
                 BaseRequest.class,
                 GetModelRequest.class,
-                GetListsRequest.class,
                 GeneSearchRequest.class,
                 GeneSearchResultsCountRequest.class,
                 GetQueryResultsRequest.class,
                 GetTemplateResultsRequest.class,
                 GetTemplatesRequest.class,
                 AppendGenesToListRequest.class,
+                CreateGenesList.class,
+                GetListsRequest.class,
                 GetUserTokenRequest.class,
                 PostBaseAuthorizationRequest.class,
                 PostAuthRequest.class,
-                FetchListResultsRequest.class
+                FetchListResultsRequest.class,
+                NavigationDrawerFragment.class
         },
         library = true
 )

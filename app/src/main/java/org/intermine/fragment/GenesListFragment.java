@@ -12,6 +12,7 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.adapter.ApiPager;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
@@ -45,12 +46,14 @@ public class GenesListFragment extends BaseFragment {
     private OnGeneSelectedListener mListener;
 
     private org.intermine.core.List mList;
+    private String mMineName;
 
     protected boolean mLoading;
 
-    public static GenesListFragment newInstance(org.intermine.core.List list) {
+    public static GenesListFragment newInstance(org.intermine.core.List list, String mineName) {
         GenesListFragment fragment = new GenesListFragment();
         fragment.setList(list);
+        fragment.setMineName(mineName);
         return fragment;
     }
 
@@ -58,7 +61,7 @@ public class GenesListFragment extends BaseFragment {
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    public class ListResultsListener implements RequestListener<ListItems> {
+    private class ListResultsListener implements RequestListener<ListItems> {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
@@ -155,7 +158,7 @@ public class GenesListFragment extends BaseFragment {
     }
 
     protected void performGetListResultsRequest() {
-        FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), "FlyMine",
+        FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), mMineName,
                 mList.getName(), mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
         executeRequest(request, new ListResultsListener());
     }
@@ -174,5 +177,13 @@ public class GenesListFragment extends BaseFragment {
 
     public void setList(org.intermine.core.List list) {
         mList = list;
+    }
+
+    public String getMineName() {
+        return mMineName;
+    }
+
+    public void setMineName(String mineName) {
+        this.mMineName = mineName;
     }
 }

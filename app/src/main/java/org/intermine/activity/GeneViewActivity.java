@@ -10,17 +10,20 @@ import android.widget.Toast;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
-import org.intermine.dao.GeneDAO;
-import org.intermine.dao.SQLiteGeneDAO;
 import org.intermine.fragment.GeneViewFragment;
+import org.intermine.listener.GetListsListener;
+import org.intermine.net.request.get.GetListsRequest;
+import org.intermine.util.Collections;
 import org.intermine.util.Emails;
+import org.intermine.util.Strs;
 
 import java.util.List;
 
 
 public class GeneViewActivity extends MainActivity implements GeneViewFragment.GeneActionCallbacks {
-    private GeneDAO mGeneDAO;
     private Gene mGene;
+
+    private String mGeneFavoritesListName;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
@@ -59,7 +62,8 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
         getNavigationDrawer().setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), false);
-        mGeneDAO = new SQLiteGeneDAO(this);
+
+        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -68,8 +72,19 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
 
     @Override
     public void onGeneAddedToFavorites(Gene gene) {
-        mGeneDAO.save(gene);
-        Toast.makeText(this, R.string.gene_added_to_favorites, Toast.LENGTH_LONG).show();
+        String token = getStorage().getUserToken(gene.getMine());
+
+        if (Strs.isNullOrEmpty(token)) {
+            Toast.makeText(this, R.string.unauthorized_gene_to_favorites_error_message,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            GetListsRequest request = new GetListsRequest(this, gene.getMine(),
+                    mGeneFavoritesListName);
+            List<Gene> genes = Collections.newArrayList();
+            genes.add(gene);
+            executeRequest(request, new GetListsListener(this, gene.getMine(), genes));
+            Toast.makeText(this, R.string.gene_added_to_favorites, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -5,7 +5,6 @@
     <string name="app_name">InterMine</string>
     <string name="gene_view">Gene View</string>
     <string name="search">Search</string>
-    <string name="browse">Browse</string>
     <string name="lists">Lists</string>
     <string name="templates">Templates</string>
     <string name="favorites">Favorites</string>
@@ -96,5 +95,7 @@
 
     <!-- Errors -->
     <string name="default_error_message">Internal error happened. Please, try again later.</string>
+    <string name="add_gene_to_favorites_error_message">Error while trying to add gene to favorites. Please, try again later.</string>
+    <string name="unauthorized_gene_to_favorites_error_message">Please, login first to add gene to favorites.</string>
 
 </resources>

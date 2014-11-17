@@ -16,7 +16,7 @@ import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
 import org.intermine.core.templates.Template;
-import org.intermine.fragment.ApiPager;
+import org.intermine.adapter.ApiPager;
 import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;

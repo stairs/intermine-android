@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity implements
     // --------------------------------------------------------------------------------------------
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, String mineName) {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = null;
 
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements
             case 3:
                 List list = new List();
                 list.setName(getString(R.string.gene_favorites_list_name));
-                fragment = GenesListFragment.newInstance(list);
+                fragment = GenesListFragment.newInstance(list, mineName);
                 break;
             case 4:
                 fragment = LogInFragment.newInstance();

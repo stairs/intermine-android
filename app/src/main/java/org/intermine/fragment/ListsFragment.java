@@ -118,7 +118,8 @@ public class ListsFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
 
     protected void fetchLists() {
-        executeRequest(new GetListsRequest(getActivity()), new GetListsRequestListener());
+        GetListsRequest request = new GetListsRequest(getActivity(), "FlyMine", null);
+        executeRequest(request, new GetListsRequestListener());
     }
 
     protected void setProgress(boolean loading) {

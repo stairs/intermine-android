@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/app_info"
-        style="@style/InterMine.Theme.Text.Bold"
+        style="@style/InterMine.Theme.Text.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -24,15 +24,6 @@
         android:text="@string/app_info"
         android:layout_marginTop="36dp"
         android:layout_alignParentTop="true"/>
-
-    <!--<TextView-->
-    <!--android:id="@+id/app_description"-->
-    <!--style="@style/InterMine.Theme.Text.Small"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:padding="15dp"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:text="@string/app_description"/>-->
 
     <TextView
         android:id="@+id/copyright"
