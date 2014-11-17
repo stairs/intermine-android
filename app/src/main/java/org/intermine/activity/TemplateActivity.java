@@ -97,7 +97,8 @@ public class TemplateActivity extends BaseActivity {
         }
         mTemplate.setConstraints(queryConstraints);
 
-        TemplateResultsActivity.start(this, mTemplate);
+        TemplateResultsActivity.start(this, mTemplate, mMineName);
+        finish();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -123,8 +124,6 @@ public class TemplateActivity extends BaseActivity {
                 if (null != view) {
                     view.setTag(constraint);
                 }
-
-                Log.e("ddd", constraint.getPath());
             }
         }
     }

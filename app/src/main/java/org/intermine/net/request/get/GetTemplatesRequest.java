@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.templates.Template;
+import org.intermine.net.request.JsonGetAuthRequest;
 import org.intermine.net.request.JsonGetRequest;
 import org.intermine.util.Collections;
 
@@ -15,10 +16,10 @@ import static org.intermine.net.request.get.GetTemplatesRequest.Templates;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class GetTemplatesRequest extends JsonGetRequest<Templates> {
+public class GetTemplatesRequest extends JsonGetAuthRequest<Templates> {
 
-    public GetTemplatesRequest(Context ctx) {
-        super(Templates.class, ctx, null, null);
+    public GetTemplatesRequest(Context ctx, String mineName) {
+        super(Templates.class, ctx, null, null, mineName);
 
         setOutWrapper("templates");
     }
@@ -33,7 +34,7 @@ public class GetTemplatesRequest extends JsonGetRequest<Templates> {
     @Override
     public String getUrl() {
         Context ctx = getContext();
-        return ctx.getString(R.string.flymine_url) + ctx.getString(R.string.templates_path);
+        return getBaseUrl() + ctx.getString(R.string.templates_path);
     }
 
     public static class Templates extends HashMap<String, Template> {

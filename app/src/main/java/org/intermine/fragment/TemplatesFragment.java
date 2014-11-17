@@ -32,12 +32,15 @@ public class TemplatesFragment extends BaseFragment {
 
     protected boolean mLoading;
 
+    private String mMineName;
 
-    public TemplatesFragment() {
-    }
+    // --------------------------------------------------------------------------------------------
+    // Static Methods
+    // --------------------------------------------------------------------------------------------
 
-    public static TemplatesFragment newInstance() {
+    public static TemplatesFragment newInstance(String mineName) {
         TemplatesFragment fragment = new TemplatesFragment();
+        fragment.setMineName(mineName);
         return fragment;
     }
 
@@ -46,7 +49,7 @@ public class TemplatesFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
 
     public static interface OnTemplateSelectedListener {
-        void onTemplateSelected(Template template);
+        void onTemplateSelected(Template template, String mineName);
     }
 
     public class GetTemplatesListener implements RequestListener<Templates> {
@@ -98,13 +101,13 @@ public class TemplatesFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (null != mOnTemplateSelectedListener) {
                     Template selected = (Template) mTemplatesAdapter.getItem(position);
-                    mOnTemplateSelectedListener.onTemplateSelected(selected);
+                    mOnTemplateSelectedListener.onTemplateSelected(selected, mMineName);
                 }
             }
         });
 
         setProgress(true);
-        performGetTemplates();
+        fetchTemplates();
     }
 
     @Override
@@ -123,8 +126,9 @@ public class TemplatesFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
-    protected void performGetTemplates() {
-        GetTemplatesRequest request = new GetTemplatesRequest(getActivity());
+
+    protected void fetchTemplates() {
+        GetTemplatesRequest request = new GetTemplatesRequest(getActivity(), mMineName);
         executeRequest(request, new GetTemplatesListener());
     }
 
@@ -138,5 +142,9 @@ public class TemplatesFragment extends BaseFragment {
             Views.setVisible(mTemplates);
             Views.setGone(mProgressView);
         }
+    }
+
+    public void setMineName(String mineName) {
+        mMineName = mineName;
     }
 }

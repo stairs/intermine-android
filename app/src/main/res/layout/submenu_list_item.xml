@@ -12,6 +12,6 @@
               android:textAppearance="?android:attr/textAppearanceListItemSmall"
               android:gravity="right|center_vertical"
               android:paddingRight="25dp"
-              android:background="@color/background_floating_material_dark"
+              android:background="@color/submenu_background"
               android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
 </RelativeLayout>

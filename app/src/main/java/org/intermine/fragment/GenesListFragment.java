@@ -12,6 +12,7 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.activity.MainActivity;
 import org.intermine.adapter.ApiPager;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
@@ -68,7 +69,8 @@ public class GenesListFragment extends BaseFragment {
             setProgress(false);
             mViewController.onFinishLoad();
 
-            Toast.makeText(getActivity(), spiceException.getMessage(), Toast.LENGTH_LONG).show();
+            Views.setVisible(mNotFoundView);
+            Views.setGone(mListView);
         }
 
         @Override
@@ -99,6 +101,10 @@ public class GenesListFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mListener = (OnGeneSelectedListener) activity;
+
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).onSectionAttached(getString(R.string.favorites));
+        }
     }
 
     @Override

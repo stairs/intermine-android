@@ -1,13 +1,9 @@
 package org.intermine.fragment;
 
 import android.app.Activity;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -24,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
@@ -39,15 +34,11 @@ import org.intermine.listener.GetListsListener;
 import org.intermine.listener.OnGeneSelectedListener;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.net.request.get.GetListsRequest;
-import org.intermine.net.request.post.AppendGenesToListRequest;
-import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.util.Emails;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,10 +73,11 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private SearchView mSearchView;
 
     protected boolean mLoading;
+    private ApiPager mPager;
     protected LoadOnScrollViewController mViewController;
-    private String mQuery = "";
-    private OnGeneSelectedListener mListener;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
+    private OnSearchRequestsFinishedAsyncTask mAsyncTask;
+
     private GenesAdapter mGenesAdapter;
     private List<Gene> mGenes;
 
@@ -93,9 +85,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     private CountDownLatch mCountDownLatch;
 
-    private ApiPager mPager;
+    private OnGeneSelectedListener mListener;
 
     private String mGeneFavoritesListName;
+    private String mQuery = "";
 
     public SearchFragment() {
     }
@@ -139,13 +132,19 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             }
 
             if (!mGenes.isEmpty()) {
-                Views.setVisible(mProgressBar);
                 setProgress(false);
             }
         }
     }
 
     private class OnSearchRequestsFinishedAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            if (!mGenes.isEmpty()) {
+                Views.setVisible(mProgressBar);
+            }
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -173,6 +172,11 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
             setProgress(false);
         }
+
+        @Override
+        protected void onCancelled() {
+            Views.setGone(mProgressBar);
+        }
     }
 
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
@@ -184,6 +188,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater menuInflater = mode.getMenuInflater();
             menuInflater.inflate(R.menu.context, menu);
+
+            ((MainActivity) getActivity()).getSupportActionBar().hide();
             return true;
         }
 
@@ -214,6 +220,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            ((MainActivity) getActivity()).getSupportActionBar().show();
         }
     };
     // --------------------------------------------------------------------------------------------
@@ -292,7 +299,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
-
 
 
     @Override
@@ -413,8 +419,15 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private void performSearchRequests(String query, String format, int start) {
         Set<String> selectedMines = getStorage().getMineNames();
 
+        if (null != mAsyncTask && !mAsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
+            mAsyncTask.cancel(true);
+        }
+
         mCountDownLatch = new CountDownLatch(selectedMines.size());
-        new OnSearchRequestsFinishedAsyncTask().execute();
+
+        mAsyncTask = new OnSearchRequestsFinishedAsyncTask();
+        mAsyncTask.execute();
+
 
         for (String mine : selectedMines) {
             Integer count = mMine2ResultsCount.get(mine);

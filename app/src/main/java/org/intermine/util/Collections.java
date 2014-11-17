@@ -3,12 +3,12 @@ package org.intermine.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class Collections {
-
     private Collections() {
     }
 
@@ -32,5 +32,9 @@ public class Collections {
      */
     public static <K, V> HashMap<K, V> newHashMap() {
         return new HashMap<K, V>();
+    }
+
+    public static <T> List<T> emptyList() {
+        return (List<T>) java.util.Collections.emptyList();
     }
 }

@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements
                 fragment = SearchFragment.newInstance();
                 break;
             case 1:
-                fragment = TemplatesFragment.newInstance();
+                fragment = TemplatesFragment.newInstance(mineName);
                 break;
             case 2:
                 fragment = ListsFragment.newInstance();
@@ -88,9 +88,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawer.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             restoreActionBar();
             return super.onCreateOptionsMenu(menu);
         }
@@ -112,8 +109,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onTemplateSelected(Template template) {
-        TemplateActivity.start(this, template, null);
+    public void onTemplateSelected(Template template, String mineName) {
+        TemplateActivity.start(this, template, mineName);
     }
 
     // --------------------------------------------------------------------------------------------

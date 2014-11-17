@@ -72,24 +72,19 @@ public class StartActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-//        if (null == getStorage().getMineToModelMap()) {
-//            setContentView(R.layout.start_activity);
-//            Map<String, String> mineToBaseUrlMap = Mines.getMineToBaseUrlMap(this);
-//
-//            mCountDownLatch = new CountDownLatch(mineToBaseUrlMap.size());
-//            new WailForAllRequestsFinishedAsyncTask().execute();
-//
-//            for (String mineBaseUrl : mineToBaseUrlMap.values()) {
-//                executeRequest(new GetModelRequest(this, mineBaseUrl), new ModelRequestListener());
-//            }
-//        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startMainActivity();
-                }
-            }, 1000);
-//        }
+        if (null == getStorage().getMineToModelMap()) {
+            setContentView(R.layout.start_activity);
+            Map<String, String> mineToBaseUrlMap = Mines.getMineToBaseUrlMap(this);
+
+            mCountDownLatch = new CountDownLatch(mineToBaseUrlMap.size());
+            new WailForAllRequestsFinishedAsyncTask().execute();
+
+            for (String mineBaseUrl : mineToBaseUrlMap.values()) {
+                executeRequest(new GetModelRequest(this, mineBaseUrl), new ModelRequestListener());
+            }
+        } else {
+            startMainActivity();
+        }
     }
 
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -22,17 +21,26 @@ import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class TemplateResultsActivity extends BaseActivity {
-    public static final String TEMPLATE_KEY = "template_key";
-
     public static final int ITEMS_PER_PAGE = 15;
 
-    protected ListView mListView;
-    private ProgressView mProgressView;
-    protected View mNotFoundView;
+    public static final String TEMPLATE_KEY = "template_key";
+    public static final String MINE_NAME_KEY = "mine_name_key";
+
+    @InjectView(R.id.list)
+    ListView mListView;
+
+    @InjectView(R.id.progress_view)
+    ProgressView mProgressView;
+
+    @InjectView(R.id.not_found_results_container)
+    View mNotFoundView;
 
     private ListAdapter mListAdapter;
 
@@ -41,6 +49,7 @@ public class TemplateResultsActivity extends BaseActivity {
     private ApiPager mPager;
 
     private Template mTemplate;
+    private String mMineName;
 
     protected boolean mLoading;
 
@@ -48,9 +57,10 @@ public class TemplateResultsActivity extends BaseActivity {
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, Template template) {
+    public static void start(Context context, Template template, String mineName) {
         Intent intent = new Intent(context, TemplateResultsActivity.class);
         intent.putExtra(TEMPLATE_KEY, template);
+        intent.putExtra(MINE_NAME_KEY, mineName);
         context.startActivity(intent);
     }
 
@@ -65,7 +75,7 @@ public class TemplateResultsActivity extends BaseActivity {
             setProgress(false);
             mViewController.onFinishLoad();
 
-            Toast.makeText(TemplateResultsActivity.this, spiceException.getMessage(), Toast.LENGTH_LONG).show();
+            Views.setVisible(mNotFoundView);
         }
 
         @Override
@@ -80,6 +90,23 @@ public class TemplateResultsActivity extends BaseActivity {
             }
         }
     }
+
+    public class TemplateResultsCountListener implements RequestListener<Integer> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+        }
+
+        @Override
+        public void onRequestSuccess(Integer count) {
+            mPager = new ApiPager(count, 0, ITEMS_PER_PAGE);
+            fetchTemplateResults();
+        }
+    }
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -87,18 +114,15 @@ public class TemplateResultsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.genes_list_activity);
+        setContentView(R.layout.template_results_activity);
+        ButterKnife.inject(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
-
-        mProgressView = (ProgressView) findViewById(R.id.progress_view);
-        mNotFoundView = findViewById(R.id.not_found_results_container);
-
-        mListView = (ListView) findViewById(R.id.list);
+        mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
 
         mListAdapter = new ListAdapter(this);
         mListView.setAdapter(mListAdapter);
@@ -111,16 +135,8 @@ public class TemplateResultsActivity extends BaseActivity {
             setTitle(mTemplate.getTitle());
             setProgress(true);
 
-            if (null == mPager) {
-                mPager = new ApiPager(100, 0, ITEMS_PER_PAGE);
-            }
-            requestTemplateResults();
+            fetchTemplateResultsCount();
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
@@ -154,7 +170,7 @@ public class TemplateResultsActivity extends BaseActivity {
             @Override
             public void loadMore() {
                 mPager = mPager.next();
-                requestTemplateResults();
+                fetchTemplateResults();
 
                 mViewController.onStartLoad();
                 mLoading = true;
@@ -162,11 +178,16 @@ public class TemplateResultsActivity extends BaseActivity {
         };
     }
 
-    protected void requestTemplateResults() {
-        GetTemplateResultsRequest request = new GetTemplateResultsRequest(this, mTemplate);
+    protected void fetchTemplateResults() {
+        GetTemplateResultsRequest request = new GetTemplateResultsRequest(ListItems.class, this,
+                mTemplate, mMineName, mPager.getCurrentPage() * mPager.getPerPage(), ITEMS_PER_PAGE);
         executeRequest(request, new TemplateResultsListener());
-//        PostListResultsRequest request = new PostListResultsRequest(this, mList.getName(),
-//                mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
+    }
+
+    protected void fetchTemplateResultsCount() {
+        GetTemplateResultsRequest request = new GetTemplateResultsRequest(Integer.class, this,
+                mTemplate, mMineName, 0, ITEMS_PER_PAGE);
+        executeRequest(request, new TemplateResultsCountListener());
     }
 
     protected void setProgress(boolean loading) {

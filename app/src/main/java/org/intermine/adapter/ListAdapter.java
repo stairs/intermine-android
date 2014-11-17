@@ -23,7 +23,6 @@ public class ListAdapter extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    private List<String> mFeaturesName;
     private List<List<String>> mFeatures;
 
     private String mTemplate;
@@ -32,12 +31,10 @@ public class ListAdapter extends BaseAdapter {
         mContext = ctx;
 
         mLayoutInflater = LayoutInflater.from(ctx);
-        mFeatures = new ArrayList<List<String>>();
+        mFeatures = new ArrayList<>();
     }
 
     public void updateData(ListItems listItems) {
-        mFeaturesName = listItems.getFeaturesNames();
-
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
         }
@@ -84,7 +81,6 @@ public class ListAdapter extends BaseAdapter {
         List<String> listItemFeatures = (List<String>) getItem(position);
         String text = String.format(mTemplate, listItemFeatures.toArray());
         listItem.setText(text);
-
         return convertView;
     }
 

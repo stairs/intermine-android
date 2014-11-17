@@ -13,7 +13,6 @@ import org.intermine.activity.SettingsActivity;
 import org.intermine.activity.StartActivity;
 import org.intermine.activity.TemplateActivity;
 import org.intermine.activity.TemplateResultsActivity;
-import org.intermine.adapter.ExpandableMenuListAdapter;
 import org.intermine.fragment.BaseFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.ListsFragment;
@@ -35,7 +34,6 @@ import org.intermine.net.request.post.AppendGenesToListRequest;
 import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.net.request.post.GetUserTokenRequest;
-import org.intermine.net.request.post.PostBaseAuthorizationRequest;
 import org.intermine.storage.MemoryStorage;
 
 import javax.inject.Singleton;
@@ -77,7 +75,6 @@ import dagger.Provides;
                 CreateGenesList.class,
                 GetListsRequest.class,
                 GetUserTokenRequest.class,
-                PostBaseAuthorizationRequest.class,
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
                 NavigationDrawerFragment.class

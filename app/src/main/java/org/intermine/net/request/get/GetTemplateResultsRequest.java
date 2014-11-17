@@ -7,6 +7,7 @@ import org.intermine.core.ListItems;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.core.templates.constraint.Constraint;
+import org.intermine.net.request.JsonGetAuthRequest;
 import org.intermine.net.request.JsonGetRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Uris;
@@ -18,54 +19,51 @@ import java.util.Map;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
-    private Template mTemplate;
+public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
+    public static final String JSON_FORMAT = "json";
+    public static final String COUNT_FORMAT = "count";
 
-    public GetTemplateResultsRequest(Context ctx, Template template) {
-        super(ListItems.class, ctx, null, null);
+    private static final String NAME_PARAM = "name";
+    private static final String START_PARAM = "start";
+    private static final String SIZE_PARAM = "size";
+
+    private Template mTemplate;
+    private int mSize;
+    private int mStart;
+    private String mFormat;
+
+    public GetTemplateResultsRequest(Class clazz, Context ctx, Template template,
+                                     String mineName, int start, int size) {
+        super(clazz, ctx, null, null, mineName);
         mTemplate = template;
+        mSize = size;
+        mStart = start;
+
+        if (clazz.equals(Integer.class)) {
+            mFormat = COUNT_FORMAT;
+        } else {
+            mFormat = JSON_FORMAT;
+        }
     }
 
     @Override
     public Map<String, ?> getUrlParams() {
         Map<String, String> params = Collections.newHashMap();
-        params.put(FORMAT_PARAM, "json");
-        params.put("name", mTemplate.getName());
-        params.put("start", "0");
-        params.put("size", "10");
+        params.put(FORMAT_PARAM, mFormat);
+        params.put(NAME_PARAM, mTemplate.getName());
+        params.put(START_PARAM, Integer.toString(mStart));
+        params.put(SIZE_PARAM, Integer.toString(mSize));
 
         //TemplateQuery query = convert2TemplateQuery(mTemplate);
         setTemplateParameters(getParametersFor(mTemplate), params);
-
         return params;
     }
 
     @Override
     public String getUrl() {
         Context ctx = getContext();
-        return ctx.getString(R.string.flymine_url) + ctx.getString(R.string.template_results_path);
+        return getBaseUrl() + ctx.getString(R.string.template_results_path);
     }
-
-//    private List<TemplateParameter> getParametersFor(TemplateQuery template) {
-//        List<TemplateParameter> params = new ArrayList<TemplateParameter>();
-//
-//        for (PathConstraint pc : template.getEditableConstraints()) {
-//            if (template.getSwitchOffAbility(pc) != SwitchOffAbility.OFF) {
-//                TemplateParameter tp;
-//                String path = pc.getPath();
-//                String op = pc.getOp().toString();
-//
-//                String code = template.getConstraints().get(pc);
-//                if (PathConstraint.getValues(pc) != null) {
-//                    tp = new TemplateParameter(path, op, PathConstraint.getValues(pc), code);
-//                } else {
-//                    tp = new TemplateParameter(path, op, PathConstraint.getValue(pc), PathConstraint.getExtraValue(pc), code);
-//                }
-//                params.add(tp);
-//            }
-//        }
-//        return params;
-//    }
 
     private List<TemplateParameter> getParametersFor(Template template) {
         List<TemplateParameter> params = new ArrayList<>();
@@ -110,29 +108,4 @@ public class GetTemplateResultsRequest extends JsonGetRequest<ListItems> {
             }
         }
     }
-
-
-    protected String expandQuery(String uriString, Map<String, ?> params) {
-        return Uris.expandQuery(uriString, params);
-    }
-
-//    protected TemplateQuery convert2TemplateQuery(Template template) {
-//        ModelService modelService = getModelService();
-//        Model model = null;
-//
-//        try {
-//            model = modelService.getModel();
-//        } catch (Exception ex) {
-//            Log.e("ddd", ex.toString());
-//        }
-//
-//        String name = template.getModel().getName();
-//        model = Model.getInstanceByName(name);
-//        PathQuery pathQuery = new PathQuery(model);
-//        pathQuery.
-//
-//                TemplateQuery templateQuery = new TemplateQuery(template.getName(),
-//                template.getTitle(), template.getComment(), pathQuery);
-//        return templateQuery;
-//    }
 }

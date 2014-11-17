@@ -1,7 +1,6 @@
 package org.intermine.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +22,18 @@ public class ExpandableMenuListAdapter extends BaseExpandableListAdapter {
     private final Context mContext;
     private final LayoutInflater mInflater;
 
-    private Map<String, ArrayList<String>> mGroups;
+    private Map<String, List<String>> mGroups;
     private List<String> mMenus;
 
-    public ExpandableMenuListAdapter(Context context, Map<String, ArrayList<String>> groups) {
+    public ExpandableMenuListAdapter(Context context) {
         mContext = context;
+        mInflater = LayoutInflater.from(context);
+    }
+
+    public void updateMenuList(Map<String, List<String>> groups) {
         mGroups = groups;
         mMenus = new ArrayList<>(groups.keySet());
-
-        mInflater = LayoutInflater.from(context);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -87,10 +89,16 @@ public class ExpandableMenuListAdapter extends BaseExpandableListAdapter {
             menuItem = (TextView) convertView.getTag(R.id.menu_item);
         }
 
-        if (isExpanded) {
-            //Изменяем что-нибудь, если текущая Group раскрыта
+        final int childrenCount = getChildrenCount(groupPosition);
+
+        if (0 == childrenCount) {
+            menuItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else {
-            //Изменяем что-нибудь, если текущая Group скрыта
+            if (isExpanded) {
+                menuItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_expand_less_grey, 0);
+            } else {
+                menuItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_expand_more_grey, 0);
+            }
         }
 
         String menuTitle = mMenus.get(groupPosition);

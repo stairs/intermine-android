@@ -27,6 +27,9 @@ import org.intermine.util.Collections;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class NavigationDrawerFragment extends BaseFragment {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
@@ -38,6 +41,7 @@ public class NavigationDrawerFragment extends BaseFragment {
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mDrawerListView;
+    private ExpandableMenuListAdapter mAdapter;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -98,21 +102,16 @@ public class NavigationDrawerFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, boolean displayDrawerIcon) {
-        final ArrayList<String> submenus = new ArrayList<>(getStorage().getMineToUserTokenMap().keySet());
-        LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
-        ArrayList<String> emptyList = Collections.newArrayList();
-        map.put(getString(R.string.search), emptyList);
-        map.put(getString(R.string.templates), emptyList);
-        map.put(getString(R.string.lists), emptyList);
-        map.put(getString(R.string.favorites), submenus);
-        map.put(getString(R.string.log_in), emptyList);
-        map.put(getString(R.string.info), emptyList);
+        mAdapter = new ExpandableMenuListAdapter(getActivity());
+        mAdapter.updateMenuList(generateMenu());
 
-        mDrawerListView.setAdapter(new ExpandableMenuListAdapter(getActivity(), map));
+        mDrawerListView.setAdapter(mAdapter);
         mDrawerListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                selectItem(groupPosition, null);
+                if (0 == mAdapter.getChildrenCount(groupPosition)) {
+                    selectItem(groupPosition, null);
+                }
                 return false;
             }
         });
@@ -120,7 +119,7 @@ public class NavigationDrawerFragment extends BaseFragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                         int childPosition, long id) {
-                selectItem(groupPosition, submenus.get(childPosition));
+                selectItem(groupPosition, (String) mAdapter.getChild(groupPosition, childPosition));
                 return false;
             }
         });
@@ -159,9 +158,9 @@ public class NavigationDrawerFragment extends BaseFragment {
                     return;
                 }
 
+                mAdapter.updateMenuList(generateMenu());
+
                 if (!mUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
@@ -258,6 +257,10 @@ public class NavigationDrawerFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Callbacks
+    // --------------------------------------------------------------------------------------------
+
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
@@ -268,6 +271,22 @@ public class NavigationDrawerFragment extends BaseFragment {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+    }
+
+    private Map<String, List<String>> generateMenu() {
+        Set<String> authMines = getStorage().getMineToUserTokenMap().keySet();
+        List<String> favoritesSubmenus = new ArrayList<>(authMines);
+        List<String> minesSubmenus = new ArrayList<>(getStorage().getMineNames());
+        List<String> emptyList = java.util.Collections.emptyList();
+
+        LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();
+        map.put(getString(R.string.search), emptyList);
+        map.put(getString(R.string.templates), minesSubmenus);
+        map.put(getString(R.string.lists), emptyList);
+        map.put(getString(R.string.favorites), favoritesSubmenus);
+        map.put(getString(R.string.log_in), emptyList);
+        map.put(getString(R.string.info), emptyList);
+        return map;
     }
 
     private ActionBar getActionBar() {
