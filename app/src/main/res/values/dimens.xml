@@ -10,4 +10,6 @@
 
 
     <dimen name="login_fragment_margin">30dp</dimen>
+
+    <dimen name="default_indent">10dp</dimen>
 </resources>
