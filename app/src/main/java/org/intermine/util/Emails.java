@@ -54,8 +54,8 @@ public class Emails {
 
         if (!Strs.isNullOrEmpty(gene.getLocationStart()) &&
                 !Strs.isNullOrEmpty(gene.getLocationEnd())) {
-            builder.append("Chromosomal Location: " + gene.getLocationStart()
-                    + " to " + gene.getLocationEnd());
+            builder.append("Chromosomal Location: ").append(gene.getLocationStart()).
+                    append(" to ").append(gene.getLocationEnd());
         }
         return builder.toString();
     }

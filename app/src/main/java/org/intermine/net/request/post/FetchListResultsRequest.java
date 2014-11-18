@@ -47,7 +47,7 @@ public class FetchListResultsRequest extends PostAuthRequest<ListItems> {
 
     @Override
     public MultiValueMap<String, String> getPost() {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(FORMAT_PARAM, JSON);
         params.add(QUERY_PARAM, mQuery);
 
@@ -63,8 +63,7 @@ public class FetchListResultsRequest extends PostAuthRequest<ListItems> {
         String json = post();
 
         Gson mapper = getMapper();
-        ListItems listItems = mapper.fromJson(json, ListItems.class);
-        return listItems;
+        return mapper.fromJson(json, ListItems.class);
     }
 
     protected Gson getMapper() {

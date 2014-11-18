@@ -28,7 +28,7 @@ public abstract class GetRequest<T> extends BaseRequest<T> {
         RestTemplate rtp = getRestTemplate();
         HttpHeaders headers = getHeaders();
 
-        HttpEntity<String> req = new HttpEntity<String>(headers);
+        HttpEntity<String> req = new HttpEntity<>(headers);
         ResponseEntity<byte[]> res;
 
         URI uri = URI.create(expandQuery(uriString, params));

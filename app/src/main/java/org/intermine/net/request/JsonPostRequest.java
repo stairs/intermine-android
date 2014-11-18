@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.intermine.net.request.BaseRequest;
 import org.intermine.util.Strs;
 import org.intermine.util.Uris;
 import org.springframework.http.HttpEntity;
@@ -19,9 +18,6 @@ import java.util.Map;
 
 import static org.springframework.http.HttpMethod.POST;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public class JsonPostRequest<T, V> extends BaseRequest<T> {
     public final static String CONTENT_TYPE = "application";
     public final static String CONTENT_SUBTYPE = "json";
@@ -55,9 +51,9 @@ public class JsonPostRequest<T, V> extends BaseRequest<T> {
 
         HttpEntity<String> req;
         if (Strs.isNullOrEmpty(obj)) {
-            req = new HttpEntity<String>(headers);
+            req = new HttpEntity<>(headers);
         } else {
-            req = new HttpEntity<String>(obj, headers);
+            req = new HttpEntity<>(obj, headers);
         }
 
         ResponseEntity<String> res;
@@ -91,11 +87,11 @@ public class JsonPostRequest<T, V> extends BaseRequest<T> {
 
         String res = post(getUrl(), getUrlParams(), json);
 
-        if (true == Strs.isNullOrEmpty(res)) {
+        if (Strs.isNullOrEmpty(res)) {
             return null;
         }
 
-        if (false == Strs.isNullOrEmpty(mOutWrapper)) {
+        if (Strs.isNullOrEmpty(mOutWrapper)) {
             Map<String, Object> rooted = mapper.fromJson(res, Map.class);
             String inner = mapper.toJson(rooted.get(mOutWrapper));
 

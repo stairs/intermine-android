@@ -51,10 +51,10 @@ public class GetUserTokenRequest extends PostRequest<String> {
 
     @Override
     public MultiValueMap<String, String> getPost() {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(TOKEN_TYPE_PARAM, DEFAULT_TOKEN_TYPE_VALUE);
         params.add(TOKEN_MESSAGE_PARAM, TOKEN_MESSAGE_VALUE);
-        return super.getPost();
+        return params;
     }
 
     @Override

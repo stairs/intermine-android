@@ -194,17 +194,19 @@ public class Gene implements Parcelable, Comparable<Gene> {
 
     @Override
     public int compareTo(Gene another) {
+        if (null == another) {
+            return 1;
+        }
+
         if (getRelevance() > another.getRelevance())
-            return -1;       // Neither val is NaN, thisVal is smaller
+            return -1;
         if (getRelevance() < another.getRelevance())
-            return 1;        // Neither val is NaN, thisVal is larger
+            return 1;
 
         long thisBits = Double.doubleToLongBits(getRelevance());
         long anotherBits = Double.doubleToLongBits(getRelevance());
 
-        return (thisBits == anotherBits ? 0 : // Values are equal
-                (thisBits < anotherBits ? 1 : // (-0.0, 0.0) or (!NaN, NaN)
-                        -1));
+        return (thisBits == anotherBits ? 0 : (thisBits < anotherBits ? 1 : -1));
     }
 
     @Override

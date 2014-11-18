@@ -91,8 +91,6 @@ public class List implements Parcelable {
             return false;
         if (mName != null ? !mName.equals(list.mName) : list.mName != null) return false;
         if (mTitle != null ? !mTitle.equals(list.mTitle) : list.mTitle != null) return false;
-        if (mType != null ? !mType.equals(list.mType) : list.mType != null) return false;
-
         return true;
     }
 

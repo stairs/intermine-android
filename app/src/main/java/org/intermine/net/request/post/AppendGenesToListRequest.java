@@ -4,9 +4,6 @@ import android.content.Context;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
-import org.intermine.net.request.PostAuthRequest;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 

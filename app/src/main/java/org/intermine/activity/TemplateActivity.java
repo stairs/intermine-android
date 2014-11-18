@@ -109,7 +109,7 @@ public class TemplateActivity extends BaseActivity {
         Model model = getStorage().getMineModel(mMineName);
 
         for (Constraint constraint : constraints) {
-            if (!SwitchOffAbility.OFF.equals(constraint.getSwitched())) {
+            if (!SwitchOffAbility.OFF.toString().equals(constraint.getSwitched())) {
                 ConstraintOperation operation = ConstraintOperation.valueByName(constraint.getOp());
 
                 View view = null;
@@ -127,9 +127,4 @@ public class TemplateActivity extends BaseActivity {
             }
         }
     }
-
-    private final String[] INTEGRAL_TYPES = {"int", "Integer", "long", "Long"};
-    private final String[] FRACTIONAL_TYPES = {"double", "Double", "float", "Float"};
-    private final String[] NUMERIC_TYPES = {"int", "Integer", "long", "Long", "double", "Double", "float", "Float"};
-    private final String[] BOOLEAN_TYPES = {"boolean", "Boolean"};
 }

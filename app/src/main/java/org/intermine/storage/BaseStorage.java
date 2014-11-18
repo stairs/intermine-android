@@ -9,7 +9,6 @@ import org.intermine.util.Strs;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;

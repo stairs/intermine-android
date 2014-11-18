@@ -68,7 +68,7 @@ public class GeneSearchRequest extends JsonGetRequest<GenesList> {
 
     @Override
     public Map<String, ?> getUrlParams() {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(QUERY_PARAM, mQuery);
         params.put(FACET_CATEGORY_PARAM, FACET_CATEGORY_VALUE);
         params.put(FORMAT_PARAM, mFormat);

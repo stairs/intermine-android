@@ -63,7 +63,7 @@ public class GeneSearchResultsCountRequest extends JsonGetRequest<ResultsCount> 
 
     @Override
     public Map<String, ?> getUrlParams() {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         String query = String.format(GENE_NAME_SEARCH_QUERY, mQuery, mQuery);
         params.put(QUERY_PARAM, query);
         params.put(FORMAT_PARAM, mFormat);

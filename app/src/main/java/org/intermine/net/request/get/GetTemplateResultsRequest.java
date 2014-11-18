@@ -74,7 +74,7 @@ public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
         for (Constraint condition : template.getConstraints()) {
             if (!condition.getSwitched().equals(org.intermine.core.templates.SwitchOffAbility.OFF.name())) {
                 String path = condition.getPath();
-                String op = condition.getOp().toString();
+                String op = condition.getOp();
                 String code = condition.getCode();
                 TemplateParameter tp = new TemplateParameter(path, op, condition.getValue(), null, code);
                 params.add(tp);

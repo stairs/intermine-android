@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import org.intermine.R;
 import org.intermine.core.templates.Template;
+import org.intermine.util.Collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class TemplatesAdapter extends BaseAdapter {
     }
 
     public void updateData(Collection<Template> templates) {
-        mTemplates = new ArrayList<Template>(templates);
+        mTemplates = Collections.newArrayList();
         notifyDataSetChanged();
     }
 
