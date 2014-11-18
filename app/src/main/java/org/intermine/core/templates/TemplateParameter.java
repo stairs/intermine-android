@@ -3,10 +3,6 @@ package org.intermine.core.templates;
 import java.util.Collection;
 
 /**
- * @author Daria Komkova <Daria_Komkova @ hotmail.com>
- */
-
-/**
  * The TemplateParameter model is simple model representing template parameter. Template parameter
  * is predefined constraint where you can specify constraint operation and constrained
  * value. For example it can be constraint for gene length and you can specify if the gene length

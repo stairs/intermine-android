@@ -73,7 +73,7 @@ public class TemplateActivity extends BaseActivity {
 
         if (null != mTemplate) {
             setTitle(mTemplate.getTitle());
-            mTemplate.setDescription(mTemplate.getDescription());
+            mTemplateDescription.setText(mTemplate.getDescription());
 
             processConstraints(mTemplate.getConstraints());
         }

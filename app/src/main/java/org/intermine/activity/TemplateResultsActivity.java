@@ -138,13 +138,6 @@ public class TemplateResultsActivity extends BaseActivity {
             fetchTemplateResultsCount();
         }
     }
-
-    protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
-        if (null == mDataController) {
-            mDataController = generateDataController();
-        }
-        return mDataController;
-    }
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
@@ -176,6 +169,13 @@ public class TemplateResultsActivity extends BaseActivity {
                 mLoading = true;
             }
         };
+    }
+
+    protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
+        if (null == mDataController) {
+            mDataController = generateDataController();
+        }
+        return mDataController;
     }
 
     protected void fetchTemplateResults() {

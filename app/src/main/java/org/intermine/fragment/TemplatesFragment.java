@@ -21,12 +21,20 @@ import org.intermine.net.request.get.GetTemplatesRequest.Templates;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
-public class TemplatesFragment extends BaseFragment {
-    protected ListView mTemplates;
-    private TemplatesAdapter mTemplatesAdapter;
+import butterknife.InjectView;
+import butterknife.OnItemClick;
 
-    protected View mNotFoundView;
-    private ProgressView mProgressView;
+public class TemplatesFragment extends BaseFragment {
+    @InjectView(R.id.templates)
+    ListView mTemplates;
+
+    @InjectView(R.id.not_found_results_container)
+    View mNotFoundView;
+
+    @InjectView(R.id.progress_view)
+    ProgressView mProgressView;
+
+    private TemplatesAdapter mTemplatesAdapter;
 
     private OnTemplateSelectedListener mOnTemplateSelectedListener;
 
@@ -89,22 +97,8 @@ public class TemplatesFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mProgressView = (ProgressView) view.findViewById(R.id.progress_view);
-        mNotFoundView = view.findViewById(R.id.not_found_results_container);
-
-        mTemplates = (ListView) view.findViewById(R.id.templates);
         mTemplatesAdapter = new TemplatesAdapter(getActivity());
         mTemplates.setAdapter(mTemplatesAdapter);
-
-        mTemplates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (null != mOnTemplateSelectedListener) {
-                    Template selected = (Template) mTemplatesAdapter.getItem(position);
-                    mOnTemplateSelectedListener.onTemplateSelected(selected, mMineName);
-                }
-            }
-        });
 
         setProgress(true);
         fetchTemplates();
@@ -122,6 +116,13 @@ public class TemplatesFragment extends BaseFragment {
     // Callbacks
     // --------------------------------------------------------------------------------------------
 
+    @OnItemClick(R.id.templates)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (null != mOnTemplateSelectedListener) {
+            Template selected = (Template) mTemplatesAdapter.getItem(position);
+            mOnTemplateSelectedListener.onTemplateSelected(selected, mMineName);
+        }
+    }
 
     // --------------------------------------------------------------------------------------------
     // Helper Methods

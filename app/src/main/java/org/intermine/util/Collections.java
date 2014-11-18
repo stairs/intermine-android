@@ -33,8 +33,4 @@ public class Collections {
     public static <K, V> HashMap<K, V> newHashMap() {
         return new HashMap<K, V>();
     }
-
-    public static <T> List<T> emptyList() {
-        return (List<T>) java.util.Collections.emptyList();
-    }
 }
