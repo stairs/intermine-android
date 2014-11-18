@@ -18,66 +18,63 @@ import org.intermine.util.Views;
 
 import butterknife.InjectView;
 
-public class GeneViewFragment extends Fragment {
+public class GeneViewFragment extends BaseFragment {
     public static final String GENE_EXTRA = "gene_extra";
 
     @InjectView(R.id.standard_name_title)
-    private TextView mStandardNameTitle;
+    TextView mStandardNameTitle;
 
     @InjectView(R.id.standard_name_value)
-    private TextView mStandardNameValue;
+    TextView mStandardNameValue;
 
     @InjectView(R.id.systematic_name_title)
-    private TextView mSystematicNameTitle;
+    TextView mSystematicNameTitle;
 
     @InjectView(R.id.systematic_name_value)
-    private TextView mSystematicNameValue;
+    TextView mSystematicNameValue;
 
     @InjectView(R.id.secondary_id_title)
-    private TextView mSecondaryIdTitle;
+    TextView mSecondaryIdTitle;
 
     @InjectView(R.id.secondary_id_value)
-    private TextView mSecondaryIdValue;
+    TextView mSecondaryIdValue;
 
     @InjectView(R.id.organism_name_title)
-    private TextView mOrganismTitle;
+    TextView mOrganismTitle;
 
     @InjectView(R.id.organism_name_value)
-    private TextView mOrganismValue;
+    TextView mOrganismValue;
 
     @InjectView(R.id.organism_short_title)
-    private TextView mOrganismShortTitle;
+    TextView mOrganismShortTitle;
 
     @InjectView(R.id.organism_short_value)
-    private TextView mOrganismShortValue;
+    TextView mOrganismShortValue;
 
     @InjectView(R.id.name_description_title)
-    private TextView mNameDescriptionTitle;
+    TextView mNameDescriptionTitle;
 
     @InjectView(R.id.name_description_value)
-    private TextView mNameDescriptionValue;
+    TextView mNameDescriptionValue;
 
     @InjectView(R.id.chromosomal_location_title)
-    private TextView mChromosomalLocationTitle;
+    TextView mChromosomalLocationTitle;
 
     @InjectView(R.id.chromosomal_location_value)
-    private TextView mChromosomalLocationValue;
+    TextView mChromosomalLocationValue;
 
     @InjectView(R.id.ontology_term_title)
-    private TextView mOntologyTermTitle;
+    TextView mOntologyTermTitle;
 
     @InjectView(R.id.ontology_term_value)
-    private TextView mOntologyTermValue;
+    TextView mOntologyTermValue;
 
     private GeneActionCallbacks mCallbacks;
     private Gene mGene;
 
-    public static interface GeneActionCallbacks {
-        void onGeneAddedToFavorites(Gene gene);
-
-        void onGeneSelectedToBeEmailed(Gene gene);
-
-    }
+    // --------------------------------------------------------------------------------------------
+    // Static Methods
+    // --------------------------------------------------------------------------------------------
 
     public static GeneViewFragment newInstance(Gene gene) {
         GeneViewFragment fragment = new GeneViewFragment();
@@ -85,7 +82,15 @@ public class GeneViewFragment extends Fragment {
         return fragment;
     }
 
-    public GeneViewFragment() {
+    // --------------------------------------------------------------------------------------------
+    // Inner Classes
+    // --------------------------------------------------------------------------------------------
+
+    public static interface GeneActionCallbacks {
+        void onGeneAddedToFavorites(Gene gene);
+
+        void onGeneSelectedToBeEmailed(Gene gene);
+
     }
 
     // --------------------------------------------------------------------------------------------
@@ -183,10 +188,6 @@ public class GeneViewFragment extends Fragment {
             Views.setVisible(titleView, valueView);
             valueView.setText(value);
         }
-    }
-
-    public Gene getGene() {
-        return mGene;
     }
 
     public void setGene(Gene gene) {

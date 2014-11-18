@@ -14,6 +14,7 @@ import org.intermine.activity.StartActivity;
 import org.intermine.activity.TemplateActivity;
 import org.intermine.activity.TemplateResultsActivity;
 import org.intermine.fragment.BaseFragment;
+import org.intermine.fragment.GeneViewFragment;
 import org.intermine.fragment.GenesListFragment;
 import org.intermine.fragment.ListsFragment;
 import org.intermine.fragment.LogInFragment;
@@ -62,6 +63,7 @@ import dagger.Provides;
                 GenesListFragment.class,
                 TemplatesFragment.class,
                 LogInFragment.class,
+                GeneViewFragment.class,
                 PreferencesFragment.class,
                 BaseRequest.class,
                 GetModelRequest.class,
