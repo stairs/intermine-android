@@ -19,9 +19,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
     public final static String CONTENT_ENCODING = "UTF-8";
 

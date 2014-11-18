@@ -1,9 +1,5 @@
 package org.intermine.util;
 
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.MINUTES;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
@@ -11,11 +7,10 @@ import android.text.Spanned;
 
 import java.util.Iterator;
 
-/**
- * Strings utilities
- *
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
+import static java.util.concurrent.TimeUnit.HOURS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 @SuppressLint("DefaultLocale")
 public class Strs {
     public final static String EMPTY_STRING = "";
@@ -169,10 +164,8 @@ public class Strs {
     /**
      * Joins array of object to single string by separator
      *
-     * @param iterable
-     *            any kind of iterable ex.: <code>["a", "b", "c"]</code>
-     * @param separator
-     *            separetes entries ex.: <code>","</code>
+     * @param iterable  any kind of iterable ex.: <code>["a", "b", "c"]</code>
+     * @param separator separetes entries ex.: <code>","</code>
      * @return joined string ex.: <code>"a,b,c"</code>
      */
     public static String join(Iterable<?> iterable, String separator) {

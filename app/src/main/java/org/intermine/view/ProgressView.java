@@ -10,9 +10,6 @@ import android.widget.RelativeLayout;
 
 import org.intermine.R;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public class ProgressView extends RelativeLayout {
     private ImageView mProgress;
     private Animation mAnimation;

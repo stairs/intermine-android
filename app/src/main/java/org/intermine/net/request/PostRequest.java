@@ -15,9 +15,6 @@ import java.util.Map;
 
 import static org.springframework.http.HttpMethod.POST;
 
-/**
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public abstract class PostRequest<T> extends BaseRequest<T> {
     private MultiValueMap<String, String> mPost;
 

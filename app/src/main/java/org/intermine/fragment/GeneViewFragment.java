@@ -10,31 +10,63 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.intermine.R;
 import org.intermine.core.Gene;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 
+import butterknife.InjectView;
+
 public class GeneViewFragment extends Fragment {
     public static final String GENE_EXTRA = "gene_extra";
 
+    @InjectView(R.id.standard_name_title)
     private TextView mStandardNameTitle;
+
+    @InjectView(R.id.standard_name_value)
     private TextView mStandardNameValue;
+
+    @InjectView(R.id.systematic_name_title)
     private TextView mSystematicNameTitle;
+
+    @InjectView(R.id.systematic_name_value)
     private TextView mSystematicNameValue;
+
+    @InjectView(R.id.secondary_id_title)
     private TextView mSecondaryIdTitle;
+
+    @InjectView(R.id.secondary_id_value)
     private TextView mSecondaryIdValue;
+
+    @InjectView(R.id.organism_name_title)
     private TextView mOrganismTitle;
+
+    @InjectView(R.id.organism_name_value)
     private TextView mOrganismValue;
+
+    @InjectView(R.id.organism_short_title)
     private TextView mOrganismShortTitle;
+
+    @InjectView(R.id.organism_short_value)
     private TextView mOrganismShortValue;
+
+    @InjectView(R.id.name_description_title)
     private TextView mNameDescriptionTitle;
+
+    @InjectView(R.id.name_description_value)
     private TextView mNameDescriptionValue;
+
+    @InjectView(R.id.chromosomal_location_title)
     private TextView mChromosomalLocationTitle;
+
+    @InjectView(R.id.chromosomal_location_value)
     private TextView mChromosomalLocationValue;
+
+    @InjectView(R.id.ontology_term_title)
     private TextView mOntologyTermTitle;
+
+    @InjectView(R.id.ontology_term_value)
     private TextView mOntologyTermValue;
 
     private GeneActionCallbacks mCallbacks;
@@ -77,23 +109,6 @@ public class GeneViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (null != mGene) {
-            mStandardNameTitle = (TextView) view.findViewById(R.id.standard_name_title);
-            mStandardNameValue = (TextView) view.findViewById(R.id.standard_name_value);
-            mSystematicNameTitle = (TextView) view.findViewById(R.id.systematic_name_title);
-            mSystematicNameValue = (TextView) view.findViewById(R.id.systematic_name_value);
-            mSecondaryIdTitle = (TextView) view.findViewById(R.id.secondary_id_title);
-            mSecondaryIdValue = (TextView) view.findViewById(R.id.secondary_id_value);
-            mOrganismTitle = (TextView) view.findViewById(R.id.organism_name_title);
-            mOrganismValue = (TextView) view.findViewById(R.id.organism_name_value);
-            mOrganismShortTitle = (TextView) view.findViewById(R.id.organism_short_title);
-            mOrganismShortValue = (TextView) view.findViewById(R.id.organism_short_value);
-            mNameDescriptionTitle = (TextView) view.findViewById(R.id.name_description_title);
-            mNameDescriptionValue = (TextView) view.findViewById(R.id.name_description_value);
-            mChromosomalLocationTitle = (TextView) view.findViewById(R.id.chromosomal_location_title);
-            mChromosomalLocationValue = (TextView) view.findViewById(R.id.chromosomal_location_value);
-            mOntologyTermTitle = (TextView) view.findViewById(R.id.ontology_term_title);
-            mOntologyTermValue = (TextView) view.findViewById(R.id.ontology_term_value);
-
             showRowIfInfoAvailable(mGene.getSymbol(), mStandardNameTitle, mStandardNameValue);
             showRowIfInfoAvailable(mGene.getPrimaryDBId(),
                     mSystematicNameTitle, mSystematicNameValue);
@@ -111,13 +126,11 @@ public class GeneViewFragment extends Fragment {
                 Views.setGone(mChromosomalLocationTitle, mChromosomalLocationValue);
             } else {
                 Views.setVisible(mChromosomalLocationTitle, mChromosomalLocationValue);
-                //TODO: refactore
                 mChromosomalLocationValue.setText(mGene.getLocationStart() + " to "
                         + mGene.getLocationEnd());
             }
         }
     }
-
 
     @Override
     public void onAttach(Activity activity) {

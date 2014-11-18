@@ -30,6 +30,7 @@ public class TemplatesAdapter extends BaseAdapter {
 
     public void updateData(Collection<Template> templates) {
         mTemplates = Collections.newArrayList();
+        mTemplates.addAll(templates);
         notifyDataSetChanged();
     }
 

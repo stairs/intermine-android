@@ -4,11 +4,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
-/**
- * Handy and conventional view helper
- *
- * @author Siarhei Ivonchik <Siarhei_Ivonchik @ epam.com>
- */
 public class Views {
     public static void setVisible(View... views) {
         for (View view : views) {
@@ -40,7 +35,7 @@ public class Views {
         }
     }
 
-    public static void setClickable(boolean clickable, View...views) {
+    public static void setClickable(boolean clickable, View... views) {
         for (View view : views) {
             view.setClickable(clickable);
         }
@@ -54,25 +49,5 @@ public class Views {
 
             view.startAnimation(anim);
         }
-    }
-
-    public static String getText(TextView tw) {
-        if (null == tw || null == tw.getText()) {
-            return "";
-        } else {
-            return tw.getText().toString();
-        }
-    }
-
-    public static boolean contains(View view, int rawX, int rawY) {
-        int[] l = new int[2];
-        view.getLocationOnScreen(l);
-
-        int x = l[0];
-        int y = l[1];
-        int w = view.getWidth();
-        int h = view.getHeight();
-
-        return !(rawX < x || rawX > x + w || rawY < y || rawY > y + h);
     }
 }

@@ -38,8 +38,6 @@ public class TemplatesFragment extends BaseFragment {
 
     private OnTemplateSelectedListener mOnTemplateSelectedListener;
 
-    protected boolean mLoading;
-
     private String mMineName;
 
     // --------------------------------------------------------------------------------------------
@@ -134,8 +132,6 @@ public class TemplatesFragment extends BaseFragment {
     }
 
     protected void setProgress(boolean loading) {
-        mLoading = loading;
-
         if (loading) {
             Views.setVisible(mProgressView);
             Views.setGone(mTemplates, mNotFoundView);
