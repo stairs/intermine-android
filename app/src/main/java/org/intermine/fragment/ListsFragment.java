@@ -15,28 +15,36 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.ListsAdapter;
+import org.intermine.core.List;
 import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
-import java.util.List;
+import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 public class ListsFragment extends BaseFragment {
     public static final String TAG = ListsFragment.class.getSimpleName();
 
-    private ProgressView mProgressView;
-    private ListView mListsView;
+    @InjectView(R.id.progress_view)
+    ProgressView mProgressView;
+
+    @InjectView(R.id.lists)
+    ListView mListsView;
+
     private ListsAdapter mAdapter;
+
+    private String mMineName;
 
     private OnListSelectedListener mListener;
 
-    protected boolean mLoading;
+    // --------------------------------------------------------------------------------------------
+    // Static Methods
+    // --------------------------------------------------------------------------------------------
 
-    public ListsFragment() {
-    }
-
-    public static ListsFragment newInstance() {
+    public static ListsFragment newInstance(String mineName) {
         ListsFragment fragment = new ListsFragment();
+        fragment.setMineName(mineName);
         return fragment;
     }
 
@@ -45,7 +53,7 @@ public class ListsFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
 
     public static interface OnListSelectedListener {
-        void onListSelected(org.intermine.core.List list);
+        void onListSelected(org.intermine.core.List list, String mineName);
     }
 
     class GetListsRequestListener implements RequestListener<GetListsRequest.Lists> {
@@ -76,28 +84,18 @@ public class ListsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        View view = inflater.inflate(R.layout.lists_fragment, container, false);
-
-        fetchLists();
-        return view;
+        return inflater.inflate(R.layout.lists_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mProgressView = (ProgressView) view.findViewById(R.id.progress_view);
-        mListsView = (ListView) view.findViewById(R.id.lists);
-
         mAdapter = new ListsAdapter(getActivity());
         mListsView.setAdapter(mAdapter);
-        mListsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onListSelected((org.intermine.core.List) mAdapter.getItem(position));
-            }
-        });
+
         setProgress(true);
+        fetchLists();
     }
 
     @Override
@@ -112,19 +110,22 @@ public class ListsFragment extends BaseFragment {
     // Callbacks
     // --------------------------------------------------------------------------------------------
 
+    @OnItemClick(R.id.lists)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        List list = (List) mAdapter.getItem(position);
+        mListener.onListSelected(list, mMineName);
+    }
 
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
     protected void fetchLists() {
-        GetListsRequest request = new GetListsRequest(getActivity(), "FlyMine", null);
+        GetListsRequest request = new GetListsRequest(getActivity(), mMineName, null);
         executeRequest(request, new GetListsRequestListener());
     }
 
     protected void setProgress(boolean loading) {
-        mLoading = loading;
-
         if (loading) {
             Views.setVisible(mProgressView);
             Views.setGone(mListsView);
@@ -132,5 +133,9 @@ public class ListsFragment extends BaseFragment {
             Views.setVisible(mListsView);
             Views.setGone(mProgressView);
         }
+    }
+
+    public void setMineName(String mineName) {
+        mMineName = mineName;
     }
 }

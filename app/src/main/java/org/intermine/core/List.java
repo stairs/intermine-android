@@ -25,7 +25,10 @@ public class List implements Parcelable {
     private int mSize;
 
     public List() {
+    }
 
+    public List(String name) {
+        mName = name;
     }
 
     public List(Parcel parcel) {

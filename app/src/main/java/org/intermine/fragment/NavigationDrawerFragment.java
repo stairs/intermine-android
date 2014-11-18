@@ -282,7 +282,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();
         map.put(getString(R.string.search), emptyList);
         map.put(getString(R.string.templates), minesSubmenus);
-        map.put(getString(R.string.lists), emptyList);
+        map.put(getString(R.string.lists), minesSubmenus);
         map.put(getString(R.string.favorites), favoritesSubmenus);
         map.put(getString(R.string.log_in), emptyList);
         map.put(getString(R.string.info), emptyList);

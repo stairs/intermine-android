@@ -27,6 +27,8 @@ public class MainActivity extends BaseActivity implements
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
     private NavigationDrawerFragment mNavigationDrawer;
 
+    private List mGeneFavoritesList;
+
     protected CharSequence mTitle;
 
     // --------------------------------------------------------------------------------------------
@@ -46,6 +48,8 @@ public class MainActivity extends BaseActivity implements
 
         mNavigationDrawer.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), true);
+
+        mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
 
         mTitle = getTitle();
     }
@@ -67,12 +71,10 @@ public class MainActivity extends BaseActivity implements
                 fragment = TemplatesFragment.newInstance(mineName);
                 break;
             case 2:
-                fragment = ListsFragment.newInstance();
+                fragment = ListsFragment.newInstance(mineName);
                 break;
             case 3:
-                List list = new List();
-                list.setName(getString(R.string.gene_favorites_list_name));
-                fragment = GenesListFragment.newInstance(list, mineName);
+                fragment = GenesListFragment.newInstance(mGeneFavoritesList, mineName);
                 break;
             case 4:
                 fragment = LogInFragment.newInstance();
@@ -104,8 +106,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onListSelected(org.intermine.core.List list) {
-        GenesListActivity.start(this, list);
+    public void onListSelected(org.intermine.core.List list, String mineName) {
+        GenesListActivity.start(this, list, mineName);
     }
 
     @Override

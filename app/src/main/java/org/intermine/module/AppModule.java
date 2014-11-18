@@ -27,7 +27,6 @@ import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.net.request.get.GeneSearchResultsCountRequest;
 import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.net.request.get.GetModelRequest;
-import org.intermine.net.request.get.GetQueryResultsRequest;
 import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.net.request.get.GetTemplatesRequest;
 import org.intermine.net.request.post.AppendGenesToListRequest;
@@ -68,7 +67,6 @@ import dagger.Provides;
                 GetModelRequest.class,
                 GeneSearchRequest.class,
                 GeneSearchResultsCountRequest.class,
-                GetQueryResultsRequest.class,
                 GetTemplateResultsRequest.class,
                 GetTemplatesRequest.class,
                 AppendGenesToListRequest.class,

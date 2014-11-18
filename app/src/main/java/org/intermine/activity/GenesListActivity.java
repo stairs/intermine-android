@@ -16,14 +16,19 @@ import org.intermine.listener.OnGeneSelectedListener;
  */
 public class GenesListActivity extends BaseActivity implements OnGeneSelectedListener {
     public static final String LIST_KEY = "list_key";
+    public static final String MINE_NAME_KEY = "mine_name_key";
+
+    private List mList;
+    private String mMineName;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, org.intermine.core.List list) {
+    public static void start(Context context, org.intermine.core.List list, String mineName) {
         Intent intent = new Intent(context, GenesListActivity.class);
         intent.putExtra(LIST_KEY, list);
+        intent.putExtra(MINE_NAME_KEY, mineName);
         context.startActivity(intent);
     }
 
@@ -44,12 +49,13 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        List list = getIntent().getParcelableExtra(LIST_KEY);
+        mList = getIntent().getParcelableExtra(LIST_KEY);
+        mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
 
-        if (null != list) {
-            setTitle(list.getTitle());
+        if (null != mList) {
+            setTitle(mList.getTitle());
 
-            GenesListFragment fragment = GenesListFragment.newInstance(list, "FlyMine");
+            GenesListFragment fragment = GenesListFragment.newInstance(mList, mMineName);
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }
