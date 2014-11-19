@@ -5,6 +5,8 @@
                     android:choiceMode="singleChoice"
                     android:divider="@android:color/transparent"
                     android:background="@android:color/white"
+                    android:childDivider="@android:color/transparent"
+                    android:childIndicator="@null"
                     android:dividerHeight="0dp"
                     android:groupIndicator="@null"
                     tools:context=".NavigationDrawerFragment"/>

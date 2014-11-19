@@ -8,10 +8,9 @@
               android:id="@+id/submenu_item"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:textColor="@color/white"
-              android:textAppearance="?android:attr/textAppearanceListItemSmall"
-              android:gravity="right|center_vertical"
-              android:paddingRight="25dp"
-              android:background="@color/submenu_background"
+              android:gravity="center_vertical"
+              android:paddingLeft="25dp"
+              android:text="Submenu List Item"
+              android:background="@color/submenu_item_background"
               android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
 </RelativeLayout>

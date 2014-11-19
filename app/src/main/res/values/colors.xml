@@ -6,7 +6,7 @@
     <color name="light_gray">#D3D3D3</color>
     <color name="light_green">#99cc00</color>
     <color name="dark_green">#669900</color>
-    <color name="submenu_background">#99424242</color>
+    <color name="submenu_item_background">#4D424242</color>
 
     <color name="im_green">#1E9618</color>
     <color name="im_green_transparent">#801E9618</color>

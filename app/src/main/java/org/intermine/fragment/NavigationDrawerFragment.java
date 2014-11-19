@@ -52,13 +52,8 @@ public class NavigationDrawerFragment extends BaseFragment {
     public NavigationDrawerFragment() {
     }
 
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
+
     public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
         void onNavigationDrawerItemSelected(int position, String mineName);
     }
 
@@ -105,6 +100,8 @@ public class NavigationDrawerFragment extends BaseFragment {
         mAdapter = new ExpandableMenuListAdapter(getActivity());
         mAdapter.updateMenuList(generateMenu());
 
+        mDrawerListView.setDividerHeight(0);
+        mDrawerListView.setChildDivider(getResources().getDrawable(android.R.color.transparent));
         mDrawerListView.setAdapter(mAdapter);
         mDrawerListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -123,7 +120,7 @@ public class NavigationDrawerFragment extends BaseFragment {
                 return false;
             }
         });
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
@@ -191,7 +188,7 @@ public class NavigationDrawerFragment extends BaseFragment {
     private void selectItem(int position, String mineName) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+            //mDrawerListView.setItemChecked(position, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
