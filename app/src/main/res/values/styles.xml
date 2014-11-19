@@ -1,8 +1,10 @@
 <resources>
 
     <style name="InterMine.Theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/light_green</item>
-        <item name="colorPrimaryDark">@color/dark_green</item>
+        <item name="colorPrimary">@color/im_green</item>
+        <item name="colorPrimaryDark">@color/im_green_dark</item>
+        <item name="colorAccent">@color/im_green</item>
+        <item name="colorControlHighlight">@color/im_green_transparent</item>
     </style>
 
     <!-- Font styles -->

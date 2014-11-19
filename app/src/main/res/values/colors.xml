@@ -7,4 +7,8 @@
     <color name="light_green">#99cc00</color>
     <color name="dark_green">#669900</color>
     <color name="submenu_background">#99424242</color>
+
+    <color name="im_green">#1E9618</color>
+    <color name="im_green_transparent">#801E9618</color>
+    <color name="im_green_dark">#146310</color>
 </resources>
