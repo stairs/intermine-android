@@ -103,7 +103,7 @@ public class TemplateActivity extends BaseActivity {
 
         for (int i = 0; i < mContainer.getChildCount(); i++) {
             ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
-            PathConstraint pathConstraint = constraintView.getPathConstraint();
+            PathConstraint pathConstraint = constraintView.getPopulatedConstraint();
             parameters.add(generateTemplateParameter(pathConstraint));
         }
 
@@ -141,9 +141,16 @@ public class TemplateActivity extends BaseActivity {
 
     private TemplateParameter generateTemplateParameter(PathConstraint constraint) {
         String path = constraint.getPath();
-        String op = constraint.getOperation().toString();
+        String operation = constraint.getOperation().toString();
         String code = constraint.getCode();
-        String value = PathConstraint.getValue(constraint);
-        return new TemplateParameter(path, op, value, null, code);
+
+        if (!Collections.isNullOrEmpty(PathConstraint.getValues(constraint))) {
+            return new TemplateParameter(path, operation,
+                    (List<String>) PathConstraint.getValues(constraint), code);
+        } else {
+            return new TemplateParameter(path, operation,
+                    PathConstraint.getValue(constraint),
+                    PathConstraint.getExtraValue(constraint), code);
+        }
     }
 }

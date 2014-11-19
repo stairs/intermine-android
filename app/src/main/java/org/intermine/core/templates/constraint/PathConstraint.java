@@ -3,6 +3,7 @@ package org.intermine.core.templates.constraint;
 import org.intermine.util.Strs;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Set;
 
 public abstract class PathConstraint {
@@ -34,6 +35,8 @@ public abstract class PathConstraint {
     public static String getValue(PathConstraint con) {
         if (con instanceof PathConstraintAttribute) {
             return ((PathConstraintAttribute) con).getValue();
+        } else if (con instanceof PathConstraintLookup) {
+            return ((PathConstraintLookup) con).getValue();
         }
         return null;
     }
@@ -41,6 +44,14 @@ public abstract class PathConstraint {
     public static String getExtraValue(PathConstraint con) {
         if (con instanceof PathConstraintLookup) {
             return ((PathConstraintLookup) con).getExtraValue();
+        } else {
+            return null;
+        }
+    }
+
+    public static Collection<String> getValues(PathConstraint con) {
+        if (con instanceof PathConstraintMultiValue) {
+            return ((PathConstraintMultiValue) con).getValues();
         } else {
             return null;
         }
@@ -61,5 +72,13 @@ public abstract class PathConstraint {
 
     public void setCode(String code) {
         mCode = code;
+    }
+
+    public void setPath(String path) {
+        mPath = path;
+    }
+
+    public void setOperation(ConstraintOperation operation) {
+        mOperation = operation;
     }
 }

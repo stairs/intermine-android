@@ -41,4 +41,6 @@ public abstract class ConstraintView extends RelativeLayout {
     public void setPathConstraint(PathConstraint pathConstraint) {
         mPathConstraint = pathConstraint;
     }
+
+    public abstract PathConstraint getPopulatedConstraint();
 }

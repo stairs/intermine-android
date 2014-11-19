@@ -8,6 +8,7 @@ import android.widget.Spinner;
 import org.intermine.R;
 import org.intermine.adapter.SimpleAdapter;
 import org.intermine.core.templates.constraint.ConstraintOperation;
+import org.intermine.core.templates.constraint.PathConstraint;
 import org.intermine.core.templates.constraint.PathConstraintAttribute;
 
 import butterknife.ButterKnife;
@@ -53,7 +54,15 @@ public class AttributeConstraintView extends ConstraintView {
         return mValue.getText().toString();
     }
 
-    public String getOperation() {
-        return (String) mOperationsSpinner.getSelectedItem();
+    public ConstraintOperation getOperation() {
+        return (ConstraintOperation) mOperationsSpinner.getSelectedItem();
+    }
+
+    @Override
+    public PathConstraint getPopulatedConstraint() {
+        PathConstraintAttribute constraint = (PathConstraintAttribute) getPathConstraint();
+        constraint.setValue(getValue());
+        constraint.setOperation(getOperation());
+        return constraint;
     }
 }
