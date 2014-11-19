@@ -6,6 +6,7 @@ public class PathConstraintLookup extends PathConstraint {
 
     public PathConstraintLookup(String path, String value, String extraValue) {
         super(path, ConstraintOperation.LOOKUP);
+
         if (value == null) {
             throw new NullPointerException("Cannot create a lookup constraint with a null value");
         }
@@ -19,10 +20,5 @@ public class PathConstraintLookup extends PathConstraint {
 
     public String getExtraValue() {
         return mExtraValue;
-    }
-
-    @Override
-    public String toString() {
-        return mPath + " LOOKUP " + mValue + " IN " + mExtraValue;
     }
 }

@@ -113,10 +113,11 @@ public class TemplateActivity extends BaseActivity {
                 ConstraintOperation operation = ConstraintOperation.valueByName(constraint.getOp());
 
                 View view = null;
+
                 if (ConstraintOperation.LOOKUP.equals(operation)) {
                     view = new LookupConstraintView(this, constraint.getValue());
                     mContainer.addView(view);
-                } else if (PathConstraintAttribute.VALID_OPS.contains(operation)) {
+                } else if (PathConstraintAttribute.VALID_OPERATIONS.contains(operation)) {
                     view = new AttributeConstraintView(this, constraint.getValue());
                     mContainer.addView(view);
                 }
