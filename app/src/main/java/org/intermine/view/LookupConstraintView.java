@@ -16,7 +16,6 @@ import butterknife.InjectView;
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class LookupConstraintView extends ConstraintView {
-    private
     @InjectView(R.id.lookup_value)
     EditText mValue;
 

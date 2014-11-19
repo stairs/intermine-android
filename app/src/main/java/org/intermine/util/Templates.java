@@ -40,13 +40,13 @@ public class Templates {
 
         if (PathConstraintSimpleMultiValue.VALID_OPERATIONS.contains(operation)
                 && !values.isEmpty()) {
-            return new PathConstraintSimpleMultiValue(path, operation, values);
+            return new PathConstraintSimpleMultiValue(path, operation, values, constraint.getCode());
         } else if (ConstraintOperation.LOOKUP.equals(operation)) {
             return new PathConstraintLookup(path, constraint.getValue(),
-                    constraint.getExtraValue());
+                    constraint.getExtraValue(), constraint.getCode());
         } else if (PathConstraintAttribute.VALID_OPERATIONS.contains(operation)) {
             return new PathConstraintAttribute(path, operation,
-                    constraint.getValue());
+                    constraint.getValue(), constraint.getCode());
         }
         return null;
     }
