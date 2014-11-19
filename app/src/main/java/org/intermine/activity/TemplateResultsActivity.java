@@ -16,10 +16,16 @@ import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
 import org.intermine.core.templates.Template;
 import org.intermine.adapter.ApiPager;
+import org.intermine.core.templates.TemplateParameter;
 import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,8 +36,9 @@ import butterknife.InjectView;
 public class TemplateResultsActivity extends BaseActivity {
     public static final int ITEMS_PER_PAGE = 15;
 
-    public static final String TEMPLATE_KEY = "template_key";
+    public static final String TEMPLATE_NAME_KEY = "template_name_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
+    public static final String TEMPLATE_PARAMS_KEY = "template_params_key";
 
     @InjectView(R.id.list)
     ListView mListView;
@@ -48,7 +55,8 @@ public class TemplateResultsActivity extends BaseActivity {
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private ApiPager mPager;
 
-    private Template mTemplate;
+    private String mTemplateName;
+    private ArrayList<TemplateParameter> mTemplateParams;
     private String mMineName;
 
     protected boolean mLoading;
@@ -57,10 +65,12 @@ public class TemplateResultsActivity extends BaseActivity {
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, Template template, String mineName) {
+    public static void start(Context context, String templateName, String mineName,
+                             ArrayList<TemplateParameter> params) {
         Intent intent = new Intent(context, TemplateResultsActivity.class);
-        intent.putExtra(TEMPLATE_KEY, template);
+        intent.putExtra(TEMPLATE_NAME_KEY, templateName);
         intent.putExtra(MINE_NAME_KEY, mineName);
+        intent.putParcelableArrayListExtra(TEMPLATE_PARAMS_KEY, params);
         context.startActivity(intent);
     }
 
@@ -121,8 +131,9 @@ public class TemplateResultsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
+        mTemplateName = getIntent().getStringExtra(TEMPLATE_NAME_KEY);
         mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
+        mTemplateParams = getIntent().getParcelableArrayListExtra(TEMPLATE_PARAMS_KEY);
 
         mListAdapter = new ListAdapter(this);
         mListView.setAdapter(mListAdapter);
@@ -131,8 +142,8 @@ public class TemplateResultsActivity extends BaseActivity {
         mListView.setOnScrollListener(mViewController);
         mListView.addFooterView(mViewController.getFooterView());
 
-        if (null != mTemplate) {
-            setTitle(mTemplate.getTitle());
+        if (null != mTemplateName) {
+            setTitle(mTemplateName);
             setProgress(true);
 
             fetchTemplateResultsCount();
@@ -180,13 +191,14 @@ public class TemplateResultsActivity extends BaseActivity {
 
     protected void fetchTemplateResults() {
         GetTemplateResultsRequest request = new GetTemplateResultsRequest(ListItems.class, this,
-                mTemplate, mMineName, mPager.getCurrentPage() * mPager.getPerPage(), ITEMS_PER_PAGE);
+                mTemplateName, mTemplateParams, mMineName,
+                mPager.getCurrentPage() * mPager.getPerPage(), ITEMS_PER_PAGE);
         executeRequest(request, new TemplateResultsListener());
     }
 
     protected void fetchTemplateResultsCount() {
         GetTemplateResultsRequest request = new GetTemplateResultsRequest(Integer.class, this,
-                mTemplate, mMineName, 0, ITEMS_PER_PAGE);
+                mTemplateName, mTemplateParams, mMineName, 0, ITEMS_PER_PAGE);
         executeRequest(request, new TemplateResultsCountListener());
     }
 

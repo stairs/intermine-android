@@ -3,7 +3,6 @@ package org.intermine.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import org.intermine.R;
@@ -17,18 +16,18 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class AttributeConstraintView extends RelativeLayout implements ConstraintView {
+public class AttributeConstraintView extends ConstraintView {
     @InjectView(R.id.operations_spinner)
     Spinner mOperationsSpinner;
 
     @InjectView(R.id.base_constraint_value)
     EditText mValue;
 
-    public AttributeConstraintView(Context context, String value) {
-        super(context);
+    public AttributeConstraintView(Context context, PathConstraintAttribute constraint) {
+        super(context, constraint);
 
         init();
-        mValue.setText(value);
+        mValue.setText(constraint.getValue());
     }
 
     public AttributeConstraintView(Context context, AttributeSet attrs) {
@@ -46,7 +45,7 @@ public class AttributeConstraintView extends RelativeLayout implements Constrain
         ButterKnife.inject(this);
 
         SimpleAdapter<ConstraintOperation> adapter = new SimpleAdapter(getContext());
-        adapter.updateData(PathConstraintAttribute.VALID_OPS);
+        adapter.updateData(PathConstraintAttribute.VALID_OPERATIONS);
         mOperationsSpinner.setAdapter(adapter);
     }
 

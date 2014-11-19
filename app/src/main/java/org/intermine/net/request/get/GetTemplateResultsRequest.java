@@ -6,6 +6,7 @@ import org.intermine.R;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.core.templates.constraint.Constraint;
+import org.intermine.core.templates.constraint.SwitchOffAbility;
 import org.intermine.net.request.JsonGetAuthRequest;
 import org.intermine.util.Collections;
 
@@ -30,15 +31,18 @@ public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
     private static final String START_PARAM = "start";
     private static final String SIZE_PARAM = "size";
 
-    private Template mTemplate;
+    private String mTemplateName;
+    private ArrayList<TemplateParameter> mTemplateParams;
     private int mSize;
     private int mStart;
     private String mFormat;
 
-    public GetTemplateResultsRequest(Class clazz, Context ctx, Template template,
+    public GetTemplateResultsRequest(Class clazz, Context ctx, String templateName,
+                                     ArrayList<TemplateParameter> templateParams,
                                      String mineName, int start, int size) {
         super(clazz, ctx, null, null, mineName);
-        mTemplate = template;
+        mTemplateName = templateName;
+        mTemplateParams = templateParams;
         mSize = size;
         mStart = start;
 
@@ -53,12 +57,10 @@ public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
     public Map<String, ?> getUrlParams() {
         Map<String, String> params = Collections.newHashMap();
         params.put(FORMAT_PARAM, mFormat);
-        params.put(NAME_PARAM, mTemplate.getName());
+        params.put(NAME_PARAM, mTemplateName);
         params.put(START_PARAM, Integer.toString(mStart));
         params.put(SIZE_PARAM, Integer.toString(mSize));
-
-        List<TemplateParameter> templateParameters = generateTemplateParameters(mTemplate);
-        params.putAll(generateUrlParams(templateParameters));
+        params.putAll(generateUrlParams(mTemplateParams));
         return params;
     }
 
@@ -66,21 +68,6 @@ public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
     public String getUrl() {
         Context ctx = getContext();
         return getBaseUrl() + ctx.getString(R.string.template_results_path);
-    }
-
-    private List<TemplateParameter> generateTemplateParameters(Template template) {
-        List<TemplateParameter> params = Collections.newArrayList();
-
-        for (Constraint condition : template.getConstraints()) {
-            if (!condition.getSwitched().equals(org.intermine.core.templates.SwitchOffAbility.OFF.name())) {
-                String path = condition.getPath();
-                String op = condition.getOp();
-                String code = condition.getCode();
-                TemplateParameter tp = new TemplateParameter(path, op, condition.getValue(), null, code);
-                params.add(tp);
-            }
-        }
-        return params;
     }
 
     private Map<String, String> generateUrlParams(List<TemplateParameter> parameters) {

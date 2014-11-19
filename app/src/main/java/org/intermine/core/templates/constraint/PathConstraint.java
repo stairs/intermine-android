@@ -2,13 +2,15 @@ package org.intermine.core.templates.constraint;
 
 import org.intermine.util.Strs;
 
+import java.io.Serializable;
 import java.util.Set;
 
 public abstract class PathConstraint {
+    private String mCode;
     protected String mPath;
     protected ConstraintOperation mOperation;
 
-    protected PathConstraint(String path, ConstraintOperation operation) {
+    protected PathConstraint(String path, ConstraintOperation operation, String code) {
         if (Strs.isNullOrEmpty(path)) {
             throw new IllegalArgumentException("The path should not be empty!");
         }
@@ -17,6 +19,7 @@ public abstract class PathConstraint {
             throw new NullPointerException("The operation for a PathConstraint can not be null!");
         }
         mPath = path;
+        mCode = code;
         mOperation = operation;
     }
 
@@ -50,5 +53,13 @@ public abstract class PathConstraint {
                     getClass().getSimpleName());
             throw new IllegalArgumentException(errorMessage);
         }
+    }
+
+    public String getCode() {
+        return mCode;
+    }
+
+    public void setCode(String code) {
+        mCode = code;
     }
 }

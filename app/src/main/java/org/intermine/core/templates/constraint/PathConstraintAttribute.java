@@ -25,8 +25,9 @@ public class PathConstraintAttribute extends PathConstraint {
 
     private String mValue;
 
-    public PathConstraintAttribute(String path, ConstraintOperation operation, String value) {
-        super(path, operation);
+    public PathConstraintAttribute(String path, ConstraintOperation operation, String value,
+                                   String code) {
+        super(path, operation, code);
 
         checkValidOperation(VALID_OPERATIONS, operation);
 

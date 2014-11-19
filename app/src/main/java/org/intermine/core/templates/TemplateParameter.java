@@ -1,5 +1,9 @@
 package org.intermine.core.templates;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -13,19 +17,19 @@ import java.util.Collection;
  *
  * @author Jakub Kulaviak
  */
-public class TemplateParameter {
+public class TemplateParameter implements Parcelable {
 
-    private final String operation;
+    private String operation;
 
-    private final String value;
+    private String value;
 
-    private final String extraValue;
+    private String extraValue;
 
-    private final String pathId;
+    private String pathId;
 
-    private final Collection<String> values;
+    private Collection<String> values;
 
-    private final String code;
+    private String code;
 
     /**
      * Create a new TemplateParameter.
@@ -120,4 +124,30 @@ public class TemplateParameter {
     public String getValue() {
         return value;
     }
+
+    protected TemplateParameter(Parcel in) {
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
+
+    public static final Parcelable.Creator<TemplateParameter> CREATOR = new Parcelable.Creator<TemplateParameter>() {
+        @Override
+        public TemplateParameter createFromParcel(Parcel in) {
+            return new TemplateParameter(in);
+        }
+
+        @Override
+        public TemplateParameter[] newArray(int size) {
+            return new TemplateParameter[size];
+        }
+    };
 }

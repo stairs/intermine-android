@@ -2,25 +2,33 @@ package org.intermine.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.intermine.R;
 import org.intermine.core.model.Model;
-import org.intermine.core.templates.SwitchOffAbility;
+import org.intermine.core.templates.TemplateParameter;
+import org.intermine.core.templates.constraint.PathConstraint;
+import org.intermine.core.templates.constraint.PathConstraintLookup;
+import org.intermine.core.templates.constraint.PathConstraintSimpleMultiValue;
+import org.intermine.core.templates.constraint.SwitchOffAbility;
 import org.intermine.core.templates.Template;
 import org.intermine.core.templates.constraint.Constraint;
 import org.intermine.core.templates.constraint.ConstraintOperation;
 import org.intermine.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.util.Collections;
+import org.intermine.util.Templates;
 import org.intermine.view.AttributeConstraintView;
 import org.intermine.view.ConstraintView;
 import org.intermine.view.LookupConstraintView;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -75,7 +83,13 @@ public class TemplateActivity extends BaseActivity {
             setTitle(mTemplate.getTitle());
             mTemplateDescription.setText(mTemplate.getDescription());
 
-            processConstraints(mTemplate.getConstraints());
+            List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(
+                    mTemplate.getConstraints(), getStorage().getMineModel(mMineName));
+            Collection<View> views = generateViewsForConstraints(pathConstraints);
+
+            for (View view : views) {
+                mContainer.addView(view);
+            }
         }
     }
 
@@ -85,19 +99,15 @@ public class TemplateActivity extends BaseActivity {
 
     @OnClick(R.id.show_results)
     protected void showTemplatesResults() {
-        List<Constraint> queryConstraints = Collections.newArrayList();
+        ArrayList<TemplateParameter> parameters = Collections.newArrayList();
 
         for (int i = 0; i < mContainer.getChildCount(); i++) {
-            View view = mContainer.getChildAt(i);
-            ConstraintView constraintView = (ConstraintView) view;
-            Constraint constraint = (Constraint) view.getTag();
-            constraint.setOp(constraintView.getValue());
-            constraint.setValue(constraintView.getValue());
-            queryConstraints.add(constraint);
+            ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
+            PathConstraint pathConstraint = constraintView.getPathConstraint();
+            parameters.add(generateTemplateParameter(pathConstraint));
         }
-        mTemplate.setConstraints(queryConstraints);
 
-        TemplateResultsActivity.start(this, mTemplate, mMineName);
+        TemplateResultsActivity.start(this, mTemplate.getName(), mMineName, parameters);
         finish();
     }
 
@@ -105,27 +115,37 @@ public class TemplateActivity extends BaseActivity {
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
-    protected void processConstraints(List<Constraint> constraints) {
-        Model model = getStorage().getMineModel(mMineName);
+    protected Collection<View> generateViewsForConstraints(List<PathConstraint> pathConstraints) {
+        Collection<View> views = Collections.newArrayList();
 
-        for (Constraint constraint : constraints) {
-            if (!SwitchOffAbility.OFF.toString().equals(constraint.getSwitched())) {
-                ConstraintOperation operation = ConstraintOperation.valueByName(constraint.getOp());
+        for (PathConstraint constraint : pathConstraints) {
+            View view = generateViewForConstraints(constraint);
 
-                View view = null;
-
-                if (ConstraintOperation.LOOKUP.equals(operation)) {
-                    view = new LookupConstraintView(this, constraint.getValue());
-                    mContainer.addView(view);
-                } else if (PathConstraintAttribute.VALID_OPERATIONS.contains(operation)) {
-                    view = new AttributeConstraintView(this, constraint.getValue());
-                    mContainer.addView(view);
-                }
-
-                if (null != view) {
-                    view.setTag(constraint);
-                }
+            if (null != view) {
+                views.add(view);
             }
         }
+        return views;
+    }
+
+    protected View generateViewForConstraints(PathConstraint pathConstraint) {
+        View view = null;
+
+        if (pathConstraint instanceof PathConstraintLookup) {
+            view = new LookupConstraintView(this, (PathConstraintLookup) pathConstraint);
+            mContainer.addView(view);
+        } else if (pathConstraint instanceof PathConstraintAttribute) {
+            view = new AttributeConstraintView(this, (PathConstraintAttribute) pathConstraint);
+            mContainer.addView(view);
+        }
+        return view;
+    }
+
+    private TemplateParameter generateTemplateParameter(PathConstraint constraint) {
+        String path = constraint.getPath();
+        String op = constraint.getOperation().toString();
+        String code = constraint.getCode();
+        String value = PathConstraint.getValue(constraint);
+        return new TemplateParameter(path, op, value, null, code);
     }
 }

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import org.intermine.R;
 import org.intermine.core.templates.constraint.ConstraintOperation;
+import org.intermine.core.templates.constraint.PathConstraintLookup;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -14,15 +15,16 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class LookupConstraintView extends RelativeLayout implements ConstraintView {
+public class LookupConstraintView extends ConstraintView {
+    private
     @InjectView(R.id.lookup_value)
     EditText mValue;
 
-    public LookupConstraintView(Context context, String value) {
-        super(context);
+    public LookupConstraintView(Context context, PathConstraintLookup constraint) {
+        super(context, constraint);
 
         init();
-        mValue.setText(value);
+        mValue.setText(constraint.getValue());
     }
 
     public LookupConstraintView(Context context, AttributeSet attrs) {
@@ -42,10 +44,5 @@ public class LookupConstraintView extends RelativeLayout implements ConstraintVi
 
     public String getValue() {
         return mValue.getText().toString();
-    }
-
-    @Override
-    public String getOperation() {
-        return ConstraintOperation.LOOKUP.toString();
     }
 }
