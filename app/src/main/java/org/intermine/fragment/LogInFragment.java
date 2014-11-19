@@ -154,12 +154,6 @@ public class LogInFragment extends BaseFragment {
         ((MainActivity) activity).onSectionAttached(getString(R.string.log_in));
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
-
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------

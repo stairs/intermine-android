@@ -17,7 +17,7 @@ import org.intermine.storage.Storage;
 
 import javax.inject.Inject;
 
-public class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends ActionBarActivity {
     private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
     @Inject

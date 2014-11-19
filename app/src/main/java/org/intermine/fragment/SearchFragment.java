@@ -238,9 +238,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        View view = inflater.inflate(R.layout.search_fragment, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+        return inflater.inflate(R.layout.search_fragment, container, false);
     }
 
     @Override
@@ -285,6 +283,12 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSearchView = null;
+    }
+
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
@@ -299,7 +303,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String query) {

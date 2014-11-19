@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
     protected SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
     @Inject
@@ -56,6 +56,12 @@ public class BaseFragment extends Fragment {
         } finally {
             super.onStop();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     // --------------------------------------------------------------------------------------------

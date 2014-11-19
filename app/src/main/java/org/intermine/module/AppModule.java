@@ -48,7 +48,6 @@ import dagger.Provides;
         injects = {
                 MemoryStorage.class,
                 InterMineApplication.class,
-                BaseActivity.class,
                 StartActivity.class,
                 GenesListActivity.class,
                 GeneViewActivity.class,
@@ -57,7 +56,6 @@ import dagger.Provides;
                 TemplateResultsActivity.class,
                 MainActivity.class,
                 GenesListActivity.class,
-                BaseFragment.class,
                 ListsFragment.class,
                 SearchFragment.class,
                 GenesListFragment.class,
