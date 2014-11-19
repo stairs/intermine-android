@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The TemplateParameter model is simple model representing template parameter. Template parameter
@@ -27,7 +28,7 @@ public class TemplateParameter implements Parcelable {
 
     private String pathId;
 
-    private Collection<String> values;
+    private List<String> values;
 
     private String code;
 
@@ -50,7 +51,7 @@ public class TemplateParameter implements Parcelable {
         this.code = code;
     }
 
-    public TemplateParameter(String pathId, String operation, Collection<String> values, String code) {
+    public TemplateParameter(String pathId, String operation, List<String> values, String code) {
         super();
         this.pathId = pathId;
         this.operation = operation;
@@ -75,6 +76,15 @@ public class TemplateParameter implements Parcelable {
         this.extraValue = null;
         this.values = null;
         this.code = code;
+    }
+
+    protected TemplateParameter(Parcel in) {
+        operation = in.readString();
+        value = in.readString();
+        pathId = in.readString();
+        extraValue = in.readString();
+        in.readStringList(values);
+        code = in.readString();
     }
 
     /**
@@ -125,10 +135,6 @@ public class TemplateParameter implements Parcelable {
         return value;
     }
 
-    protected TemplateParameter(Parcel in) {
-
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -136,7 +142,12 @@ public class TemplateParameter implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(operation);
+        dest.writeString(value);
+        dest.writeString(pathId);
+        dest.writeString(extraValue);
+        dest.writeStringList(values);
+        dest.writeString(code);
     }
 
     public static final Parcelable.Creator<TemplateParameter> CREATOR = new Parcelable.Creator<TemplateParameter>() {
