@@ -83,7 +83,7 @@ public class TemplateParameter implements Parcelable {
         value = in.readString();
         pathId = in.readString();
         extraValue = in.readString();
-        in.readStringList(values);
+        values = in.readArrayList(null);
         code = in.readString();
     }
 

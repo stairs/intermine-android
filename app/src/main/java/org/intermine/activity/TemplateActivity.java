@@ -133,10 +133,8 @@ public class TemplateActivity extends BaseActivity {
 
         if (pathConstraint instanceof PathConstraintLookup) {
             view = new LookupConstraintView(this, (PathConstraintLookup) pathConstraint);
-            mContainer.addView(view);
         } else if (pathConstraint instanceof PathConstraintAttribute) {
             view = new AttributeConstraintView(this, (PathConstraintAttribute) pathConstraint);
-            mContainer.addView(view);
         }
         return view;
     }

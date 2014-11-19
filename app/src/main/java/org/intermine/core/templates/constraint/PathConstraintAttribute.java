@@ -31,7 +31,7 @@ public class PathConstraintAttribute extends PathConstraint {
 
         checkValidOperation(VALID_OPERATIONS, operation);
 
-        if (null != value) {
+        if (null == value) {
             throw new NullPointerException("Constraint's value can not be null!");
         }
         this.mValue = value;
