@@ -1,6 +1,7 @@
 package org.intermine.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import org.intermine.R;
 import org.intermine.core.List;
+import org.intermine.util.Strs;
 
 import java.util.ArrayList;
 
@@ -74,7 +76,7 @@ public class ListsAdapter extends BaseAdapter {
         List list = (List) getItem(position);
 
         title.setText(list.getTitle());
-        description.setText(list.getDescription());
+        description.setText(Html.fromHtml(Strs.stripFromBr(list.getDescription())));
         size.setText(Integer.toString(list.getSize()));
         return convertView;
     }

@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?android:attr/listPreferredItemHeight"
                 android:background="?android:attr/activatedBackgroundIndicator"
-                android:padding="10dp">
+                android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
     <TextView
         android:id="@+id/list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"/>
+        android:layout_toLeftOf="@+id/list_size"
+        android:layout_marginTop="@dimen/margin"
+        android:textColor="@color/text_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="Title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <TextView
         android:id="@+id/list_description"
         android:layout_below="@id/list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:textColor="@color/text_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:text="Description"/>
 
     <TextView
-        android:id="@+id/list_size"
+        android:id="@id/list_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:gravity="end"
+        android:textColor="@color/text_light"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="Size"
+        android:layout_alignTop="@+id/list_title"
         android:layout_alignParentRight="true"
-        android:paddingLeft="5dp"
-        android:text="Size"/>
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

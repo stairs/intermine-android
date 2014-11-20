@@ -275,18 +275,18 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         if (!Strs.isNullOrEmpty(mQuery)) {
             outState.putString(QUERY_KEY, mQuery);
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mSearchView = null;
     }
 
     // --------------------------------------------------------------------------------------------
@@ -302,6 +302,12 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             mSearchView.setQueryHint(getString(R.string.search_hint));
             super.onCreateOptionsMenu(menu, inflater);
         }
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        mSearchView = null;
     }
 
     @Override
