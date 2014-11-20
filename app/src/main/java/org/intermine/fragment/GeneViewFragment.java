@@ -3,6 +3,7 @@ package org.intermine.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,8 +22,8 @@ import butterknife.InjectView;
 public class GeneViewFragment extends BaseFragment {
     public static final String GENE_EXTRA = "gene_extra";
 
-    @InjectView(R.id.standard_name_title)
-    TextView mStandardNameTitle;
+    @InjectView(R.id.standard_name)
+    CardView mStandardNameContainer;
 
     @InjectView(R.id.standard_name_value)
     TextView mStandardNameValue;
@@ -114,7 +115,13 @@ public class GeneViewFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (null != mGene) {
-            showRowIfInfoAvailable(mGene.getSymbol(), mStandardNameTitle, mStandardNameValue);
+            if (Strs.isNullOrEmpty(mGene.getSymbol())) {
+                Views.setGone(mStandardNameContainer);
+            } else {
+                Views.setVisible(mStandardNameContainer);
+                mStandardNameValue.setText(Strs.capitalize(mGene.getSymbol()));
+            }
+
             showRowIfInfoAvailable(mGene.getPrimaryDBId(),
                     mSystematicNameTitle, mSystematicNameValue);
             showRowIfInfoAvailable(mGene.getSecondaryIdentifier(),

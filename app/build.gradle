@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1"
+    buildToolsVersion "21.1.1"
     defaultConfig {
         applicationId "org.intermine"
         minSdkVersion 14
@@ -37,16 +37,19 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android.support:appcompat-v7:21.0.+'
+
     compile('com.octo.android.robospice:robospice-spring-android:1.4.14') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
     compile 'org.springframework.android:spring-android-core:1.0.0.RELEASE'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
 
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.jakewharton:butterknife:5.1.2'
+
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile "com.android.support:cardview-v7:21.0.0"
 }

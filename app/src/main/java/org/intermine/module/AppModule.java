@@ -63,7 +63,6 @@ import dagger.Provides;
                 LogInFragment.class,
                 GeneViewFragment.class,
                 PreferencesFragment.class,
-                BaseRequest.class,
                 GetModelRequest.class,
                 GeneSearchRequest.class,
                 GeneSearchResultsCountRequest.class,
