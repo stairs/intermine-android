@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <include layout="@layout/default_toolbar"/>
 
-    <TextView
-        style="@style/Base.TextAppearance.AppCompat.Title"
-        android:id="@+id/template_description"
-        android:layout_below="@id/default_toolbar"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="10dp"
-        android:text="Template Description"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin">
 
-    <LinearLayout
-        android:id="@+id/constraints_container"
-        android:layout_below="@id/template_description"
-        android:orientation="vertical"
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:id="@+id/template_description"
+            android:textColor="@color/text_dark"
+            android:text="Template Description"
+            android:layout_width="match_parent"
+            android:padding="@dimen/default_padding"
+            android:layout_height="wrap_content"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/constraints_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/show_results"
         android:layout_below="@id/constraints_container"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_results"
+        style="@style/Base.TextAppearance.AppCompat.Button"
         android:layout_gravity="center"/>
-</RelativeLayout>
+</LinearLayout>
