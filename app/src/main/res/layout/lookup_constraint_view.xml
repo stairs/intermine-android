@@ -11,6 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:text="@string/lookup_constraint"/>
 
     <EditText

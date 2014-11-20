@@ -1,6 +1,8 @@
 package org.intermine.adapter;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +77,9 @@ public class TemplatesAdapter extends BaseAdapter {
         Template template = (Template) getItem(position);
 
         title.setText(template.getTitle());
-        description.setText(template.getDescription());
+
+        Spanned descriptionText = Html.fromHtml(template.getDescription());
+        description.setText(descriptionText);
         return convertView;
     }
 }
