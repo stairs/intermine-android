@@ -12,12 +12,15 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.InterMineApplication;
 import org.intermine.R;
+import org.intermine.dialog.AlertDialogFragment;
 import org.intermine.service.RoboSpiceService;
 import org.intermine.storage.Storage;
+import org.intermine.util.Views;
 
 import javax.inject.Inject;
 
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends ActionBarActivity implements
+        AlertDialogFragment.OnDialogDismissedListener {
     private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
     @Inject
@@ -75,9 +78,33 @@ public abstract class BaseActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDialogDismissed(int id) {
+
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Mehods
     // --------------------------------------------------------------------------------------------
+
+    public void showStandardAlert(int messageId, int code) {
+        String message = getString(messageId);
+        showStandardAlert(null, message, code);
+    }
+
+    public void showStandardAlert(String message, int code) {
+        showStandardAlert(null, message, code);
+    }
+
+    public void showStandardAlert(String title, int messageId, int code) {
+        String message = getString(messageId);
+        showStandardAlert(null, message, code);
+    }
+
+    public void showStandardAlert(String title, String message, int code) {
+        Views.showDialogFragment(getFragmentManager(), AlertDialogFragment.newInstance(code, message));
+    }
+
 
     public void executeRequest(SpiceRequest request, RequestListener listener) {
         mSpiceManager.execute(request, listener);

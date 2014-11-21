@@ -95,6 +95,11 @@
 
     <!-- Errors -->
     <string name="default_error_message">Internal error happened. Please, try again later.</string>
+    <string name="server_error_message">Internal error happened. Please, try again later.</string>
+    <string name="no_network_error_message">Network connection problems. Please, try again later.</string>
+    <string name="bad_request_error_message">Bad request</string>
+    <string name="unauthorized_error_message">You are not authorised for this action. Please, login first.</string>
+    <string name="unknown_error_message">Unknown error happened</string>
     <string name="add_gene_to_favorites_error_message">Error while trying to add gene to favorites. Please, try again later.</string>
     <string name="unauthorized_gene_to_favorites_error_message">Please, login first to add gene to favorites.</string>
 

@@ -1,10 +1,14 @@
 package org.intermine.util;
 
+import android.app.FragmentManager;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.TextView;
+
+import org.intermine.dialog.AlertDialogFragment;
 
 public class Views {
+    private static final String DEFAULT_DIALOG_TAG = "dialog_tag";
+
     public static void setVisible(View... views) {
         for (View view : views) {
             view.setVisibility(View.VISIBLE);
@@ -49,5 +53,25 @@ public class Views {
 
             view.startAnimation(anim);
         }
+    }
+
+    public static void showDialogFragment(FragmentManager fm, AlertDialogFragment dialog) {
+        showDialogFragmentWithTag(fm, dialog, DEFAULT_DIALOG_TAG);
+    }
+
+    public static void showDialogFragmentWithTag(FragmentManager fm, AlertDialogFragment dialog, String tag) {
+        dismissDialogFragmentWithTag(fm, tag);
+        dialog.show(fm, tag);
+    }
+
+    public static void dismissDialogFragmentWithTag(FragmentManager fm, String tag) {
+        AlertDialogFragment existingDialog = (AlertDialogFragment) fm.findFragmentByTag(tag);
+        if (existingDialog != null) {
+            existingDialog.dismiss();
+        }
+    }
+
+    public static void dismissDialog(FragmentManager fm) {
+        dismissDialogFragmentWithTag(fm, DEFAULT_DIALOG_TAG);
     }
 }

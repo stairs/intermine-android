@@ -6,24 +6,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.activity.BaseActivity;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.ApiPager;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
 import org.intermine.listener.OnGeneSelectedListener;
+import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class GenesListFragment extends BaseFragment {
@@ -71,6 +71,8 @@ public class GenesListFragment extends BaseFragment {
 
             Views.setVisible(mNotFoundView);
             Views.setGone(mListView);
+            ResponseHelper.handleSpiceException(spiceException, (BaseActivity) getActivity(),
+                    mMineName);
         }
 
         @Override

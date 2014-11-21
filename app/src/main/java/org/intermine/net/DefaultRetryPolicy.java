@@ -6,7 +6,6 @@ import com.octo.android.robospice.retry.RetryPolicy;
 import org.intermine.util.Strs;
 import org.springframework.http.HttpStatus;
 
-
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
@@ -74,11 +73,11 @@ public class DefaultRetryPolicy implements RetryPolicy {
             return false;
         }
 
-        String httpMsg = netEx.getHttpMessage();
-        return isExceptionalStatusCode(netEx.getStatus()) && Strs.isNullOrEmpty(httpMsg);
+        String httpMsg = netEx.getErrorMessage();
+        return isExceptionalStatusCode(netEx.getStatusCode()) && Strs.isNullOrEmpty(httpMsg);
     }
 
-    protected boolean isExceptionalStatusCode(HttpStatus code){
+    protected boolean isExceptionalStatusCode(HttpStatus code) {
         return INTERNAL_SERVER_ERROR == code || SERVICE_UNAVAILABLE == code;
     }
 

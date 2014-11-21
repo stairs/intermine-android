@@ -5,12 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestClientException;
 
 public class HttpNetworkException extends RestClientException {
-    private static final long serialVersionUID = 3249097104680843270L;
-
-    private HttpStatus mStatus;
+    private HttpStatus mStatusCode;
     private HttpHeaders mHeaders;
-    private String mHttpMessage;
-    private Error mError;
+    private String mErrorMessage;
 
     public HttpNetworkException(String msg) {
         super(msg);
@@ -28,27 +25,19 @@ public class HttpNetworkException extends RestClientException {
         mHeaders = headers;
     }
 
-    public HttpStatus getStatus() {
-        return mStatus;
+    public HttpStatus getStatusCode() {
+        return mStatusCode;
     }
 
-    public void setStatus(HttpStatus status) {
-        mStatus = status;
+    public void setStatusCode(HttpStatus statusCode) {
+        mStatusCode = statusCode;
     }
 
-    public String getHttpMessage() {
-        return mHttpMessage;
+    public String getErrorMessage() {
+        return mErrorMessage;
     }
 
-    public void setHttpMessage(String httpMessage) {
-        mHttpMessage = httpMessage;
-    }
-
-    public Error getError() {
-        return mError;
-    }
-
-    public void setError(Error error) {
-        mError = error;
+    public void setErrorMessage(String errorMessage) {
+        mErrorMessage = errorMessage;
     }
 }
