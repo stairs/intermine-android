@@ -59,10 +59,9 @@ public class AttributeConstraintView extends ConstraintView {
     }
 
     @Override
-    public PathConstraint getPopulatedConstraint() {
+    public PathConstraint getGeneratedConstraint() {
         PathConstraintAttribute constraint = (PathConstraintAttribute) getPathConstraint();
-        constraint.setValue(getValue());
-        constraint.setOperation(getOperation());
-        return constraint;
+        return new PathConstraintAttribute(constraint.getPath(), getOperation(), getValue(),
+                constraint.getCode());
     }
 }

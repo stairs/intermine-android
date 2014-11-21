@@ -2,7 +2,6 @@ package org.intermine.core.templates.constraint;
 
 import org.intermine.util.Strs;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -22,14 +21,6 @@ public abstract class PathConstraint {
         mPath = path;
         mCode = code;
         mOperation = operation;
-    }
-
-    public String getPath() {
-        return mPath;
-    }
-
-    public ConstraintOperation getOperation() {
-        return mOperation;
     }
 
     public static String getValue(PathConstraint con) {
@@ -70,15 +61,11 @@ public abstract class PathConstraint {
         return mCode;
     }
 
-    public void setCode(String code) {
-        mCode = code;
+    public String getPath() {
+        return mPath;
     }
 
-    public void setPath(String path) {
-        mPath = path;
-    }
-
-    public void setOperation(ConstraintOperation operation) {
-        mOperation = operation;
+    public ConstraintOperation getOperation() {
+        return mOperation;
     }
 }

@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/favourites"
         android:title="@string/acction_add_2_favourites"
         android:icon="@drawable/ic_action_important"
-        android:showAsAction="collapseActionView|ifRoom"/>
+        app:showAsAction="collapseActionView|ifRoom"/>
     <item
         android:id="@+id/email"
         android:title="@string/action_send"
         android:icon="@drawable/ic_action_email"
-        android:showAsAction="collapseActionView|ifRoom"/>
+        app:showAsAction="collapseActionView|ifRoom"/>
 </menu>

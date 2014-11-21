@@ -40,8 +40,4 @@ public class PathConstraintAttribute extends PathConstraint {
     public String getValue() {
         return mValue;
     }
-
-    public void setValue(String value) {
-        mValue = value;
-    }
 }

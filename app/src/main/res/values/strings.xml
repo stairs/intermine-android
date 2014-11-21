@@ -20,7 +20,7 @@
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
     <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
     <string name="loading_label">Loading models...</string>
-    <string name="lookup_constraint">Lookup</string>
+    <string name="lookup_constraint">LOOKUP</string>
     <string name="show_results">Show Results</string>
 
     <!-- Gene Features -->

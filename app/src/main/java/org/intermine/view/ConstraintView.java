@@ -2,18 +2,9 @@ package org.intermine.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
-import org.intermine.R;
-import org.intermine.adapter.SimpleAdapter;
-import org.intermine.core.templates.constraint.ConstraintOperation;
 import org.intermine.core.templates.constraint.PathConstraint;
-import org.intermine.core.templates.constraint.PathConstraintAttribute;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -34,13 +25,9 @@ public abstract class ConstraintView extends RelativeLayout {
         super(context, attrs, defStyle);
     }
 
-    public PathConstraint getPathConstraint() {
+    protected PathConstraint getPathConstraint() {
         return mPathConstraint;
     }
 
-    public void setPathConstraint(PathConstraint pathConstraint) {
-        mPathConstraint = pathConstraint;
-    }
-
-    public abstract PathConstraint getPopulatedConstraint();
+    public abstract PathConstraint getGeneratedConstraint();
 }

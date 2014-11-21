@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.intermine.R;
 import org.intermine.core.templates.Template;
 import org.intermine.util.Collections;
+import org.intermine.util.Strs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,7 +79,7 @@ public class TemplatesAdapter extends BaseAdapter {
 
         title.setText(template.getTitle());
 
-        Spanned descriptionText = Html.fromHtml(template.getDescription());
+        Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(template.getDescription()));
         description.setText(descriptionText);
         return convertView;
     }

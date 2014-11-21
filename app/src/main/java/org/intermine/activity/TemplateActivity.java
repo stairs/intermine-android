@@ -2,7 +2,6 @@ package org.intermine.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -12,15 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.intermine.R;
-import org.intermine.core.model.Model;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.core.templates.constraint.PathConstraint;
 import org.intermine.core.templates.constraint.PathConstraintLookup;
-import org.intermine.core.templates.constraint.PathConstraintSimpleMultiValue;
-import org.intermine.core.templates.constraint.SwitchOffAbility;
 import org.intermine.core.templates.Template;
-import org.intermine.core.templates.constraint.Constraint;
-import org.intermine.core.templates.constraint.ConstraintOperation;
 import org.intermine.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.util.Collections;
 import org.intermine.util.Templates;
@@ -30,7 +24,6 @@ import org.intermine.view.LookupConstraintView;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -107,7 +100,7 @@ public class TemplateActivity extends BaseActivity {
 
         for (int i = 0; i < mContainer.getChildCount(); i++) {
             ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
-            PathConstraint pathConstraint = constraintView.getPopulatedConstraint();
+            PathConstraint pathConstraint = constraintView.getGeneratedConstraint();
             parameters.add(generateTemplateParameter(pathConstraint));
         }
 

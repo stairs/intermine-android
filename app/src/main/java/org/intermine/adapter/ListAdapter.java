@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.intermine.R;
 import org.intermine.core.ListItems;
 import org.intermine.util.Collections;
@@ -24,8 +23,7 @@ public class ListAdapter extends BaseAdapter {
     private final LayoutInflater mLayoutInflater;
 
     private List<List<String>> mFeatures;
-
-    private String mTemplate;
+    private List<String> mFeaturesNames;
 
     public ListAdapter(Context ctx) {
         mContext = ctx;
@@ -38,9 +36,7 @@ public class ListAdapter extends BaseAdapter {
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
         }
-
-        mTemplate = generateTemplate(listItems.getFeaturesNames());
-
+        mFeaturesNames = listItems.getFeaturesNames();
         notifyDataSetChanged();
     }
 
@@ -78,25 +74,27 @@ public class ListAdapter extends BaseAdapter {
             listItem = (TextView) convertView.getTag(R.id.list_item);
         }
 
-        List<String> listItemFeatures = (List<String>) getItem(position);
-        String text = String.format(mTemplate, listItemFeatures.toArray());
-        listItem.setText(text);
+        List<String> features = (List<String>) getItem(position);
+        listItem.setText(generateText(mFeaturesNames, features));
         return convertView;
     }
 
-    protected String generateTemplate(List<String> featuresNames) {
-        if (!Collections.isNullOrEmpty(featuresNames)) {
-            List<String> templateParts = Collections.newArrayList();
+    protected String generateText(List<String> featuresNames, List<String> features) {
+        if (!Collections.isNullOrEmpty(features)) {
+            StringBuilder builder = new StringBuilder();
 
-            for (String featureName : featuresNames) {
-                int dotIndex = featureName.indexOf(">");
+            for (int i = 0; i < featuresNames.size(); i++) {
+                String feature = features.get(i);
 
-                if (dotIndex > -1) {
-                    featureName = featureName.substring(dotIndex + 2);
+                if (!Strs.isNullOrEmpty(feature)) {
+                    builder.append(featuresNames.get(i)).append(": ").append(feature);
+
+                    if (i != featuresNames.size() - 1) {
+                        builder.append(", \n");
+                    }
                 }
-                templateParts.add(featureName + ": %s");
             }
-            return StringUtils.join(templateParts, ", \n");
+            return builder.toString();
         }
         return Strs.EMPTY_STRING;
     }

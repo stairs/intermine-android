@@ -18,10 +18,6 @@ public class PathConstraintLookup extends PathConstraint {
         return mValue;
     }
 
-    public void setValue(String value) {
-        mValue = value;
-    }
-
     public String getExtraValue() {
         return mExtraValue;
     }

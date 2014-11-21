@@ -3,12 +3,9 @@ package org.intermine.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import org.intermine.R;
-import org.intermine.core.templates.constraint.ConstraintOperation;
 import org.intermine.core.templates.constraint.PathConstraint;
-import org.intermine.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.core.templates.constraint.PathConstraintLookup;
 
 import butterknife.ButterKnife;
@@ -48,10 +45,9 @@ public class LookupConstraintView extends ConstraintView {
     }
 
     @Override
-    public PathConstraint getPopulatedConstraint() {
+    public PathConstraint getGeneratedConstraint() {
         PathConstraintLookup constraint = (PathConstraintLookup) getPathConstraint();
-        constraint.setValue(getValue());
-        constraint.setOperation(ConstraintOperation.LOOKUP);
-        return constraint;
+        return new PathConstraintLookup(constraint.getPath(), getValue(),
+                null, constraint.getCode());
     }
 }
