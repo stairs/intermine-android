@@ -46,7 +46,7 @@ public class ResponseHelper {
             Storage storage = atv.getStorage();
             storage.setUserToken(mineName, null);
 
-            atv.showStandardAlert(R.string.unauthorized_error_message, DIALOG_CODE_NETWORK);
+            atv.showStandardAlert(R.string.unauthorized_error_message, BaseActivity.UNAUTHORIZED_CODE);
             return;
         }
 

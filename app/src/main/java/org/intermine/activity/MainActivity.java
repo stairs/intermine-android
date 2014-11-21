@@ -115,6 +115,16 @@ public class MainActivity extends BaseActivity implements
         TemplateActivity.start(this, template, mineName);
     }
 
+    @Override
+    public void onDialogDismissed(int code) {
+        if (UNAUTHORIZED_CODE == code) {
+            FragmentManager fragmentManager = getFragmentManager();
+            Fragment fragment = LogInFragment.newInstance();
+            fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+            setTitle(getString(R.string.log_in));
+        }
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------

@@ -21,6 +21,8 @@ import javax.inject.Inject;
 
 public abstract class BaseActivity extends ActionBarActivity implements
         AlertDialogFragment.OnDialogDismissedListener {
+    public static final int UNAUTHORIZED_CODE = 0x3482;
+
     private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
 
     @Inject
@@ -79,7 +81,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onDialogDismissed(int id) {
+    public void onDialogDismissed(int code) {
 
     }
 
