@@ -11,21 +11,18 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.adapter.ApiPager;
 import org.intermine.adapter.ListAdapter;
 import org.intermine.controller.LoadOnScrollViewController;
 import org.intermine.core.ListItems;
-import org.intermine.core.templates.Template;
-import org.intermine.adapter.ApiPager;
 import org.intermine.core.templates.TemplateParameter;
+import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.get.GetTemplateResultsRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -86,6 +83,8 @@ public class TemplateResultsActivity extends BaseActivity {
             mViewController.onFinishLoad();
 
             Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
         }
 
         @Override
@@ -109,6 +108,8 @@ public class TemplateResultsActivity extends BaseActivity {
             mViewController.onFinishLoad();
 
             Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
         }
 
         @Override

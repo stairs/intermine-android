@@ -42,7 +42,7 @@ public class ServerErrorHandler implements ResponseErrorHandler {
         }
 
         HttpNetworkException e = new HttpNetworkException(response.getStatusText());
-        e.setErrorMessage(errorMessage);
+        e.setErrorMessage(Strs.isNullOrEmpty(errorMessage) ? body : errorMessage);
         e.setHeaders(response.getHeaders());
         e.setStatusCode(response.getStatusCode());
         throw e;
