@@ -50,8 +50,6 @@ public class MainActivity extends BaseActivity implements
                 (DrawerLayout) findViewById(R.id.drawer_layout), true);
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
-
-        mTitle = getTitle();
     }
 
     // --------------------------------------------------------------------------------------------
