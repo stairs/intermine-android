@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.intermine.R;
+import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
 import org.intermine.core.templates.constraint.PathConstraint;
-import org.intermine.core.templates.constraint.PathConstraintLookup;
-import org.intermine.core.templates.Template;
 import org.intermine.core.templates.constraint.PathConstraintAttribute;
+import org.intermine.core.templates.constraint.PathConstraintLookup;
 import org.intermine.util.Collections;
+import org.intermine.util.Strs;
 import org.intermine.util.Templates;
 import org.intermine.view.AttributeConstraintView;
 import org.intermine.view.ConstraintView;
@@ -77,7 +78,7 @@ public class TemplateActivity extends BaseActivity {
         if (null != mTemplate) {
             setTitle(mTemplate.getTitle());
 
-            Spanned descriptionText = Html.fromHtml(mTemplate.getDescription());
+            Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
             mTemplateDescription.setText(descriptionText);
 
             List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(

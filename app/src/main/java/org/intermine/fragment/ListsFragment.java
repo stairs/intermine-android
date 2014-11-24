@@ -2,7 +2,6 @@ package org.intermine.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,11 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.activity.BaseActivity;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.ListsAdapter;
 import org.intermine.core.List;
+import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
@@ -59,9 +60,9 @@ public class ListsFragment extends BaseFragment {
     class GetListsRequestListener implements RequestListener<GetListsRequest.Lists> {
 
         @Override
-        public void onRequestFailure(SpiceException spiceException) {
+        public void onRequestFailure(SpiceException ex) {
             setProgress(false);
-            Log.e(TAG, spiceException.toString());
+            ResponseHelper.handleSpiceException(ex, (BaseActivity) getActivity(), mMineName);
         }
 
         @Override

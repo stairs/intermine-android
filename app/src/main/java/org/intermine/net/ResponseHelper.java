@@ -1,5 +1,7 @@
 package org.intermine.net;
 
+import android.util.Log;
+
 import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.exception.RequestCancelledException;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 public class ResponseHelper {
+    public static final String TAG = ResponseHelper.class.getSimpleName();
     public static final int DIALOG_CODE_NETWORK = 0x3433;
 
     public static void handleSpiceException(SpiceException ex, BaseActivity atv,
@@ -22,7 +25,7 @@ public class ResponseHelper {
         }
 
         if (ex instanceof NoNetworkException) {
-            atv.showStandardAlert(null, R.string.no_network_error_message, DIALOG_CODE_NETWORK);
+            atv.showStandardAlert(R.string.no_network_error_message, DIALOG_CODE_NETWORK);
             return;
         }
 
@@ -55,6 +58,8 @@ public class ResponseHelper {
         } else {
             atv.showStandardAlert(message, dialogCode);
         }
+
+        Log.e(TAG, ex.toString());
     }
 
     public static void handleSpiceException(SpiceException ex, BaseActivity atv, String mineName) {

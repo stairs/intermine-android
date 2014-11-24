@@ -32,6 +32,7 @@ import org.intermine.core.Gene;
 import org.intermine.core.GenesList;
 import org.intermine.listener.GetListsListener;
 import org.intermine.listener.OnGeneSelectedListener;
+import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.util.Emails;
@@ -48,7 +49,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemClick;
 
@@ -106,7 +106,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         @Override
         public void onRequestFailure(SpiceException e) {
             mCountDownLatch.countDown();
-            // TODO notify user?
+            ResponseHelper.handleSpiceException(e, (BaseActivity) getActivity(), null);
         }
 
         @Override

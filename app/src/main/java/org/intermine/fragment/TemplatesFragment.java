@@ -7,15 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.R;
+import org.intermine.activity.BaseActivity;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.TemplatesAdapter;
 import org.intermine.core.templates.Template;
+import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.get.GetTemplatesRequest;
 import org.intermine.net.request.get.GetTemplatesRequest.Templates;
 import org.intermine.util.Views;
@@ -25,6 +26,8 @@ import butterknife.InjectView;
 import butterknife.OnItemClick;
 
 public class TemplatesFragment extends BaseFragment {
+    public static final String MINE_NAME_PARAM = "mine_name";
+
     @InjectView(R.id.templates)
     ListView mTemplates;
 
@@ -46,7 +49,10 @@ public class TemplatesFragment extends BaseFragment {
 
     public static TemplatesFragment newInstance(String mineName) {
         TemplatesFragment fragment = new TemplatesFragment();
-        fragment.setMineName(mineName);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(MINE_NAME_PARAM, mineName);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -61,9 +67,9 @@ public class TemplatesFragment extends BaseFragment {
     public class GetTemplatesListener implements RequestListener<Templates> {
 
         @Override
-        public void onRequestFailure(SpiceException spiceException) {
+        public void onRequestFailure(SpiceException ex) {
             setProgress(false);
-            Toast.makeText(getActivity(), spiceException.getMessage(), Toast.LENGTH_LONG).show();
+            ResponseHelper.handleSpiceException(ex, (BaseActivity) getActivity(), mMineName);
         }
 
         @Override
@@ -94,6 +100,12 @@ public class TemplatesFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mMineName = bundle.getString(MINE_NAME_PARAM);
+        }
 
         mTemplatesAdapter = new TemplatesAdapter(getActivity());
         mTemplates.setAdapter(mTemplatesAdapter);
@@ -139,9 +151,5 @@ public class TemplatesFragment extends BaseFragment {
             Views.setVisible(mTemplates);
             Views.setGone(mProgressView);
         }
-    }
-
-    public void setMineName(String mineName) {
-        mMineName = mineName;
     }
 }
