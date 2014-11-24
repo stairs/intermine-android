@@ -28,6 +28,8 @@ import butterknife.OnItemClick;
 public class TemplatesFragment extends BaseFragment {
     public static final String MINE_NAME_PARAM = "mine_name";
 
+    public static final long TEMPLATES_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
+
     @InjectView(R.id.templates)
     ListView mTemplates;
 
@@ -140,7 +142,7 @@ public class TemplatesFragment extends BaseFragment {
 
     protected void fetchTemplates() {
         GetTemplatesRequest request = new GetTemplatesRequest(getActivity(), mMineName);
-        executeRequest(request, new GetTemplatesListener());
+        execute(request, mMineName, TEMPLATES_CACHE_EXPIRY_DURATION, new GetTemplatesListener());
     }
 
     protected void setProgress(boolean loading) {

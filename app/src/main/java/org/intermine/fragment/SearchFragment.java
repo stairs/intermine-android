@@ -445,7 +445,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
                     (mPager.getCurrentPage() + 1) * mPager.getPerPage() < count)) {
                 GeneSearchRequest request = new GeneSearchRequest(getActivity(),
                         Mines.getMineBaseUrl(getActivity(), mine), query, mine, format, start);
-                executeRequest(request, new GeneSearchRequestListener());
+                execute(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();
             }
@@ -459,7 +459,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             if (!Strs.isNullOrEmpty(token)) {
                 GetListsRequest request = new GetListsRequest(getActivity(), mine,
                         mGeneFavoritesListName);
-                executeRequest(request, new GetListsListener((BaseActivity) getActivity(),
+                execute(request, new GetListsListener((BaseActivity) getActivity(),
                         mine, mineToGenesMap.get(mine)));
             }
         }

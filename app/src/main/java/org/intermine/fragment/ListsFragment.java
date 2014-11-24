@@ -26,6 +26,9 @@ import butterknife.OnItemClick;
 
 public class ListsFragment extends BaseFragment {
     public static final String TAG = ListsFragment.class.getSimpleName();
+    public static final String MINE_NAME_KEY = "mine_name_key";
+
+    public static final long LISTS_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
     @InjectView(R.id.progress_view)
     ProgressView mProgressView;
@@ -45,7 +48,9 @@ public class ListsFragment extends BaseFragment {
 
     public static ListsFragment newInstance(String mineName) {
         ListsFragment fragment = new ListsFragment();
-        fragment.setMineName(mineName);
+        Bundle bundle = new Bundle();
+        bundle.putString(MINE_NAME_KEY, mineName);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -95,6 +100,12 @@ public class ListsFragment extends BaseFragment {
         mAdapter = new ListsAdapter(getActivity());
         mListsView.setAdapter(mAdapter);
 
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mMineName = bundle.getString(MINE_NAME_KEY);
+        }
+
         setProgress(true);
         fetchLists();
     }
@@ -123,7 +134,7 @@ public class ListsFragment extends BaseFragment {
 
     protected void fetchLists() {
         GetListsRequest request = new GetListsRequest(getActivity(), mMineName, null);
-        executeRequest(request, new GetListsRequestListener());
+        execute(request, mMineName, LISTS_CACHE_EXPIRY_DURATION, new GetListsRequestListener());
     }
 
     protected void setProgress(boolean loading) {

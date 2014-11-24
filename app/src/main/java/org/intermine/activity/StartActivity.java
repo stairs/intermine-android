@@ -1,10 +1,7 @@
 package org.intermine.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -17,8 +14,6 @@ import org.intermine.util.Mines;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
-import javax.inject.Inject;
 
 
 public class StartActivity extends BaseActivity {
@@ -80,7 +75,7 @@ public class StartActivity extends BaseActivity {
             new WailForAllRequestsFinishedAsyncTask().execute();
 
             for (String mineBaseUrl : mineToBaseUrlMap.values()) {
-                executeRequest(new GetModelRequest(this, mineBaseUrl), new ModelRequestListener());
+                execute(new GetModelRequest(this, mineBaseUrl), new ModelRequestListener());
             }
         } else {
             startMainActivity();

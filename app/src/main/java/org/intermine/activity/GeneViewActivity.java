@@ -82,7 +82,7 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
                     mGeneFavoritesListName);
             List<Gene> genes = Collections.newArrayList();
             genes.add(gene);
-            executeRequest(request, new GetListsListener(this, gene.getMine(), genes));
+            execute(request, new GetListsListener(this, gene.getMine(), genes));
             Toast.makeText(this, R.string.gene_added_to_favorites, Toast.LENGTH_LONG).show();
         }
     }

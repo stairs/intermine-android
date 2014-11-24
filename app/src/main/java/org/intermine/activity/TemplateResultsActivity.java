@@ -194,13 +194,13 @@ public class TemplateResultsActivity extends BaseActivity {
         GetTemplateResultsRequest request = new GetTemplateResultsRequest(ListItems.class, this,
                 mTemplateName, mTemplateParams, mMineName,
                 mPager.getCurrentPage() * mPager.getPerPage(), ITEMS_PER_PAGE);
-        executeRequest(request, new TemplateResultsListener());
+        execute(request, new TemplateResultsListener());
     }
 
     protected void fetchTemplateResultsCount() {
         GetTemplateResultsRequest request = new GetTemplateResultsRequest(Integer.class, this,
                 mTemplateName, mTemplateParams, mMineName, 0, ITEMS_PER_PAGE);
-        executeRequest(request, new TemplateResultsCountListener());
+        execute(request, new TemplateResultsCountListener());
     }
 
     protected void setProgress(boolean loading) {

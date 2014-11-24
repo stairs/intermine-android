@@ -65,11 +65,16 @@ public abstract class BaseFragment extends Fragment {
     }
 
     // --------------------------------------------------------------------------------------------
-    // Helper Mehods
+    // Helper Mehod
     // --------------------------------------------------------------------------------------------
 
-    protected void executeRequest(SpiceRequest request, RequestListener listener) {
+    protected <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
         mSpiceManager.execute(request, listener);
+    }
+
+    public <T> void execute(SpiceRequest<T> request, Object requestCacheKey,
+                            long cacheExpiryDuration, RequestListener<T> listener) {
+        mSpiceManager.execute(request, requestCacheKey, cacheExpiryDuration, listener);
     }
 
     public Storage getStorage() {

@@ -1,7 +1,5 @@
 package org.intermine.listener;
 
-import android.content.Context;
-
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -40,7 +38,17 @@ public class GetListsListener implements RequestListener<Lists> {
             if (HttpStatus.NOT_FOUND.equals(httpStatusCodeException.getStatusCode())) {
                 CreateGenesList request = new CreateGenesList(mBaseActivity, mMine,
                         mBaseActivity.getString(R.string.gene_favorites_list_name), mGenes);
-                mBaseActivity.executeRequest(request, null);
+                mBaseActivity.execute(request, new RequestListener<Void>() {
+                    @Override
+                    public void onRequestFailure(SpiceException spiceException) {
+
+                    }
+
+                    @Override
+                    public void onRequestSuccess(Void aVoid) {
+
+                    }
+                });
             }
         }
     }
@@ -49,6 +57,16 @@ public class GetListsListener implements RequestListener<Lists> {
     public void onRequestSuccess(GetListsRequest.Lists result) {
         SpiceRequest req = new AppendGenesToListRequest(mBaseActivity, mMine,
                 mBaseActivity.getString(R.string.gene_favorites_list_name), mGenes);
-        mBaseActivity.executeRequest(req, null);
+        mBaseActivity.execute(req, new RequestListener<Void>() {
+            @Override
+            public void onRequestFailure(SpiceException spiceException) {
+
+            }
+
+            @Override
+            public void onRequestSuccess(Void aVoid) {
+
+            }
+        });
     }
 }

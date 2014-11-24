@@ -18,7 +18,6 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.SimpleAdapter;
-import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.util.Collections;
 import org.intermine.util.Mines;
@@ -167,7 +166,7 @@ public class LogInFragment extends BaseFragment {
 
         GetUserTokenRequest tokenRequest = new GetUserTokenRequest(getActivity(),
                 Mines.getMineBaseUrl(getActivity(), mMineName), username, password);
-        executeRequest(tokenRequest, new GetPermTokenRequestListener());
+        execute(tokenRequest, new GetPermTokenRequestListener());
     }
 
     @OnItemSelected(R.id.mine_spinner)

@@ -27,6 +27,8 @@ import org.intermine.view.ProgressView;
 import butterknife.InjectView;
 
 public class GenesListFragment extends BaseFragment {
+    public static final String LIST_KEY = "list_key";
+    public static final String MINE_NAME_KEY = "mine_name_key";
     public static final int ITEMS_PER_PAGE = 15;
 
     @InjectView(R.id.list)
@@ -53,8 +55,11 @@ public class GenesListFragment extends BaseFragment {
 
     public static GenesListFragment newInstance(org.intermine.core.List list, String mineName) {
         GenesListFragment fragment = new GenesListFragment();
-        fragment.setList(list);
-        fragment.setMineName(mineName);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LIST_KEY, list);
+        bundle.putString(MINE_NAME_KEY, mineName);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -111,6 +116,13 @@ public class GenesListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mMineName = bundle.getString(MINE_NAME_KEY);
+            mList = bundle.getParcelable(LIST_KEY);
+        }
+
         mListAdapter = new ListAdapter(getActivity());
         mListView.setAdapter(mListAdapter);
 
@@ -166,7 +178,7 @@ public class GenesListFragment extends BaseFragment {
     protected void performGetListResultsRequest() {
         FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), mMineName,
                 mList.getName(), mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
-        executeRequest(request, new ListResultsListener());
+        execute(request, new ListResultsListener());
     }
 
     protected void setProgress(boolean loading) {
@@ -179,17 +191,5 @@ public class GenesListFragment extends BaseFragment {
             Views.setVisible(mListView);
             Views.setGone(mProgressView);
         }
-    }
-
-    public void setList(org.intermine.core.List list) {
-        mList = list;
-    }
-
-    public String getMineName() {
-        return mMineName;
-    }
-
-    public void setMineName(String mineName) {
-        this.mMineName = mineName;
     }
 }

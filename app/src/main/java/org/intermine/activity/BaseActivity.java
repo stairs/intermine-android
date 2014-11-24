@@ -107,9 +107,13 @@ public abstract class BaseActivity extends ActionBarActivity implements
         Views.showDialogFragment(getFragmentManager(), AlertDialogFragment.newInstance(code, message));
     }
 
-
-    public void executeRequest(SpiceRequest request, RequestListener listener) {
+    public <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
         mSpiceManager.execute(request, listener);
+    }
+
+    public <T> void execute(SpiceRequest<T> request, Object requestCacheKey,
+                            long cacheExpiryDuration, RequestListener<T> listener) {
+        mSpiceManager.execute(request, requestCacheKey, cacheExpiryDuration, listener);
     }
 
     public Storage getStorage() {
