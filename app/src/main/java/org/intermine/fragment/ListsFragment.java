@@ -100,12 +100,6 @@ public class ListsFragment extends BaseFragment {
         mAdapter = new ListsAdapter(getActivity());
         mListsView.setAdapter(mAdapter);
 
-        Bundle bundle = getArguments();
-
-        if (null != bundle) {
-            mMineName = bundle.getString(MINE_NAME_KEY);
-        }
-
         setProgress(true);
         fetchLists();
     }
@@ -115,7 +109,14 @@ public class ListsFragment extends BaseFragment {
         super.onAttach(activity);
         mListener = (OnListSelectedListener) activity;
 
-        ((MainActivity) activity).onSectionAttached(getString(R.string.lists));
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mMineName = bundle.getString(MINE_NAME_KEY);
+        }
+
+        String title = mMineName + " " + getString(R.string.lists);
+        ((MainActivity) activity).onSectionAttached(title);
     }
 
     // --------------------------------------------------------------------------------------------

@@ -26,7 +26,7 @@ import butterknife.InjectView;
 import butterknife.OnItemClick;
 
 public class TemplatesFragment extends BaseFragment {
-    public static final String MINE_NAME_PARAM = "mine_name";
+    public static final String MINE_NAME_KEY = "mine_name";
 
     public static final long TEMPLATES_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
@@ -53,7 +53,7 @@ public class TemplatesFragment extends BaseFragment {
         TemplatesFragment fragment = new TemplatesFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(MINE_NAME_PARAM, mineName);
+        bundle.putString(MINE_NAME_KEY, mineName);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -103,12 +103,6 @@ public class TemplatesFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle bundle = getArguments();
-
-        if (null != bundle) {
-            mMineName = bundle.getString(MINE_NAME_PARAM);
-        }
-
         mTemplatesAdapter = new TemplatesAdapter(getActivity());
         mTemplates.setAdapter(mTemplatesAdapter);
 
@@ -121,7 +115,14 @@ public class TemplatesFragment extends BaseFragment {
         super.onAttach(activity);
         mOnTemplateSelectedListener = (OnTemplateSelectedListener) activity;
 
-        ((MainActivity) activity).onSectionAttached(getString(R.string.templates));
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mMineName = bundle.getString(MINE_NAME_KEY);
+        }
+
+        String title = mMineName + " " + getString(R.string.templates);
+        ((MainActivity) activity).onSectionAttached(title);
     }
 
     // --------------------------------------------------------------------------------------------
