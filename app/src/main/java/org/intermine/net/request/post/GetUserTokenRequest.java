@@ -21,7 +21,7 @@ public class GetUserTokenRequest extends PostRequest<String> {
     public static final String TOKEN_TYPE_PARAM = "type";
     public static final String TOKEN_MESSAGE_PARAM = "message";
 
-    public static final String DEFAULT_TOKEN_TYPE_VALUE = "perm";
+    public static final String DEFAULT_TOKEN_TYPE_VALUE = "api";
     public static final String TOKEN_MESSAGE_VALUE = "InterMine Android App";
 
     private String mUsername;

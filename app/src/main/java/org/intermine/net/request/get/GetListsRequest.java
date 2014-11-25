@@ -5,9 +5,6 @@ import android.content.Context;
 import org.intermine.R;
 import org.intermine.core.List;
 import org.intermine.net.request.JsonGetAuthRequest;
-import org.intermine.net.request.JsonGetRequest;
-import org.intermine.util.Collections;
-import org.intermine.util.Strs;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,8 +25,8 @@ public class GetListsRequest extends JsonGetAuthRequest<Lists> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
-        Map<String, String> params = Collections.newHashMap();
+    public Map<String, String> getUrlParams() {
+        Map<String, String> params = super.getUrlParams();
         params.put(FORMAT_PARAM, "json");
         params.put(LIST_NAME_PARAM, mListName);
         return params;

@@ -5,8 +5,6 @@ import android.content.Context;
 import org.intermine.R;
 import org.intermine.core.templates.Template;
 import org.intermine.net.request.JsonGetAuthRequest;
-import org.intermine.net.request.JsonGetRequest;
-import org.intermine.util.Collections;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +23,8 @@ public class GetTemplatesRequest extends JsonGetAuthRequest<Templates> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
-        Map<String, String> params = Collections.newHashMap();
+    public Map<String, String> getUrlParams() {
+        Map<String, String> params = super.getUrlParams();
         params.put(FORMAT_PARAM, "json");
         return params;
     }

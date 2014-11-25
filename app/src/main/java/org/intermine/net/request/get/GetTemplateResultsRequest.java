@@ -3,10 +3,7 @@ package org.intermine.net.request.get;
 import android.content.Context;
 
 import org.intermine.R;
-import org.intermine.core.templates.Template;
 import org.intermine.core.templates.TemplateParameter;
-import org.intermine.core.templates.constraint.Constraint;
-import org.intermine.core.templates.constraint.SwitchOffAbility;
 import org.intermine.net.request.JsonGetAuthRequest;
 import org.intermine.util.Collections;
 
@@ -54,8 +51,8 @@ public class GetTemplateResultsRequest<T> extends JsonGetAuthRequest<T> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
-        Map<String, String> params = Collections.newHashMap();
+    public Map<String, String> getUrlParams() {
+        Map<String, String> params = super.getUrlParams();
         params.put(FORMAT_PARAM, mFormat);
         params.put(NAME_PARAM, mTemplateName);
         params.put(START_PARAM, Integer.toString(mStart));

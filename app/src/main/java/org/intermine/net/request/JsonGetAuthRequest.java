@@ -21,7 +21,7 @@ public abstract class JsonGetAuthRequest<T> extends JsonGetRequest<T> {
     }
 
     @Override
-    public Map<String, ?> getUrlParams() {
+    public Map<String, String> getUrlParams() {
         Map<String, String> params = Collections.newHashMap();
         String token = getStorage().getUserToken(mMineName);
 
