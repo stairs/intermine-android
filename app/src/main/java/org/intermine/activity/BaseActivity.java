@@ -13,7 +13,6 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.dialog.AlertDialogFragment;
-import org.intermine.service.RoboSpiceService;
 import org.intermine.storage.Storage;
 import org.intermine.util.Views;
 
@@ -23,7 +22,8 @@ public abstract class BaseActivity extends ActionBarActivity implements
         AlertDialogFragment.OnDialogDismissedListener {
     public static final int UNAUTHORIZED_CODE = 0x3482;
 
-    private final SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
+    @Inject
+    SpiceManager mSpiceManager;
 
     @Inject
     Storage mStorage;

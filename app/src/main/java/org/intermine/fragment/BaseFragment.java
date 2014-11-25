@@ -9,7 +9,6 @@ import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.InterMineApplication;
-import org.intermine.service.RoboSpiceService;
 import org.intermine.storage.Storage;
 
 import javax.inject.Inject;
@@ -20,7 +19,8 @@ import butterknife.ButterKnife;
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public abstract class BaseFragment extends Fragment {
-    protected SpiceManager mSpiceManager = new SpiceManager(RoboSpiceService.class);
+    @Inject
+    SpiceManager mSpiceManager;
 
     @Inject
     Storage mStorage;
