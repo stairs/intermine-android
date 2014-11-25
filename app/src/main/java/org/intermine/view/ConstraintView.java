@@ -29,5 +29,9 @@ public abstract class ConstraintView extends RelativeLayout {
         return mPathConstraint;
     }
 
+    public abstract boolean isValidConstraint();
+
+    public abstract void highlightInvalid();
+
     public abstract PathConstraint getGeneratedConstraint();
 }

@@ -19,6 +19,7 @@ import org.intermine.core.templates.constraint.PathConstraintLookup;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
 import org.intermine.util.Templates;
+import org.intermine.util.Views;
 import org.intermine.view.AttributeConstraintView;
 import org.intermine.view.ConstraintView;
 import org.intermine.view.LookupConstraintView;
@@ -43,6 +44,9 @@ public class TemplateActivity extends BaseActivity {
 
     @InjectView(R.id.template_description)
     TextView mTemplateDescription;
+
+    @InjectView(R.id.description_card)
+    View mDescriptionContainer;
 
     private Template mTemplate;
     private String mMineName;
@@ -78,8 +82,13 @@ public class TemplateActivity extends BaseActivity {
         if (null != mTemplate) {
             setTitle(mTemplate.getTitle());
 
-            Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
-            mTemplateDescription.setText(descriptionText);
+            if (Strs.isNullOrEmpty(mTemplate.getDescription())) {
+                Views.setGone(mDescriptionContainer);
+            } else {
+                Views.setVisible(mDescriptionContainer);
+                Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
+                mTemplateDescription.setText(descriptionText);
+            }
 
             List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(
                     mTemplate.getConstraints(), getStorage().getMineModel(mMineName));
@@ -97,16 +106,18 @@ public class TemplateActivity extends BaseActivity {
 
     @OnClick(R.id.show_results)
     protected void showTemplatesResults() {
-        ArrayList<TemplateParameter> parameters = Collections.newArrayList();
+        if (checkAllConstraintsValid()) {
+            ArrayList<TemplateParameter> parameters = Collections.newArrayList();
 
-        for (int i = 0; i < mContainer.getChildCount(); i++) {
-            ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
-            PathConstraint pathConstraint = constraintView.getGeneratedConstraint();
-            parameters.add(generateTemplateParameter(pathConstraint));
+            for (int i = 0; i < mContainer.getChildCount(); i++) {
+                ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
+                PathConstraint pathConstraint = constraintView.getGeneratedConstraint();
+                parameters.add(generateTemplateParameter(pathConstraint));
+            }
+
+            TemplateResultsActivity.start(this, mTemplate.getName(), mMineName, parameters);
+            finish();
         }
-
-        TemplateResultsActivity.start(this, mTemplate.getName(), mMineName, parameters);
-        finish();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -135,6 +146,20 @@ public class TemplateActivity extends BaseActivity {
             view = new AttributeConstraintView(this, (PathConstraintAttribute) pathConstraint);
         }
         return view;
+    }
+
+    private boolean checkAllConstraintsValid() {
+        boolean allValid = true;
+
+        for (int i = 0; i < mContainer.getChildCount(); i++) {
+            ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
+
+            if (!constraintView.isValidConstraint()) {
+                allValid = false;
+                constraintView.highlightInvalid();
+            }
+        }
+        return allValid;
     }
 
     private TemplateParameter generateTemplateParameter(PathConstraint constraint) {

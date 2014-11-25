@@ -7,6 +7,7 @@ import android.widget.EditText;
 import org.intermine.R;
 import org.intermine.core.templates.constraint.PathConstraint;
 import org.intermine.core.templates.constraint.PathConstraintLookup;
+import org.intermine.util.Strs;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -38,6 +39,16 @@ public class LookupConstraintView extends ConstraintView {
     private void init() {
         inflate(getContext(), R.layout.lookup_constraint_view, this);
         ButterKnife.inject(this);
+    }
+
+    @Override
+    public boolean isValidConstraint() {
+        return !Strs.isNullOrEmpty(mValue.getText().toString());
+    }
+
+    @Override
+    public void highlightInvalid() {
+        mValue.setError(getContext().getString(R.string.empty_value_em));
     }
 
     public String getValue() {
