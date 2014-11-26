@@ -17,8 +17,9 @@
     <string name="action_settings">Settings</string>
     <string name="search_hint">Enter gene name</string>
     <string name="not_found">No results found.</string>
+    <string name="favorites_requirement_label">Please, login first to see your favorites.</string>
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
-    <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
+    <string name="login_to_add_to_favorites">Please, login first to add genes to favorites from mines:</string>
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">LOOKUP</string>
     <string name="show_results">Show Results</string>

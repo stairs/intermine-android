@@ -42,6 +42,7 @@ import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,7 @@ import java.util.concurrent.CountDownLatch;
 
 import butterknife.InjectView;
 import butterknife.OnItemClick;
+import roboguice.util.temp.Strings;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
@@ -202,10 +204,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.favourites:
-                    Map<String, List<Gene>> selectedGenes = getMineToSelectedGenesMap();
-                    checkFavoritesListExists(selectedGenes);
-                    Toast.makeText(getActivity(), R.string.genes_added_to_favorites,
-                            Toast.LENGTH_LONG).show();
+                    Map<String, List<Gene>> mine2selectedGenes = getMineToSelectedGenesMap();
+                    remindUserToLoginIfRequired(mine2selectedGenes.keySet());
+                    checkFavoritesListExists(mine2selectedGenes);
                     mode.finish();
                     return true;
                 case R.id.email:
@@ -449,6 +450,17 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             } else {
                 mCountDownLatch.countDown();
             }
+        }
+    }
+
+    protected void remindUserToLoginIfRequired(Collection<String> mines) {
+        List<String> userNotLoginedMines = new ArrayList<>(mines);
+        userNotLoginedMines.removeAll(getStorage().getMineToUserTokenMap().keySet());
+
+        if (!org.intermine.util.Collections.isNullOrEmpty(userNotLoginedMines)) {
+            String text = getString(R.string.login_to_add_to_favorites);
+            Toast.makeText(getActivity(), text.concat(" ").concat(Strings.join(", ", userNotLoginedMines)),
+                    Toast.LENGTH_LONG).show();
         }
     }
 

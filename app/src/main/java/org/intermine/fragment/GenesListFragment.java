@@ -21,6 +21,7 @@ import org.intermine.listener.OnGeneSelectedListener;
 import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.util.Collections;
+import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
@@ -36,6 +37,9 @@ public class GenesListFragment extends BaseFragment {
 
     @InjectView(R.id.not_found_results_container)
     protected View mNotFoundView;
+
+    @InjectView(R.id.auth_required_label)
+    protected View mAuthRequiredView;
 
     @InjectView(R.id.progress_view)
     protected ProgressView mProgressView;
@@ -130,13 +134,21 @@ public class GenesListFragment extends BaseFragment {
         mListView.setOnScrollListener(mViewController);
         mListView.addFooterView(mViewController.getFooterView());
 
-        if (null != mList) {
+        if (null != mList && !Strs.isNullOrEmpty(mMineName)) {
             setProgress(true);
 
             if (null == mPager) {
                 mPager = new ApiPager(mList.getSize(), 0, ITEMS_PER_PAGE);
             }
             performGetListResultsRequest();
+        } else {
+            setProgress(false);
+            mViewController.onFinishLoad();
+            Views.setVisible(mNotFoundView);
+
+            if (Strs.isNullOrEmpty(mMineName)) {
+                Views.setVisible(mAuthRequiredView);
+            }
         }
     }
 

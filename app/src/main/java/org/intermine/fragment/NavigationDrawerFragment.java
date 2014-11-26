@@ -17,13 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import org.intermine.R;
 import org.intermine.adapter.ExpandableMenuListAdapter;
-import org.intermine.util.Collections;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

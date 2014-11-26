@@ -27,12 +27,25 @@
 
         <TextView
             style="@style/InterMine.Theme.Text.Large"
+            android:id="@+id/not_found_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sad_cloud_image"
             android:layout_centerHorizontal="true"
-            android:paddingTop="10dp"
+            android:paddingTop="@dimen/default_padding"
             android:text="@string/not_found"/>
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:id="@+id/auth_required_label"
+            android:textColor="@color/gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/not_found_label"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/default_padding"
+            android:visibility="gone"
+            android:text="@string/favorites_requirement_label"/>
     </RelativeLayout>
 
     <org.intermine.view.ProgressView
