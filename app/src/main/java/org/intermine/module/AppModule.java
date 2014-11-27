@@ -73,8 +73,7 @@ import dagger.Provides;
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
                 NavigationDrawerFragment.class
-        },
-        library = true
+        }
 )
 public final class AppModule {
     /**

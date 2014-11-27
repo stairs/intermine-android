@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"/>
 
     <RelativeLayout
-        android:id="@+id/creds_container"
+        android:id="@+id/login_container"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -60,12 +60,23 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/logged_in_for_all_mines_label"
+    <RelativeLayout
+        android:id="@+id/logout_container"
         android:layout_width="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:text="@string/logged_in_for_all_mines_label"/>
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/logout_button"
+            android:paddingTop="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/logout"/>
+    </RelativeLayout>
 
     <TextView
         android:padding="15dp"

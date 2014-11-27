@@ -19,15 +19,13 @@ import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.SimpleAdapter;
 import org.intermine.net.request.post.GetUserTokenRequest;
-import org.intermine.util.Collections;
 import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -44,8 +42,11 @@ public class LogInFragment extends BaseFragment {
     @InjectView(R.id.mine_spinner)
     Spinner mMinesSpinner;
 
-    @InjectView(R.id.creds_container)
-    ViewGroup mCredsContainer;
+    @InjectView(R.id.login_container)
+    ViewGroup mLoginContainer;
+
+    @InjectView(R.id.logout_container)
+    ViewGroup mLogOutContainer;
 
     @InjectView(R.id.login)
     TextView mLogin;
@@ -61,9 +62,6 @@ public class LogInFragment extends BaseFragment {
 
     @InjectView(R.id.authorized_for_mines_label)
     TextView mAuthorizedForMinesLabel;
-
-    @InjectView(R.id.logged_in_for_all_mines_label)
-    TextView mLoggedInForAllMines;
 
     private SimpleAdapter<String> mAdapter;
 
@@ -111,8 +109,10 @@ public class LogInFragment extends BaseFragment {
 
             getStorage().setUserToken(mMineName, token);
 
-            cleanCredsFields();
-            initLogInContainer(getStorage().getMineNames());
+            cleanLoginFields();
+            Views.setGone(mLoginContainer);
+            Views.setVisible(mLogOutContainer);
+            updateBottomLine();
         }
     }
 
@@ -143,7 +143,13 @@ public class LogInFragment extends BaseFragment {
 
         Set<String> mineNames = getStorage().getMineNames();
         mAdapter.updateData(mineNames);
-        initLogInContainer(mineNames);
+        Object selected = mMinesSpinner.getSelectedItem();
+
+        if (null != selected) {
+            showAuthContainer(selected.toString());
+        }
+
+        updateBottomLine();
     }
 
     @Override
@@ -169,39 +175,41 @@ public class LogInFragment extends BaseFragment {
         execute(tokenRequest, new GetPermTokenRequestListener());
     }
 
-    @OnItemSelected(R.id.mine_spinner)
-    protected void setMineBaseUrl() {
-        mMineName = mMinesSpinner.getSelectedItem().toString();
+    @OnClick(R.id.logout_button)
+    protected void logOut() {
+        getStorage().setUserToken(mMineName, null);
+        Views.setVisible(mLoginContainer);
+        Views.setGone(mLogOutContainer);
+        updateBottomLine();
     }
 
-    protected void initLogInContainer(Set<String> mineNames) {
-        List<String> minesToLogin = Collections.newArrayList();
-        for (String mine : mineNames) {
-            String token = mStorage.getUserToken(mine);
+    @OnItemSelected(R.id.mine_spinner)
+    protected void onMineSelected() {
+        mMineName = mMinesSpinner.getSelectedItem().toString();
+        showAuthContainer(mMineName);
+    }
 
-            if (Strs.isNullOrEmpty(token)) {
-                minesToLogin.add(mine);
-            }
-        }
+    protected void showAuthContainer(String mineName) {
+        String token = getStorage().getUserToken(mineName);
 
-        if (minesToLogin.isEmpty()) {
-            Views.setGone(mMinesSpinner, mCredsContainer);
-            Views.setVisible(mLoggedInForAllMines);
+        if (Strs.isNullOrEmpty(token)) {
+            Views.setVisible(mLoginContainer);
+            Views.setGone(mLogOutContainer);
         } else {
-            Views.setVisible(mMinesSpinner, mCredsContainer);
-            Views.setGone(mLoggedInForAllMines);
-            mAdapter.updateData(minesToLogin);
+            Views.setVisible(mLogOutContainer);
+            Views.setGone(mLoginContainer);
         }
+    }
 
-        Set<String> loggedInMines = new HashSet<>(mineNames);
-        loggedInMines.removeAll(minesToLogin);
-
-        if (!loggedInMines.isEmpty()) {
-            Views.setVisible(mAuthorizedForMinesLabel);
-            String mines = Strs.join(loggedInMines, ", ");
-            mAuthorizedForMinesLabel.setText(mAuthorizedForMines + " " + mines);
-        } else {
+    protected void updateBottomLine() {
+        if (getStorage().getMineToUserTokenMap().isEmpty()) {
             Views.setGone(mAuthorizedForMinesLabel);
+        } else {
+            Views.setVisible(mAuthorizedForMinesLabel);
+
+            Collection<String> mines = getStorage().getMineToUserTokenMap().keySet();
+            String text = Strs.join(mines, ", ");
+            mAuthorizedForMinesLabel.setText(mAuthorizedForMines.concat(" ").concat(text));
         }
     }
 
@@ -215,7 +223,7 @@ public class LogInFragment extends BaseFragment {
         }
     }
 
-    protected void cleanCredsFields() {
+    protected void cleanLoginFields() {
         mLogin.setText("");
         mPassword.setText("");
         mLogin.requestFocus();

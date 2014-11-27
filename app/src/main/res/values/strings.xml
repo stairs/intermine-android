@@ -93,6 +93,7 @@
     <string name="password">Password</string>
     <string name="login_button_label">Login</string>
     <string name="incorrect_creds">Invalid username/password combination. Please, try again.</string>
+    <string name="logout">Log out</string>
 
     <!-- Errors -->
     <string name="default_error_message">Internal error happened. Please, try again later.</string>
