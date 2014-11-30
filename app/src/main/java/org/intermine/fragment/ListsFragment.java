@@ -2,11 +2,11 @@ package org.intermine.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -14,6 +14,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.R;
 import org.intermine.activity.BaseActivity;
 import org.intermine.activity.MainActivity;
+import org.intermine.adapter.DividerItemDecoration;
 import org.intermine.adapter.ListsAdapter;
 import org.intermine.core.List;
 import org.intermine.net.ResponseHelper;
@@ -22,9 +23,8 @@ import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
 
 import butterknife.InjectView;
-import butterknife.OnItemClick;
 
-public class ListsFragment extends BaseFragment {
+public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemClickListener {
     public static final String TAG = ListsFragment.class.getSimpleName();
     public static final String MINE_NAME_KEY = "mine_name_key";
 
@@ -34,9 +34,7 @@ public class ListsFragment extends BaseFragment {
     ProgressView mProgressView;
 
     @InjectView(R.id.lists)
-    ListView mListsView;
-
-    private ListsAdapter mAdapter;
+    RecyclerView mRecyclerView;
 
     private String mMineName;
 
@@ -53,7 +51,6 @@ public class ListsFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
     // --------------------------------------------------------------------------------------------
     // Inner Classes
     // --------------------------------------------------------------------------------------------
@@ -73,20 +70,13 @@ public class ListsFragment extends BaseFragment {
         @Override
         public void onRequestSuccess(GetListsRequest.Lists lists) {
             setProgress(false);
-            mAdapter.setLists(lists);
-            mAdapter.notifyDataSetChanged();
+            mRecyclerView.setAdapter(new ListsAdapter(lists, ListsFragment.this));
         }
     }
 
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -97,8 +87,11 @@ public class ListsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAdapter = new ListsAdapter(getActivity());
-        mListsView.setAdapter(mAdapter);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                LinearLayoutManager.VERTICAL));
 
         setProgress(true);
         fetchLists();
@@ -123,9 +116,8 @@ public class ListsFragment extends BaseFragment {
     // Callbacks
     // --------------------------------------------------------------------------------------------
 
-    @OnItemClick(R.id.lists)
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        List list = (List) mAdapter.getItem(position);
+    @Override
+    public void onItemClick(List list) {
         mListener.onListSelected(list, mMineName);
     }
 
@@ -141,9 +133,9 @@ public class ListsFragment extends BaseFragment {
     protected void setProgress(boolean loading) {
         if (loading) {
             Views.setVisible(mProgressView);
-            Views.setGone(mListsView);
+            Views.setGone(mRecyclerView);
         } else {
-            Views.setVisible(mListsView);
+            Views.setVisible(mRecyclerView);
             Views.setGone(mProgressView);
         }
     }

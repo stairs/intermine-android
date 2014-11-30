@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:background="?android:attr/activatedBackgroundIndicator"
-                android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-                android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/list_title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/list_size"
-        android:layout_marginTop="@dimen/margin"
-        android:textColor="@color/text_dark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="Title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
-    <TextView
-        android:id="@+id/list_description"
-        android:layout_below="@id/list_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin"
-        android:layout_marginTop="@dimen/small_margin"
-        android:textColor="@color/text_medium"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="Description"/>
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/list_size"
+            android:layout_marginTop="@dimen/margin"
+            android:textColor="@color/text_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="Title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
-    <TextView
-        android:id="@id/list_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:gravity="end"
-        android:textColor="@color/text_light"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="Size"
-        android:layout_alignTop="@+id/list_title"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/list_description"
+            android:layout_below="@id/list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="@color/text_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="Description"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@id/list_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="end"
+            android:textColor="@color/text_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="Size"
+            android:layout_alignTop="@+id/list_title"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"/>
+</FrameLayout>
