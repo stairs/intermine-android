@@ -123,8 +123,6 @@ public class NavigationDrawerFragment extends BaseFragment {
         mDrawerLayout = drawerLayout;
         mDrawerIconRequried = displayDrawerIcon;
 
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
@@ -165,21 +163,25 @@ public class NavigationDrawerFragment extends BaseFragment {
             }
         };
 
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
-        }
-
-        // Defer code dependent on restoration of previous instance state.
-        mDrawerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.syncState();
+        if (null != mDrawerLayout) {
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+            if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
+                mDrawerLayout.openDrawer(mFragmentContainerView);
             }
-        });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+            // Defer code dependent on restoration of previous instance state.
+            mDrawerLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerToggle.syncState();
+                }
+            });
 
-        mDrawerToggle.setDrawerIndicatorEnabled(displayDrawerIcon);
+            mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerToggle.setDrawerIndicatorEnabled(displayDrawerIcon);
+        } else {
+            getActionBarActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     private void selectItem(int position, String mineName) {
@@ -220,8 +222,10 @@ public class NavigationDrawerFragment extends BaseFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Forward the new configuration the drawer toggle component.
-        mDrawerToggle.onConfigurationChanged(newConfig);
+
+        if (null != mDrawerLayout) {
+            mDrawerToggle.onConfigurationChanged(newConfig);
+        }
     }
 
     @Override
@@ -240,7 +244,7 @@ public class NavigationDrawerFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (null != mDrawerLayout && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 

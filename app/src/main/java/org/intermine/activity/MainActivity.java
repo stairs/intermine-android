@@ -21,6 +21,8 @@ import org.intermine.fragment.SearchFragment;
 import org.intermine.fragment.TemplatesFragment;
 import org.intermine.listener.OnGeneSelectedListener;
 
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends BaseActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks, OnGeneSelectedListener,
@@ -46,8 +48,8 @@ public class MainActivity extends BaseActivity implements
         mNavigationDrawer = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        mNavigationDrawer.setUp(R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout), true);
+        DrawerLayout drawer = ButterKnife.findById(this, R.id.drawer_layout);
+        mNavigationDrawer.setUp(R.id.navigation_drawer, drawer, true);
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
     }
