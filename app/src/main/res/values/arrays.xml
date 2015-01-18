@@ -5,11 +5,17 @@
         <item>MouseMine</item>
         <item>RatMine</item>
         <item>YeastMine</item>
+        <item>ZebrafishMine</item>
+        <item>WormMine</item>
+        <item>HumanMine</item>
     </string-array>
     <string-array name="mines_urls">
         <item>http://www.flymine.org/query/service</item>
         <item>http://www.mousemine.org/mousemine/service</item>
         <item>http://ratmine.mcw.edu/ratmine/service</item>
         <item>http://yeastmine.yeastgenome.org/yeastmine/service</item>
+        <item>http://zebrafishmine.org/service</item>
+        <item>http://www.wormbase.org/tools/wormmine/service</item>
+        <item>http://human.intermine.org/human/service</item>
     </string-array>
 </resources>

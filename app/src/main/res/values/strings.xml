@@ -39,9 +39,9 @@
     <string name="gene_symbol">Symbol</string>
 
     <!-- Mines URLs -->
-    <string name="flymine_url">http://www.flymine.org/query/service</string>
-    <string name="ratmime_url">http://ratmine.mcw.edu/ratmine/service</string>
-    <string name="yeastmine_url">http://yeastmine.yeastgenome.org/yeastmine/service</string>
+    <!--<string name="flymine_url">http://www.flymine.org/query/service</string>-->
+    <!--<string name="ratmime_url">http://ratmine.mcw.edu/ratmine/service</string>-->
+    <!--<string name="yeastmine_url">http://yeastmine.yeastgenome.org/yeastmine/service</string>-->
 
     <string name="search_path">/query/results</string>
     <string name="lists_path">/lists</string>
