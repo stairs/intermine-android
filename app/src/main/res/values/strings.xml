@@ -81,9 +81,9 @@
     <!-- Preferences -->
     <string name="settings">Settings</string>
     <string name="mines_preference">Mines</string>
+    <string name="add_mine_preference">Add mine</string>
     <string name="mines_default_summary">All available</string>
     <string name="title_activity_base">BaseActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
 
     <!-- Authorization -->
