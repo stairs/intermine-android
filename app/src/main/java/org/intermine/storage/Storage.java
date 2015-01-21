@@ -2,7 +2,6 @@ package org.intermine.storage;
 
 import org.intermine.core.model.Model;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +11,7 @@ import java.util.Set;
 public interface Storage {
     public final static String USER_TOKEN_KEY = "user_token_key_";
     public static final String MINE_NAMES_KEY = "mine_names_key";
+    public static final String ADD_MINE_KEY = "add_mine_key";
 
     String getUserToken(String mineName);
 

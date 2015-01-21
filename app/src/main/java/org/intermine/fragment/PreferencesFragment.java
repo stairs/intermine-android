@@ -1,15 +1,19 @@
 package org.intermine.fragment;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
-import android.os.Bundle;
+import android.util.Patterns;
 
 import org.intermine.InterMineApplication;
 import org.intermine.R;
 import org.intermine.storage.Storage;
 import org.intermine.util.Strs;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +31,7 @@ public class PreferencesFragment extends PreferenceFragment
     Storage mStorage;
 
     private MultiSelectListPreference mMinesPreference;
+    private EditTextPreference mAddMinePreference;
 
     private Set<String> mMineNames;
 
@@ -46,6 +51,7 @@ public class PreferencesFragment extends PreferenceFragment
 
         addPreferencesFromResource(R.xml.preferences);
         mMinesPreference = (MultiSelectListPreference) findPreference(Storage.MINE_NAMES_KEY);
+        mAddMinePreference = (EditTextPreference) findPreference(Storage.ADD_MINE_KEY);
     }
 
     @Override
@@ -86,6 +92,20 @@ public class PreferencesFragment extends PreferenceFragment
             }
 
             mMinesPreference.setSummary(generateMinesSummary(mines));
+        } else if (Storage.ADD_MINE_KEY.equals(key)) {
+            String potentialUrl = mAddMinePreference.getText();
+
+            if (Patterns.WEB_URL.matcher(potentialUrl).matches()) {
+                try {
+                    URL url = new URL(potentialUrl);
+                    Set<String> mines = mStorage.getMineNames();
+                    mines.add(url.getHost());
+                    mStorage.setMineNames(mines);
+                } catch (MalformedURLException e) {
+                }
+
+                mAddMinePreference.setText("");
+            }
         }
     }
 
