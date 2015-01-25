@@ -9,8 +9,7 @@
         android:entries="@array/mines_names"
         android:entryValues="@array/mines_names"/>
 
-    <EditTextPreference
+    <Preference
         android:key="add_mine_key"
-        android:title="@string/add_mine_preference"
-        android:hint="Enter mine URL"/>
+        android:title="@string/add_mine_preference"/>
 </PreferenceScreen>

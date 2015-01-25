@@ -92,4 +92,13 @@ public class MemoryStorage extends BaseStorage {
         }
         return result;
     }
+
+    @Override
+    public void setMineUrl(String mine, String url) {
+        super.setMineUrl(mine, url);
+
+        if (null != mMineNameToUrlMap) {
+            mMineNameToUrlMap.put(mine, url);
+        }
+    }
 }

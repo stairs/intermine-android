@@ -54,7 +54,7 @@ public abstract class BaseStorage implements Storage {
     @Override
     public void setMineNames(Set<String> mineNames) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putStringSet(MINE_NAMES_KEY, mineNames);
+        editor.putStringSet(MINE_NAMES_KEY, new HashSet<>(mineNames));
         editor.commit();
     }
 
