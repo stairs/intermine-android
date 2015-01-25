@@ -19,7 +19,6 @@ import org.intermine.R;
 import org.intermine.activity.MainActivity;
 import org.intermine.adapter.SimpleAdapter;
 import org.intermine.net.request.post.GetUserTokenRequest;
-import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.springframework.http.HttpStatus;
@@ -171,7 +170,7 @@ public class LogInFragment extends BaseFragment {
         String password = mPassword.getText().toString();
 
         GetUserTokenRequest tokenRequest = new GetUserTokenRequest(getActivity(),
-                Mines.getMineBaseUrl(getActivity(), mMineName), username, password);
+                getStorage().getMineUrl(mMineName), username, password);
         execute(tokenRequest, new GetPermTokenRequestListener());
     }
 

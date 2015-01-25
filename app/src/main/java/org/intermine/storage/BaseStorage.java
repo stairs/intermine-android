@@ -57,4 +57,20 @@ public abstract class BaseStorage implements Storage {
         editor.putStringSet(MINE_NAMES_KEY, mineNames);
         editor.commit();
     }
+
+    @Override
+    public String getMineUrl(String mine) {
+        return mPreferences.getString(MINE_URL_KEY + mine, Strs.EMPTY_STRING);
+    }
+
+    @Override
+    public void setMineUrl(String mine, String url) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(MINE_URL_KEY + mine, url);
+        editor.commit();
+    }
+
+    protected Context getContext() {
+        return mContext;
+    }
 }

@@ -45,7 +45,7 @@ public class CreateGenesList extends PostAuthRequest<Void> {
 
     @Override
     public String getUrl() {
-        return getBaseUrl() + getContext().getString(R.string.lists_path);
+        return getBaseUrl(mMineName) + getContext().getString(R.string.lists_path);
     }
 
     @Override

@@ -17,6 +17,6 @@ public class AppendGenesToListRequest extends CreateGenesList {
 
     @Override
     public String getUrl() {
-        return getBaseUrl() + getContext().getString(R.string.append_to_lists_path);
+        return getBaseUrl(mMineName) + getContext().getString(R.string.append_to_lists_path);
     }
 }

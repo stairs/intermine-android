@@ -8,7 +8,6 @@ import org.intermine.R;
 import org.intermine.core.ListItems;
 import org.intermine.net.NoRetryPolicy;
 import org.intermine.net.request.PostAuthRequest;
-import org.intermine.net.request.PostRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -42,7 +41,7 @@ public class FetchListResultsRequest extends PostAuthRequest<ListItems> {
 
     @Override
     public String getUrl() {
-        return getBaseUrl() + getContext().getString(R.string.search_path);
+        return getBaseUrl(mMineName) + getContext().getString(R.string.search_path);
     }
 
     @Override

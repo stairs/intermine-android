@@ -52,6 +52,7 @@ public class PreferencesFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.preferences);
         mMinesPreference = (MultiSelectListPreference) findPreference(Storage.MINE_NAMES_KEY);
         mAddMinePreference = (EditTextPreference) findPreference(Storage.ADD_MINE_KEY);
+        mAddMinePreference.setOnPreferenceChangeListener();
     }
 
     @Override
@@ -82,7 +83,6 @@ public class PreferencesFragment extends PreferenceFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Storage.MINE_NAMES_KEY.equals(key)) {
-
             Set<String> mines = mStorage.getMineNames();
 
             if (mines.isEmpty()) {
@@ -90,21 +90,24 @@ public class PreferencesFragment extends PreferenceFragment
                 mines = mMineNames;
                 mMinesPreference.setValues(mines);
             }
-
             mMinesPreference.setSummary(generateMinesSummary(mines));
         } else if (Storage.ADD_MINE_KEY.equals(key)) {
             String potentialUrl = mAddMinePreference.getText();
+            mAddMinePreference.setText("");
 
             if (Patterns.WEB_URL.matcher(potentialUrl).matches()) {
                 try {
-                    URL url = new URL(potentialUrl);
                     Set<String> mines = mStorage.getMineNames();
-                    mines.add(url.getHost());
-                    mStorage.setMineNames(mines);
-                } catch (MalformedURLException e) {
-                }
+                    String name = extractMineName(potentialUrl);
 
-                mAddMinePreference.setText("");
+                    mStorage.setMineUrl(name, potentialUrl);
+                    mines.add(name);
+                    mStorage.setMineNames(mines);
+                    mMinesPreference.setSummary(generateMinesSummary(mines));
+                    //mMinesPreference.
+                } catch (MalformedURLException e) {
+                    mAddMinePreference.getEditText().setError(getString(R.string.malformed_url_provided_em));
+                }
             }
         }
     }
@@ -115,5 +118,10 @@ public class PreferencesFragment extends PreferenceFragment
 
     protected String generateMinesSummary(Set<String> mines) {
         return Strs.join(mines, COMMA);
+    }
+
+    protected String extractMineName(String validUrl) throws MalformedURLException {
+        URL url = new URL(validUrl);
+        return url.getHost();
     }
 }

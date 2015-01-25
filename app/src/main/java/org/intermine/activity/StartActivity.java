@@ -10,7 +10,6 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.R;
 import org.intermine.core.model.Model;
 import org.intermine.net.request.get.GetModelRequest;
-import org.intermine.util.Mines;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -69,7 +68,7 @@ public class StartActivity extends BaseActivity {
 
         if (null == getStorage().getMineToModelMap()) {
             setContentView(R.layout.start_activity);
-            Map<String, String> mineToBaseUrlMap = Mines.getMineToBaseUrlMap(this);
+            Map<String, String> mineToBaseUrlMap = getStorage().getMineNameToUrlMap();
 
             mCountDownLatch = new CountDownLatch(mineToBaseUrlMap.size());
             new WailForAllRequestsFinishedAsyncTask().execute();

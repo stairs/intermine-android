@@ -36,7 +36,6 @@ import org.intermine.net.ResponseHelper;
 import org.intermine.net.request.get.GeneSearchRequest;
 import org.intermine.net.request.get.GetListsRequest;
 import org.intermine.util.Emails;
-import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.intermine.util.Views;
 import org.intermine.view.ProgressView;
@@ -445,7 +444,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             if (0 == start || (null != count &&
                     (mPager.getCurrentPage() + 1) * mPager.getPerPage() < count)) {
                 GeneSearchRequest request = new GeneSearchRequest(getActivity(),
-                        Mines.getMineBaseUrl(getActivity(), mine), query, mine, format, start);
+                        getStorage().getMineUrl(mine), query, mine, format, start);
                 execute(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();

@@ -3,7 +3,6 @@ package org.intermine.net.request;
 import android.content.Context;
 
 import org.intermine.util.Collections;
-import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 import org.springframework.util.MultiValueMap;
 
@@ -15,7 +14,7 @@ import java.util.Map;
 public abstract class PostAuthRequest<T> extends PostRequest<T> {
     protected static final String TOKEN_PARAM = "token";
 
-    private String mMineName;
+    protected String mMineName;
 
     public PostAuthRequest(Class<T> clazz, Context ctx, String url, Map<String, ?> params,
                            MultiValueMap<String, String> post, String mineName) {
@@ -32,10 +31,6 @@ public abstract class PostAuthRequest<T> extends PostRequest<T> {
             params.put(TOKEN_PARAM, token);
         }
         return params;
-    }
-
-    protected String getBaseUrl() {
-        return Mines.getMineBaseUrl(getContext(), mMineName);
     }
 
     public String getMineName() {

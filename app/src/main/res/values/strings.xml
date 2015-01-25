@@ -105,5 +105,5 @@
     <string name="add_gene_to_favorites_error_message">Error while trying to add gene to favorites. Please, try again later.</string>
     <string name="unauthorized_gene_to_favorites_error_message">Please, login first to add gene to favorites.</string>
     <string name="empty_value_em">The value must be non-empty!</string>
-
+    <string name="malformed_url_provided_em">Please, provide a correct mine URL!</string>
 </resources>

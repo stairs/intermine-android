@@ -3,7 +3,6 @@ package org.intermine.net.request;
 import android.content.Context;
 
 import org.intermine.util.Collections;
-import org.intermine.util.Mines;
 import org.intermine.util.Strs;
 
 import java.util.Map;
@@ -32,7 +31,7 @@ public abstract class JsonGetAuthRequest<T> extends JsonGetRequest<T> {
     }
 
     protected String getBaseUrl() {
-        return Mines.getMineBaseUrl(getContext(), mMineName);
+        return getStorage().getMineUrl(mMineName);
     }
 
     public String getMineName() {

@@ -2,10 +2,13 @@ package org.intermine.storage;
 
 import android.content.Context;
 
+import org.intermine.R;
 import org.intermine.core.model.Model;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +17,7 @@ import java.util.Set;
  */
 public class MemoryStorage extends BaseStorage {
     private Map<String, Model> mMineToModelMap;
+    private Map<String, String> mMineNameToUrlMap;
 
     public MemoryStorage(Context ctx) {
         super(ctx);
@@ -50,6 +54,40 @@ public class MemoryStorage extends BaseStorage {
 
             if (!Strs.isNullOrEmpty(token)) {
                 result.put(mine, token);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, String> getMineNameToUrlMap() {
+        if (null == mMineNameToUrlMap) {
+            mMineNameToUrlMap = initializeMineToBaseUrlMap(getContext());
+        }
+        return mMineNameToUrlMap;
+    }
+
+    private Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
+        Map<String, String> result = Collections.newHashMap();
+
+        List<String> defaultMineNames = Arrays.asList(ctx.getResources().getStringArray(R.array.mines_names));
+        String[] defaultMineBaseUrls = ctx.getResources().getStringArray(R.array.mines_urls);
+
+        if (null != defaultMineNames && null != defaultMineBaseUrls &&
+                defaultMineNames.size() == defaultMineBaseUrls.length) {
+            int length = defaultMineNames.size();
+
+            for (int i = 0; i < length; i++) {
+                result.put(defaultMineNames.get(i), defaultMineBaseUrls[i]);
+            }
+        }
+
+        Set<String> allMines = getMineNames();
+        allMines.removeAll(defaultMineNames);
+
+        if (!Collections.isNullOrEmpty(allMines)) {
+            for (String mineName : allMines) {
+                result.put(mineName, getMineUrl(mineName));
             }
         }
         return result;
