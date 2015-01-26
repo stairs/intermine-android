@@ -96,9 +96,32 @@ public class PreferencesFragment extends PreferenceFragment
                 mines = mMineNames;
                 mMinesPreference.setValues(mines);
             }
+            mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
+        } else if (key.startsWith(Storage.MINE_URL_KEY)) {
+            CharSequence[] entryValues = mMinesPreference.getEntryValues();
+            CharSequence[] result = new CharSequence[entryValues.length + 1];
+
+            for (int i = 0; i < entryValues.length; i++) {
+                result[i] = entryValues[i];
+            }
+
+            String newMineName = key.substring(Storage.MINE_URL_KEY.length());
+            result[entryValues.length] = newMineName;
+            mMinesPreference.setEntryValues(result);
+            mMinesPreference.setEntries(result);
+//            Set<String> values = mMinesPreference.getValues();
+//            values.add(newMineName);
+//            mMinesPreference.setValues(values);
+
+            Set<String> mines = mStorage.getMineNames();
+
+            if (!mines.contains(newMineName)) {
+                mines.add(newMineName);
+                mStorage.setMineNames(mines);
+            }
+
+            mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
         }
-        Log.e("ddd", key + mStorage.getMineNames());
-        mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
     }
 
     // --------------------------------------------------------------------------------------------

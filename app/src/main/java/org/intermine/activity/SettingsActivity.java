@@ -47,9 +47,9 @@ public class SettingsActivity extends BaseActivity implements AddMineDialogFragm
         Set<String> mines = getStorage().getMineNames();
 
         if (!mines.contains(mineName)) {
-            getStorage().setMineUrl(mineName, mineUrl);
             mines.add(mineName);
             mStorage.setMineNames(mines);
+            getStorage().setMineUrl(mineName, mineUrl);
         }
     }
 }
