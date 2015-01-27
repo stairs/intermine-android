@@ -47,6 +47,18 @@ public abstract class BaseStorage implements Storage {
     }
 
     @Override
+    public Set<String> getCustomMineNames() {
+        return mPreferences.getStringSet(CUSTOM_MINE_NAMES_KEY, new HashSet<String>());
+    }
+
+    @Override
+    public void setCustomMineNames(Set<String> mineNames) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putStringSet(CUSTOM_MINE_NAMES_KEY, new HashSet<>(mineNames));
+        editor.commit();
+    }
+
+    @Override
     public Set<String> getMineNames() {
         return mPreferences.getStringSet(MINE_NAMES_KEY, mDefaultMineNames);
     }

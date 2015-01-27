@@ -90,6 +90,6 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
     }
 
     protected String getBaseUrl(String mineName) {
-        return getStorage().getMineUrl(mineName);
+        return getStorage().getMineNameToUrlMap().get(mineName);
     }
 }

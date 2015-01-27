@@ -44,11 +44,11 @@ public class SettingsActivity extends BaseActivity implements AddMineDialogFragm
 
     @Override
     public void onMineAdded(String mineName, String mineUrl) {
-        Set<String> mines = getStorage().getMineNames();
+        Set<String> mines = getStorage().getCustomMineNames();
 
         if (!mines.contains(mineName)) {
             mines.add(mineName);
-            mStorage.setMineNames(mines);
+            mStorage.setCustomMineNames(mines);
             getStorage().setMineUrl(mineName, mineUrl);
         }
     }

@@ -31,7 +31,7 @@ public abstract class JsonGetAuthRequest<T> extends JsonGetRequest<T> {
     }
 
     protected String getBaseUrl() {
-        return getStorage().getMineUrl(mMineName);
+        return getStorage().getMineNameToUrlMap().get(mMineName);
     }
 
     public String getMineName() {
