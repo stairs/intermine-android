@@ -2,10 +2,8 @@ package org.intermine.fragment;
 
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -30,7 +28,6 @@ import java.util.Set;
 
 public class NavigationDrawerFragment extends BaseFragment {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -61,11 +58,7 @@ public class NavigationDrawerFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // TODO: use storage concept to store these data
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(
-                getActivity().getApplicationContext());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        mUserLearnedDrawer = getStorage().hasUserLearnedDrawer();
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -154,9 +147,7 @@ public class NavigationDrawerFragment extends BaseFragment {
 
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    getStorage().setUserLearnedDrawer(true);
                 }
 
                 getActivity().invalidateOptionsMenu();
@@ -274,7 +265,7 @@ public class NavigationDrawerFragment extends BaseFragment {
     private Map<String, List<String>> generateMenu() {
         Set<String> authMines = getStorage().getMineToUserTokenMap().keySet();
         List<String> favoritesSubmenus = new ArrayList<>(authMines);
-        List<String> minesSubmenus = new ArrayList<>(getStorage().getMineNames());
+        List<String> minesSubmenus = new ArrayList<>(getStorage().getSelectedMineNames());
         List<String> emptyList = java.util.Collections.emptyList();
 
         LinkedHashMap<String, List<String>> map = new LinkedHashMap<>();

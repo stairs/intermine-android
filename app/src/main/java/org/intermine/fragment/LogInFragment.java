@@ -140,7 +140,7 @@ public class LogInFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
 
-        Set<String> mineNames = getStorage().getMineNames();
+        Set<String> mineNames = getStorage().getSelectedMineNames();
         mAdapter.updateData(mineNames);
         Object selected = mMinesSpinner.getSelectedItem();
 

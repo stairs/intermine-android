@@ -31,6 +31,7 @@ import org.intermine.net.request.post.CreateGenesList;
 import org.intermine.net.request.post.FetchListResultsRequest;
 import org.intermine.net.request.post.GetUserTokenRequest;
 import org.intermine.storage.MemoryStorage;
+import org.intermine.storage.Storage;
 
 import javax.inject.Singleton;
 
@@ -70,7 +71,8 @@ import dagger.Provides;
                 GetUserTokenRequest.class,
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
-                NavigationDrawerFragment.class
+                NavigationDrawerFragment.class,
+                Storage.class
         }
 )
 public final class AppModule {

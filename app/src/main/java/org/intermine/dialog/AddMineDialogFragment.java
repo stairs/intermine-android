@@ -19,6 +19,7 @@ import butterknife.OnClick;
 
 public class AddMineDialogFragment extends DialogFragment {
     public static final String ADD_MINE_DIALOG_TAG = "add_mine_dialog_tag";
+
     @InjectView(R.id.mine_name)
     EditText mMineName;
 

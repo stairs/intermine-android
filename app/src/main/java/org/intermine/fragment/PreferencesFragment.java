@@ -12,8 +12,6 @@ import org.intermine.dialog.AddMineDialogFragment;
 import org.intermine.storage.Storage;
 import org.intermine.util.Strs;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -32,9 +30,6 @@ public class PreferencesFragment extends PreferenceFragment
     private MultiSelectListPreference mMinesPreference;
     private Preference mAddMinePreference;
 
-    private String[] mMineNamesArray;
-    private Set<String> mMineNames;
-
     // --------------------------------------------------------------------------------------------
     // Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -43,14 +38,11 @@ public class PreferencesFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMineNamesArray = getResources().getStringArray(R.array.mines_names);
-        mMineNames = new HashSet<>(Arrays.asList(mMineNamesArray));
-
         InterMineApplication app = InterMineApplication.get(getActivity());
         app.inject(this);
 
         addPreferencesFromResource(R.xml.preferences);
-        mMinesPreference = (MultiSelectListPreference) findPreference(Storage.MINE_NAMES_KEY);
+        mMinesPreference = (MultiSelectListPreference) findPreference(Storage.SELECTED_MINE_NAMES_KEY);
         updateMinesPreference();
 
         mAddMinePreference = findPreference(Storage.ADD_MINE_KEY);
@@ -81,7 +73,7 @@ public class PreferencesFragment extends PreferenceFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
+        mMinesPreference.setSummary(generateMinesSummary(mStorage.getSelectedMineNames()));
     }
 
     // --------------------------------------------------------------------------------------------
@@ -90,28 +82,23 @@ public class PreferencesFragment extends PreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Storage.MINE_NAMES_KEY.equals(key)) {
-            Set<String> mines = mStorage.getMineNames();
+        if (Storage.SELECTED_MINE_NAMES_KEY.equals(key)) {
+            Set<String> selectedMines = mStorage.getSelectedMineNames();
 
-            if (mines.isEmpty()) {
-                mStorage.setMineNames(new HashSet<>(mMineNames));
-                mines = mMineNames;
-                mMinesPreference.setValues(mines);
+            if (selectedMines.isEmpty()) {
+                selectedMines = mStorage.getMineNames();
+                mStorage.setSelectedMineNames(selectedMines);
             }
-            mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
-        } else if (key.startsWith(Storage.MINE_URL_KEY)) {
-            String newMineName = key.substring(Storage.MINE_URL_KEY.length());
+            mMinesPreference.setValues(selectedMines);
 
-            Set<String> mines = mStorage.getMineNames();
-
-            if (!mines.contains(newMineName)) {
-                mines.add(newMineName);
-                mStorage.setMineNames(mines);
-            }
-
+            mMinesPreference.setSummary(generateMinesSummary(selectedMines));
+        } else {
             updateMinesPreference();
-            mMinesPreference.setValues(mStorage.getMineNames());
-            mMinesPreference.setSummary(generateMinesSummary(mStorage.getMineNames()));
+
+            Set<String> selectedMines = mStorage.getSelectedMineNames();
+            mMinesPreference.setValues(selectedMines);
+
+            mMinesPreference.setSummary(generateMinesSummary(selectedMines));
         }
     }
 
@@ -124,11 +111,11 @@ public class PreferencesFragment extends PreferenceFragment
     }
 
     private void updateMinesPreference() {
-        Set<String> customMines = mStorage.getCustomMineNames();
-        CharSequence[] result = Arrays.copyOf(mMineNamesArray, mMineNamesArray.length + customMines.size());
-        Iterator<String> iterator = customMines.iterator();
+        Set<String> mines = mStorage.getMineNames();
+        CharSequence[] result = new CharSequence[mines.size()];
+        Iterator<String> iterator = mines.iterator();
 
-        for (int i = mMineNamesArray.length; i < mMineNamesArray.length + customMines.size(); i++) {
+        for (int i = 0; i < mines.size(); i++) {
             result[i] = iterator.next();
         }
         mMinesPreference.setEntryValues(result);

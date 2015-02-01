@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <MultiSelectListPreference
-        android:key="mine_names_key"
+        android:key="selected_mine_names_key"
         android:title="@string/mines_preference"
         android:summary="@string/mines_default_summary"
         android:defaultValue="@array/mines_names"

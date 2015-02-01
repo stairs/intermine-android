@@ -426,7 +426,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     private void performSearchRequests(String query, String format, int start) {
-        Set<String> selectedMines = getStorage().getMineNames();
+        Set<String> selectedMines = getStorage().getSelectedMineNames();
 
         if (null != mAsyncTask && !mAsyncTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
             mAsyncTask.cancel(true);

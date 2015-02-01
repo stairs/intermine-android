@@ -23,7 +23,6 @@ public class InterMineApplication extends Application {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-
         objectGraph = ObjectGraph.create(new AppModule(this));
     }
 

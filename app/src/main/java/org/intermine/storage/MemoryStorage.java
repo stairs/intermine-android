@@ -2,13 +2,10 @@ package org.intermine.storage;
 
 import android.content.Context;
 
-import org.intermine.R;
 import org.intermine.core.model.Model;
 import org.intermine.util.Collections;
 import org.intermine.util.Strs;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,7 +43,7 @@ public class MemoryStorage extends BaseStorage {
 
     @Override
     public Map<String, String> getMineToUserTokenMap() {
-        Set<String> mines = getMineNames();
+        Set<String> mines = getSelectedMineNames();
         Map<String, String> result = Collections.newHashMap();
 
         for (String mine : mines) {
@@ -69,24 +66,10 @@ public class MemoryStorage extends BaseStorage {
 
     private Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
         Map<String, String> result = Collections.newHashMap();
+        Set<String> selectedMineNames = getSelectedMineNames();
 
-        List<String> defaultMineNames = Arrays.asList(ctx.getResources().getStringArray(R.array.mines_names));
-        String[] defaultMineBaseUrls = ctx.getResources().getStringArray(R.array.mines_urls);
-
-        if (null != defaultMineNames && null != defaultMineBaseUrls &&
-                defaultMineNames.size() == defaultMineBaseUrls.length) {
-            int length = defaultMineNames.size();
-
-            for (int i = 0; i < length; i++) {
-                result.put(defaultMineNames.get(i), defaultMineBaseUrls[i]);
-            }
-        }
-
-        Set<String> allMines = getMineNames();
-        allMines.removeAll(defaultMineNames);
-
-        if (!Collections.isNullOrEmpty(allMines)) {
-            for (String mineName : allMines) {
+        if (!Collections.isNullOrEmpty(selectedMineNames)) {
+            for (String mineName : selectedMineNames) {
                 result.put(mineName, getMineUrl(mineName));
             }
         }
@@ -97,8 +80,9 @@ public class MemoryStorage extends BaseStorage {
     public void setMineUrl(String mine, String url) {
         super.setMineUrl(mine, url);
 
-        if (null != mMineNameToUrlMap) {
-            mMineNameToUrlMap.put(mine, url);
+        if (null == mMineNameToUrlMap) {
+            mMineNameToUrlMap = initializeMineToBaseUrlMap(getContext());
         }
+        mMineNameToUrlMap.put(mine, url);
     }
 }
