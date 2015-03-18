@@ -437,14 +437,13 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         mAsyncTask = new OnSearchRequestsFinishedAsyncTask();
         mAsyncTask.execute();
 
-
         for (String mine : selectedMines) {
             Integer count = mMine2ResultsCount.get(mine);
 
             if (0 == start || (null != count &&
                     (mPager.getCurrentPage() + 1) * mPager.getPerPage() < count)) {
                 GeneSearchRequest request = new GeneSearchRequest(getActivity(),
-                        getStorage().getMineUrl(mine), query, mine, format, start);
+                        query, mine, format, start);
                 execute(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();

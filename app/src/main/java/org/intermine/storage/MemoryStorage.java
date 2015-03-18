@@ -8,6 +8,7 @@ import org.intermine.util.Collections;
 import org.intermine.util.Strs;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public class MemoryStorage extends BaseStorage {
     private Map<String, Model> mMineToModelMap;
-    private Map<String, String> mMineNameToUrlMap;
+    private volatile Map<String, String> mMineNameToUrlMap;
 
     public MemoryStorage(Context ctx) {
         super(ctx);
@@ -67,7 +68,7 @@ public class MemoryStorage extends BaseStorage {
         return mMineNameToUrlMap;
     }
 
-    private Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
+    private synchronized Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
         Map<String, String> result = Collections.newHashMap();
 
         List<String> defaultMineNames = Arrays.asList(ctx.getResources().getStringArray(R.array.mines_names));
@@ -82,7 +83,7 @@ public class MemoryStorage extends BaseStorage {
             }
         }
 
-        Set<String> allMines = getMineNames();
+        Set<String> allMines = new HashSet<>(getMineNames());
         allMines.removeAll(defaultMineNames);
 
         if (!Collections.isNullOrEmpty(allMines)) {

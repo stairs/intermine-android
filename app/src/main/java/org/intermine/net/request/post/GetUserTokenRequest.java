@@ -27,19 +27,19 @@ public class GetUserTokenRequest extends PostRequest<String> {
     private String mUsername;
     private String mPassword;
 
-    private String mMineBaseUrl;
+    private String mMineName;
 
-    public GetUserTokenRequest(Context ctx, String mineBaseUrl, String username, String password) {
+    public GetUserTokenRequest(Context ctx, String mineName, String username, String password) {
         super(String.class, ctx, null, null, null);
         mUsername = username;
         mPassword = password;
 
-        mMineBaseUrl = mineBaseUrl;
+        mMineName = mineName;
     }
 
     @Override
     public String getUrl() {
-        return mMineBaseUrl + getContext().getString(R.string.get_token_path);
+        return getBaseUrl(mMineName) + getContext().getString(R.string.get_token_path);
     }
 
     @Override

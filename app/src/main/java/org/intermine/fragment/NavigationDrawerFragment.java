@@ -49,7 +49,6 @@ public class NavigationDrawerFragment extends BaseFragment {
     public NavigationDrawerFragment() {
     }
 
-
     public static interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position, String mineName);
     }
