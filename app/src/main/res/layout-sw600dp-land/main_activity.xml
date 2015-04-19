@@ -16,7 +16,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:name="org.intermine.fragment.NavigationDrawerFragment"
+            android:name="org.intermine.app.fragment.NavigationDrawerFragment"
             tools:layout="@layout/navigation_drawer_fragment"/>
 
         <FrameLayout

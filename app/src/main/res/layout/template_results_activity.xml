@@ -37,7 +37,7 @@
             android:text="@string/not_found"/>
     </RelativeLayout>
 
-    <org.intermine.view.ProgressView
+    <org.intermine.app.view.ProgressView
         android:id="@+id/progress_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

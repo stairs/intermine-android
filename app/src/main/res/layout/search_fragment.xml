@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="org.intermine.fragment.GenesListFragment">
+                tools:context="org.intermine.app.fragment.GenesListFragment">
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -68,7 +68,7 @@
             android:text="@string/not_found"/>
     </RelativeLayout>
 
-    <org.intermine.view.ProgressView
+    <org.intermine.app.view.ProgressView
         android:visibility="gone"
         android:id="@+id/progress_view"
         android:layout_width="match_parent"
