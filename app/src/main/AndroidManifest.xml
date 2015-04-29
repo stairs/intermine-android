@@ -7,11 +7,11 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".InterMineApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:logo="@mipmap/ic_launcher"
-        android:name=".InterMineApplication"
         android:theme="@style/InterMine.Theme">
         <activity
             android:name=".activity.StartActivity"
@@ -44,6 +44,10 @@
             android:name=".activity.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".activity.MainActivity"/>
+        <activity
+            android:name=".activity.MinesActivity"
+            android:label="@string/mines"
+            android:parentActivityName=".activity.SettingsActivity"/>
 
         <service
             android:name=".service.RoboSpiceService"

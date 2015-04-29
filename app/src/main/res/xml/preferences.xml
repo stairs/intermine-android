@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <MultiSelectListPreference
-        android:key="selected_mine_names_key"
-        android:title="@string/mines_preference"
-        android:summary="@string/mines_default_summary"
-        android:defaultValue="@array/mines_names"
-        android:entries="@array/mines_names"
-        android:entryValues="@array/mines_names"/>
-
-    <Preference
-        android:key="add_mine_key"
-        android:title="@string/add_mine_preference"/>
+    <PreferenceScreen
+        android:key="mines"
+        android:title="Mines">
+    </PreferenceScreen>
 </PreferenceScreen>

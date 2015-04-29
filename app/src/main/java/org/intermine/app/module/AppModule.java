@@ -8,6 +8,7 @@ import org.intermine.app.InterMineApplication;
 import org.intermine.app.activity.GeneViewActivity;
 import org.intermine.app.activity.GenesListActivity;
 import org.intermine.app.activity.MainActivity;
+import org.intermine.app.activity.MinesActivity;
 import org.intermine.app.activity.SettingsActivity;
 import org.intermine.app.activity.StartActivity;
 import org.intermine.app.activity.TemplateActivity;
@@ -72,7 +73,8 @@ import dagger.Provides;
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
                 NavigationDrawerFragment.class,
-                Storage.class
+                Storage.class,
+                MinesActivity.class
         }
 )
 public final class AppModule {

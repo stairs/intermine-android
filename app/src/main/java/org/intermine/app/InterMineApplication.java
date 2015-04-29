@@ -20,9 +20,6 @@ public class InterMineApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        PreferenceManager.setDefaultValues(this, org.intermine.app.R.xml.preferences, false);
-
         objectGraph = ObjectGraph.create(new AppModule(this));
     }
 

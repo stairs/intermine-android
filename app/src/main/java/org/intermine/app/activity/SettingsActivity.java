@@ -7,13 +7,7 @@ import android.view.Menu;
 
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.R;
-import org.intermine.app.dialog.AddMineDialogFragment;
 import org.intermine.app.fragment.PreferencesFragment;
-import org.intermine.app.storage.Storage;
-
-import java.util.Set;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,10 +15,7 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class SettingsActivity extends ActionBarActivity implements AddMineDialogFragment.AddMineDialogListener {
-    @Inject
-    Storage mStorage;
-
+public class SettingsActivity extends ActionBarActivity {
     @InjectView(R.id.default_toolbar)
     Toolbar mToolbar;
 
@@ -51,20 +42,5 @@ public class SettingsActivity extends ActionBarActivity implements AddMineDialog
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public void onMineAdded(String mineName, String mineUrl) {
-        Set<String> mines = mStorage.getMineNames();
-
-        if (!mines.contains(mineName)) {
-            mines.add(mineName);
-            mStorage.setMineNames(mines);
-            Set<String> selectedMinesNames = mStorage.getSelectedMineNames();
-            selectedMinesNames.add(mineName);
-            mStorage.setSelectedMineNames(selectedMinesNames);
-
-            mStorage.setMineUrl(mineName, mineUrl);
-        }
     }
 }

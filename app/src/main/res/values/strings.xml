@@ -14,6 +14,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_send">Send email</string>
     <string name="acction_add_2_favourites">Add to favourites</string>
+    <string name="acction_delete_mine">Delete</string>
     <string name="action_settings">Settings</string>
     <string name="search_hint">Enter gene name</string>
     <string name="mine_name_hint">Enter mine name</string>
@@ -79,9 +80,12 @@
     <string name="settings">Settings</string>
     <string name="mines_preference">Mines</string>
     <string name="add_mine_preference">Add mine</string>
+    <string name="edit_mine_preference">Edit mine</string>
     <string name="mines_default_summary">All available</string>
     <string name="title_activity_base">BaseActivity</string>
     <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
+    <string name="save">Save</string>
+    <string name="mines">Mines</string>
 
     <!-- Authorization -->
     <string name="authorized_for_mines_label">You are authorized for mines:</string>
