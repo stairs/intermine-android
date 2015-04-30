@@ -1,10 +1,9 @@
-package org.intermine;
+package org.intermine.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.preference.PreferenceManager;
 
-import org.intermine.module.AppModule;
+import org.intermine.app.module.AppModule;
 
 import dagger.ObjectGraph;
 
@@ -20,9 +19,6 @@ public class InterMineApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
         objectGraph = ObjectGraph.create(new AppModule(this));
     }
 

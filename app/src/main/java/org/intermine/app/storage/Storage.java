@@ -9,10 +9,9 @@ import java.util.Set;
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public interface Storage {
-    public final static String USER_TOKEN_KEY = "user_token_key_";
+    public static final String USER_TOKEN_KEY = "user_token_key_";
     public static final String SELECTED_MINE_NAMES_KEY = "selected_mine_names_key";
     public static final String MINE_NAMES_KEY = "mine_names_key";
-    public static final String ADD_MINE_KEY = "add_mine_key";
     public static final String MINE_URL_KEY = "mine_url_key_";
     public static final String USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
