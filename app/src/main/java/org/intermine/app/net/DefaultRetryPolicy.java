@@ -13,8 +13,6 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
  * Default retry policy for Robospice requests. In default mode behaves as {@code NoRetryPolicy}.
  * In case of Internal Server Error with an empty body received switches to exceptional retry count
  * and delay parameters.
- *
- * @author Darya Kamkova <Darya_Kamkova @ epam.com>
  */
 public class DefaultRetryPolicy implements RetryPolicy {
     public static final int EXCEPTIONAL_MODE_RETRY_COUNT = 3;

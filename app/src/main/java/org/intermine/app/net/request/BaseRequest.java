@@ -57,7 +57,6 @@ public abstract class BaseRequest<T> extends SpringAndroidSpiceRequest<T> {
 
         headers.setAcceptEncoding(new ContentCodingType(CONTENT_ENCODING));
         headers.setContentEncoding(new ContentCodingType(CONTENT_ENCODING));
-
         return headers;
     }
 

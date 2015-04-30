@@ -1,6 +1,5 @@
 package org.intermine.app.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseBooleanArray;
@@ -15,14 +14,11 @@ import com.melnykov.fab.FloatingActionButton;
 
 import org.intermine.app.R;
 import org.intermine.app.adapter.MinesAdapter;
-import org.intermine.app.core.Gene;
 import org.intermine.app.dialog.MineDialogFragment;
 import org.intermine.app.storage.Storage;
 import org.intermine.app.util.Collections;
-import org.intermine.app.util.Emails;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
