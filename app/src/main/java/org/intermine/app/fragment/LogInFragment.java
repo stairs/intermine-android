@@ -171,7 +171,7 @@ public class LogInFragment extends BaseFragment {
         String password = mPassword.getText().toString();
 
         GetUserTokenRequest tokenRequest = new GetUserTokenRequest(getActivity(),
-                getStorage().getMineUrl(mMineName), username, password);
+                mMineName, username, password);
         execute(tokenRequest, new GetPermTokenRequestListener());
     }
 

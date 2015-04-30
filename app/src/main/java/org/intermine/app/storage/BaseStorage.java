@@ -1,11 +1,11 @@
-package org.intermine.app.storage;
+package org.intermine.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.intermine.app.InterMineApplication;
-import org.intermine.app.R;
-import org.intermine.app.util.Strs;
+import org.intermine.InterMineApplication;
+import org.intermine.R;
+import org.intermine.util.Strs;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,12 +31,7 @@ public abstract class BaseStorage implements Storage {
         app.inject(this);
 
         String[] mineNamesArr = ctx.getResources().getStringArray(R.array.mines_names);
-        String[] mineNamesUrls = ctx.getResources().getStringArray(R.array.mines_urls);
         mDefaultMineNames = new HashSet<>(Arrays.asList(mineNamesArr));
-
-        for (int i = 0; i < mineNamesArr.length; i++) {
-            setMineUrl(mineNamesArr[i], mineNamesUrls[i]);
-        }
     }
 
     @Override
@@ -52,9 +47,14 @@ public abstract class BaseStorage implements Storage {
     }
 
     @Override
-    public void setMineNames(Set<String> mineNames) {
+    public Set<String> getCustomMineNames() {
+        return mPreferences.getStringSet(CUSTOM_MINE_NAMES_KEY, new HashSet<String>());
+    }
+
+    @Override
+    public void setCustomMineNames(Set<String> mineNames) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putStringSet(MINE_NAMES_KEY, new HashSet<>(mineNames));
+        editor.putStringSet(CUSTOM_MINE_NAMES_KEY, new HashSet<>(mineNames));
         editor.commit();
     }
 
@@ -64,14 +64,9 @@ public abstract class BaseStorage implements Storage {
     }
 
     @Override
-    public Set<String> getSelectedMineNames() {
-        return mPreferences.getStringSet(SELECTED_MINE_NAMES_KEY, mDefaultMineNames);
-    }
-
-    @Override
-    public void setSelectedMineNames(Set<String> mineNames) {
+    public void setMineNames(Set<String> mineNames) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putStringSet(SELECTED_MINE_NAMES_KEY, new HashSet<>(mineNames));
+        editor.putStringSet(MINE_NAMES_KEY, new HashSet<>(mineNames));
         editor.commit();
     }
 
@@ -84,18 +79,6 @@ public abstract class BaseStorage implements Storage {
     public void setMineUrl(String mine, String url) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(MINE_URL_KEY + mine, url);
-        editor.commit();
-    }
-
-    @Override
-    public boolean hasUserLearnedDrawer() {
-        return mPreferences.getBoolean(USER_LEARNED_DRAWER, false);
-    }
-
-    @Override
-    public void setUserLearnedDrawer(boolean userLearnedDrawer) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(USER_LEARNED_DRAWER, userLearnedDrawer);
         editor.commit();
     }
 

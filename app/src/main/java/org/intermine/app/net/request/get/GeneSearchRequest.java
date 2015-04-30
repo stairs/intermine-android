@@ -37,9 +37,8 @@ public class GeneSearchRequest extends JsonGetRequest<GenesList> {
         super(clazz, ctx, url, params);
     }
 
-    public GeneSearchRequest(Context ctx, String url, String q, String mineName) {
+    public GeneSearchRequest(Context ctx, String q, String mineName) {
         this(GenesList.class, ctx, null, null);
-        setUrl(url);
         mQuery = q;
         mFormat = JSON_FORMAT;
         mSize = DEFAULT_SIZE;
@@ -54,16 +53,16 @@ public class GeneSearchRequest extends JsonGetRequest<GenesList> {
         return builder.create();
     }
 
-    public GeneSearchRequest(Context ctx, String url, String q,
+    public GeneSearchRequest(Context ctx, String q,
                              String mineName, String format, int start) {
-        this(ctx, url, q, mineName);
+        this(ctx, q, mineName);
         mFormat = format;
         mStart = start;
     }
 
     @Override
     public String getUrl() {
-        return super.getUrl() + "/search";
+        return getBaseUrl(mMineName) + "/search";
     }
 
     @Override

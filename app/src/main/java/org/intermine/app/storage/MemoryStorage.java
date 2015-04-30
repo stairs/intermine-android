@@ -1,11 +1,15 @@
-package org.intermine.app.storage;
+package org.intermine.storage;
 
 import android.content.Context;
 
-import org.intermine.app.core.model.Model;
-import org.intermine.app.util.Collections;
-import org.intermine.app.util.Strs;
+import org.intermine.R;
+import org.intermine.core.model.Model;
+import org.intermine.util.Collections;
+import org.intermine.util.Strs;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +18,7 @@ import java.util.Set;
  */
 public class MemoryStorage extends BaseStorage {
     private Map<String, Model> mMineToModelMap;
-    private Map<String, String> mMineNameToUrlMap;
+    private volatile Map<String, String> mMineNameToUrlMap;
 
     public MemoryStorage(Context ctx) {
         super(ctx);
@@ -43,7 +47,7 @@ public class MemoryStorage extends BaseStorage {
 
     @Override
     public Map<String, String> getMineToUserTokenMap() {
-        Set<String> mines = getSelectedMineNames();
+        Set<String> mines = getMineNames();
         Map<String, String> result = Collections.newHashMap();
 
         for (String mine : mines) {
@@ -64,12 +68,26 @@ public class MemoryStorage extends BaseStorage {
         return mMineNameToUrlMap;
     }
 
-    private Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
+    private synchronized Map<String, String> initializeMineToBaseUrlMap(Context ctx) {
         Map<String, String> result = Collections.newHashMap();
-        Set<String> selectedMineNames = getSelectedMineNames();
 
-        if (!Collections.isNullOrEmpty(selectedMineNames)) {
-            for (String mineName : selectedMineNames) {
+        List<String> defaultMineNames = Arrays.asList(ctx.getResources().getStringArray(R.array.mines_names));
+        String[] defaultMineBaseUrls = ctx.getResources().getStringArray(R.array.mines_urls);
+
+        if (null != defaultMineNames && null != defaultMineBaseUrls &&
+                defaultMineNames.size() == defaultMineBaseUrls.length) {
+            int length = defaultMineNames.size();
+
+            for (int i = 0; i < length; i++) {
+                result.put(defaultMineNames.get(i), defaultMineBaseUrls[i]);
+            }
+        }
+
+        Set<String> allMines = new HashSet<>(getMineNames());
+        allMines.removeAll(defaultMineNames);
+
+        if (!Collections.isNullOrEmpty(allMines)) {
+            for (String mineName : allMines) {
                 result.put(mineName, getMineUrl(mineName));
             }
         }
@@ -80,9 +98,8 @@ public class MemoryStorage extends BaseStorage {
     public void setMineUrl(String mine, String url) {
         super.setMineUrl(mine, url);
 
-        if (null == mMineNameToUrlMap) {
-            mMineNameToUrlMap = initializeMineToBaseUrlMap(getContext());
+        if (null != mMineNameToUrlMap) {
+            mMineNameToUrlMap.put(mine, url);
         }
-        mMineNameToUrlMap.put(mine, url);
     }
 }

@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity implements
         mNavigationDrawer.setUp(R.id.navigation_drawer, drawer, true);
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
+        getStorage().getMineNameToUrlMap();
     }
 
     // --------------------------------------------------------------------------------------------
