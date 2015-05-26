@@ -14,8 +14,8 @@
         <item>http://www.flymine.org/query/service</item>
         <item>http://www.mousemine.org/mousemine/service</item>
         <item>http://ratmine.mcw.edu/ratmine/service</item>
-        <item>http://targetmine.mizuguchilab.org/targetmine/service</item>
         <item>http://yeastmine.yeastgenome.org/yeastmine/service</item>
+        <item>http://targetmine.mizuguchilab.org/targetmine/service</item>
         <item>http://zebrafishmine.org/service</item>
         <item>http://www.wormbase.org/tools/wormmine/service</item>
         <item>http://human.intermine.org/human/service</item>

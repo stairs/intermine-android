@@ -1,5 +1,15 @@
 package org.intermine.app.net.request.post;
 
+/*
+ * Copyright (C) 2015 InterMine
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  See the LICENSE file for more
+ * information or http://www.gnu.org/copyleft/lesser.html.
+ *
+ */
+
 import android.content.Context;
 
 import org.intermine.app.R;
@@ -74,8 +84,7 @@ public class CreateGenesList extends PostAuthRequest<Void> {
         ResponseEntity<String> res;
 
         String uri = Uris.expandQuery(uriString, params);
-
-        res = rtp.exchange(uri, POST, req, String.class);
+        rtp.exchange(uri, POST, req, String.class);
         return null;
     }
 

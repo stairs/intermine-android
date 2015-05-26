@@ -1,11 +1,31 @@
 package org.intermine.app.net.request;
 
+/*
+ * Copyright (C) 2015 InterMine
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  See the LICENSE file for more
+ * information or http://www.gnu.org/copyleft/lesser.html.
+ *
+ */
+
 import android.content.Context;
 
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 
 import java.util.Map;
+
+/*
+ * Copyright (C) 2015 InterMine
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  See the LICENSE file for more
+ * information or http://www.gnu.org/copyleft/lesser.html.
+ *
+ */
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
