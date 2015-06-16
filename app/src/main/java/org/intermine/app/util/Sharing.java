@@ -11,7 +11,6 @@ package org.intermine.app.util;
  */
 
 import android.content.Intent;
-import android.net.Uri;
 
 import org.intermine.app.core.Gene;
 
@@ -20,40 +19,40 @@ import java.util.List;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class Emails {
+public class Sharing {
     private static final String EMAIL_SUBJECT_TEMPLATE = "%s/%s, Gene Details";
     private static final String GENES_LIST_EMAIL_SUBJECT = "List of Genes from InterMine";
 
-    public static Intent generateIntentToSendEmail(String subject, String body) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "", null));
+    public static Intent generateIntentToSendText(String subject, String body) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, body);
+        intent.setType("text/plain");
         return intent;
     }
 
-    public static Intent generateIntentToSendEmails(List<Gene> genes) {
+    public static Intent generateIntentToSendText(List<Gene> genes) {
         StringBuilder emailContent = new StringBuilder();
         if (null != genes && !genes.isEmpty()) {
             for (Gene gene : genes) {
-                emailContent.append(generateEmailContent(gene)).append("\n\n");
+                emailContent.append(generateMessageContent(gene)).append("\n\n");
             }
         }
-        return generateIntentToSendEmail(GENES_LIST_EMAIL_SUBJECT, emailContent.toString());
+        return generateIntentToSendText(GENES_LIST_EMAIL_SUBJECT, emailContent.toString());
     }
 
-    public static Intent generateIntentToSendEmail(Gene gene) {
-        String subject = generateEmailSubject(gene);
-        String body = generateEmailContent(gene);
-        return generateIntentToSendEmail(subject, body);
+    public static Intent generateIntentToSendText(Gene gene) {
+        String subject = generateMessageSubject(gene);
+        String body = generateMessageContent(gene);
+        return generateIntentToSendText(subject, body);
     }
 
-    protected static String generateEmailSubject(Gene gene) {
+    protected static String generateMessageSubject(Gene gene) {
         return String.format(EMAIL_SUBJECT_TEMPLATE, gene.getSymbol(), gene.getPrimaryDBId());
     }
 
-    protected static String generateEmailContent(Gene gene) {
+    protected static String generateMessageContent(Gene gene) {
         StringBuilder builder = new StringBuilder();
-        //TODO: refactore
         addRowIfNotEmpty("Standard Name", gene.getSymbol(), builder);
         addRowIfNotEmpty("Systematic Name", gene.getPrimaryDBId(), builder);
         addRowIfNotEmpty("Secondary ID", gene.getSecondaryIdentifier(), builder);

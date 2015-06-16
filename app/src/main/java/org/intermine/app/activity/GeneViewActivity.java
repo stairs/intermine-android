@@ -24,7 +24,7 @@ import org.intermine.app.fragment.GeneViewFragment;
 import org.intermine.app.listener.GetListsListener;
 import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Collections;
-import org.intermine.app.util.Emails;
+import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 
 import java.util.List;
@@ -97,24 +97,25 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
     }
 
     @Override
-    public void onGeneSelectedToBeEmailed(Gene gene) {
-        sendEmail();
+    public void onGeneSelectedToBeShared(Gene gene) {
+        shareText();
     }
 
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
-    protected void sendEmail() {
-        Intent emailIntent = Emails.generateIntentToSendEmail(mGene);
+    protected void shareText() {
+        Intent intent = Sharing.generateIntentToSendText(mGene);
 
         PackageManager manager = getPackageManager();
-        List<ResolveInfo> infos = manager.queryIntentActivities(emailIntent, 0);
+        List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
 
         if (infos.size() > 0) {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            startActivity(Intent.createChooser(intent,
+                    getResources().getString(R.string.share_message)));
         } else {
-            Toast.makeText(this, "Email client is not installed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No messenger installed.", Toast.LENGTH_SHORT).show();
         }
     }
 }

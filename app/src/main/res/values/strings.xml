@@ -12,7 +12,7 @@
     <string name="log_in">Log in</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_send">Send email</string>
+    <string name="action_share">Share</string>
     <string name="acction_add_2_favourites">Add to favourites</string>
     <string name="acction_delete_mine">Delete</string>
     <string name="action_settings">Settings</string>
@@ -26,6 +26,7 @@
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">LOOKUP</string>
     <string name="show_results">Show Results</string>
+    <string name="share_message">Share text via...</string>
 
     <!-- Gene Features -->
     <string name="gene_standard_name">Standard Name</string>
