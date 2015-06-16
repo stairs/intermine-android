@@ -99,7 +99,7 @@ public class GeneViewFragment extends BaseFragment {
     public static interface GeneActionCallbacks {
         void onGeneAddedToFavorites(Gene gene);
 
-        void onGeneSelectedToBeEmailed(Gene gene);
+        void onGeneSelectedToBeShared(Gene gene);
 
     }
 
@@ -183,9 +183,9 @@ public class GeneViewFragment extends BaseFragment {
                     mCallbacks.onGeneAddedToFavorites(mGene);
                 }
                 return true;
-            case R.id.email:
+            case R.id.share:
                 if (null != mCallbacks) {
-                    mCallbacks.onGeneSelectedToBeEmailed(mGene);
+                    mCallbacks.onGeneSelectedToBeShared(mGene);
                 }
                 return true;
             default:

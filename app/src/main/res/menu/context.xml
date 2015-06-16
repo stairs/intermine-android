@@ -6,8 +6,8 @@
         android:icon="@drawable/ic_action_important"
         app:showAsAction="collapseActionView|ifRoom"/>
     <item
-        android:id="@+id/email"
-        android:title="@string/action_send"
-        android:icon="@drawable/ic_action_email"
+        android:id="@+id/share"
+        android:title="@string/action_share"
+        android:icon="@drawable/ic_action_share"
         app:showAsAction="collapseActionView|ifRoom"/>
 </menu>
