@@ -22,6 +22,8 @@ public class ListItems {
     private List<String> mFeaturesNames;
     @SerializedName("results")
     private List<List<String>> mFeatures;
+    @SerializedName("rootClass")
+    private String mRootClass;
 
     public List<String> getFeaturesNames() {
         return mFeaturesNames;
@@ -37,5 +39,13 @@ public class ListItems {
 
     public void setFeatures(List<List<String>> features) {
         mFeatures = features;
+    }
+
+    public String getRootClass() {
+        return mRootClass;
+    }
+
+    public void setRootClass(String rootClass) {
+        mRootClass = rootClass;
     }
 }

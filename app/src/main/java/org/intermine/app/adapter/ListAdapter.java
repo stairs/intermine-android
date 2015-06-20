@@ -11,6 +11,8 @@ package org.intermine.app.adapter;
  */
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,22 +33,36 @@ import java.util.List;
 public class ListAdapter extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
+    private final int mAccentColor;
 
     private List<List<String>> mFeatures;
     private List<String> mFeaturesNames;
 
     public ListAdapter(Context ctx) {
         mContext = ctx;
+        mAccentColor = ctx.getResources().getColor(R.color.im_green);
 
         mLayoutInflater = LayoutInflater.from(ctx);
         mFeatures = new ArrayList<>();
     }
 
-    public void updateData(ListItems listItems) {
+    public void addListItems(ListItems listItems) {
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
         }
-        mFeaturesNames = listItems.getFeaturesNames();
+
+        if (!Collections.isNullOrEmpty(listItems.getFeaturesNames())) {
+            if (!Strs.isNullOrEmpty(listItems.getRootClass())) {
+                String regExp = listItems.getRootClass() + " > ";
+                mFeaturesNames = Collections.newArrayList();
+
+                for (String featureName : listItems.getFeaturesNames()) {
+                    mFeaturesNames.add(featureName.replace(regExp, ""));
+                }
+            } else {
+                mFeaturesNames = new ArrayList<>(listItems.getFeaturesNames());
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -89,23 +105,25 @@ public class ListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    protected String generateText(List<String> featuresNames, List<String> features) {
+    protected SpannableStringBuilder generateText(List<String> featuresNames, List<String> features) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!Collections.isNullOrEmpty(features)) {
-            StringBuilder builder = new StringBuilder();
 
             for (int i = 0; i < featuresNames.size(); i++) {
                 String feature = features.get(i);
 
                 if (!Strs.isNullOrEmpty(feature)) {
-                    builder.append(featuresNames.get(i)).append(": ").append(feature);
+                    String featureName = featuresNames.get(i) + ": ";
+                    Spannable featureNameSpannable = Strs.spanWithBoldFont(featureName, 0,
+                            featureName.length(), mAccentColor);
+                    builder.append(featureNameSpannable).append(feature);
 
                     if (i != featuresNames.size() - 1) {
                         builder.append(", \n");
                     }
                 }
             }
-            return builder.toString();
         }
-        return Strs.EMPTY_STRING;
+        return builder;
     }
 }

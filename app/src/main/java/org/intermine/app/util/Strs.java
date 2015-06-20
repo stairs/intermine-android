@@ -10,6 +10,11 @@ package org.intermine.app.util;
  *
  */
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+
 import java.util.Iterator;
 
 public class Strs {
@@ -41,29 +46,18 @@ public class Strs {
         return trimmed;
     }
 
-    /**
-     * Mask the string
-     *
-     * @param str     String to be masked
-     * @param visible Count of last character that should stay unmasked
-     * @return Masked string
-     */
-    public static String shadow(String str, int visible) {
-        String cipherNumber = "";
+    public static Spannable spanWithBackgroundColor(String str, int start, int end, int color) {
+        Spannable spannable = new SpannableString(str);
+        spannable.setSpan(new BackgroundColorSpan(color),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
+    }
 
-        for (int i = 0; i < str.length(); i++) {
-            if (i < str.length() - visible - 1) {
-                cipherNumber += "*";
-            } else {
-                cipherNumber += str.charAt(i);
-            }
-
-            if (0 == (i + 1) % 4) {
-                cipherNumber += " ";
-            }
-        }
-
-        return cipherNumber;
+    public static Spannable spanWithBoldFont(String str, int start, int end, int color) {
+        Spannable spannable = new SpannableString(str);
+        spannable.setSpan(new ForegroundColorSpan(color),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
     }
 
     public static boolean isNullOrEmpty(String string) {
@@ -72,10 +66,6 @@ public class Strs {
 
     public static String nullToEmpty(String string) {
         return (string == null) ? "" : string;
-    }
-
-    public static String emptyToNull(String string) {
-        return isNullOrEmpty(string) ? null : string;
     }
 
     /**
@@ -87,9 +77,12 @@ public class Strs {
      */
     public static String join(Iterable<?> iterable, String separator) {
         Iterator<?> oIter;
+
         if (iterable == null || (!(oIter = iterable.iterator()).hasNext()))
             return "";
+
         StringBuilder oBuilder = new StringBuilder(String.valueOf(oIter.next()));
+
         while (oIter.hasNext())
             oBuilder.append(separator).append(oIter.next());
         return oBuilder.toString();
