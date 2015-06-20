@@ -158,7 +158,6 @@ public class LogInFragment extends BaseFragment {
         if (null != selected) {
             showAuthContainer(selected.toString());
         }
-
         updateBottomLine();
     }
 
