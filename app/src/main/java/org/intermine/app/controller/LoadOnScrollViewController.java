@@ -14,9 +14,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ProgressBar;
 
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 public class LoadOnScrollViewController implements AbsListView.OnScrollListener {
 
@@ -38,7 +38,7 @@ public class LoadOnScrollViewController implements AbsListView.OnScrollListener 
 
     public View getFooterView() {
         if (null == mFooterView) {
-            mFooterView = new ProgressView(mContext, null, true);
+            mFooterView = new ProgressBar(mContext);
         }
         return mFooterView;
     }

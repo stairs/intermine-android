@@ -48,7 +48,6 @@ import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +75,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     protected View mInfoContainer;
 
     @InjectView(R.id.progress_view)
-    protected ProgressView mProgressView;
+    protected ProgressBar mProgressView;
 
     @InjectView(R.id.progress_bar)
     protected ProgressBar mProgressBar;

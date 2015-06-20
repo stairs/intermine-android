@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -30,7 +31,6 @@ import org.intermine.app.core.List;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 import butterknife.InjectView;
 
@@ -41,7 +41,7 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
     public static final long LISTS_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
     @InjectView(R.id.progress_view)
-    ProgressView mProgressView;
+    ProgressBar mProgressBar;
 
     @InjectView(R.id.lists)
     RecyclerView mRecyclerView;
@@ -142,11 +142,11 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
 
     protected void setProgress(boolean loading) {
         if (loading) {
-            Views.setVisible(mProgressView);
+            Views.setVisible(mProgressBar);
             Views.setGone(mRecyclerView);
         } else {
             Views.setVisible(mRecyclerView);
-            Views.setGone(mProgressView);
+            Views.setGone(mProgressBar);
         }
     }
 
