@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -30,7 +31,6 @@ import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetTemplateResultsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class TemplateResultsActivity extends BaseActivity {
     ListView mListView;
 
     @InjectView(R.id.progress_view)
-    ProgressView mProgressView;
+    ProgressBar mProgressBar;
 
     @InjectView(R.id.not_found_results_container)
     View mNotFoundView;
@@ -217,11 +217,11 @@ public class TemplateResultsActivity extends BaseActivity {
         mLoading = loading;
 
         if (loading) {
-            Views.setVisible(mProgressView);
+            Views.setVisible(mProgressBar);
             Views.setGone(mListView, mNotFoundView);
         } else {
             Views.setVisible(mListView);
-            Views.setGone(mProgressView);
+            Views.setGone(mProgressBar);
         }
     }
 }

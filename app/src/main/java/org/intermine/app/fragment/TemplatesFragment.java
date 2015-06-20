@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -30,7 +31,6 @@ import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetTemplatesRequest;
 import org.intermine.app.net.request.get.GetTemplatesRequest.Templates;
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 import butterknife.InjectView;
 import butterknife.OnItemClick;
@@ -47,7 +47,7 @@ public class TemplatesFragment extends BaseFragment {
     View mNotFoundView;
 
     @InjectView(R.id.progress_view)
-    ProgressView mProgressView;
+    ProgressBar mProgressView;
 
     private TemplatesAdapter mTemplatesAdapter;
 

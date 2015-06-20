@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -33,7 +34,6 @@ import org.intermine.app.net.request.post.FetchListResultsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
-import org.intermine.app.view.ProgressView;
 
 import butterknife.InjectView;
 
@@ -52,7 +52,7 @@ public class GenesListFragment extends BaseFragment {
     protected View mAuthRequiredView;
 
     @InjectView(R.id.progress_view)
-    protected ProgressView mProgressView;
+    protected ProgressBar mProgressView;
 
     private ListAdapter mListAdapter;
 

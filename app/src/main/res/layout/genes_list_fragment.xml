@@ -6,9 +6,9 @@
 
     <ListView
         android:id="@+id/list"
-        android:layout_below="@id/default_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/default_toolbar"
         android:footerDividersEnabled="false"/>
 
     <RelativeLayout
@@ -26,8 +26,8 @@
             android:src="@drawable/sad_face"/>
 
         <TextView
-            style="@style/InterMine.Theme.Text.Large"
             android:id="@+id/not_found_label"
+            style="@style/InterMine.Theme.Text.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sad_cloud_image"
@@ -36,21 +36,22 @@
             android:text="@string/not_found"/>
 
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:id="@+id/auth_required_label"
-            android:textColor="@color/gray"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/not_found_label"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/default_padding"
-            android:visibility="gone"
-            android:text="@string/favorites_requirement_label"/>
+            android:text="@string/favorites_requirement_label"
+            android:textColor="@color/gray"
+            android:visibility="gone"/>
     </RelativeLayout>
 
-    <org.intermine.app.view.ProgressView
+    <ProgressBar
         android:id="@+id/progress_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:visibility="gone"/>
 </RelativeLayout>

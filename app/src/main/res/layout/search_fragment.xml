@@ -5,15 +5,15 @@
                 tools:context="org.intermine.app.fragment.GenesListFragment">
 
     <ProgressBar
+        android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progress_bar"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="-8dp"
         android:layout_marginTop="-6dp"
-        android:visibility="gone"
-        android:indeterminate="true"/>
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/info_container"
@@ -37,40 +37,41 @@
     </LinearLayout>
 
     <ListView
-        android:visibility="gone"
         android:id="@+id/genes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:footerDividersEnabled="false"/>
+        android:footerDividersEnabled="false"
+        android:visibility="gone"/>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/not_found_results_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ImageView
-            android:paddingTop="30dp"
             android:id="@+id/sad_cloud_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"
             android:src="@drawable/sad_face"/>
 
         <TextView
-            android:layout_centerHorizontal="true"
             style="@style/InterMine.Theme.Text.Large"
-            android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sad_cloud_image"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
             android:text="@string/not_found"/>
     </RelativeLayout>
 
-    <org.intermine.app.view.ProgressView
-        android:visibility="gone"
+    <ProgressBar
         android:id="@+id/progress_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>
