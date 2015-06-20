@@ -103,7 +103,7 @@ public class TemplateResultsActivity extends BaseActivity {
             mViewController.onFinishLoad();
 
             if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.updateData(result);
+                mListAdapter.addListItems(result);
             } else {
                 Views.setVisible(mNotFoundView);
             }
