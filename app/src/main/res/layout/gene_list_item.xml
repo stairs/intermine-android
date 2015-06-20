@@ -3,60 +3,80 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:minHeight="?android:attr/listPreferredItemHeight"
               android:background="?android:attr/activatedBackgroundIndicator"
-              android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-              android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+              android:minHeight="?android:attr/listPreferredItemHeight"
+              android:orientation="horizontal"
               android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-              android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+              android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+              android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+              android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/name_title"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:paddingTop="@dimen/small_padding"
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/gene_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="@string/gene_name"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/organism_name_title"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/small_padding"
-            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/im_green_transparent"
             android:ellipsize="end"
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/gene_organism_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="@string/gene_organism_name"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/primary_db_id_title"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/small_padding"
             android:layout_width="match_parent"
-            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/im_green_transparent"
             android:ellipsize="end"
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/gene_primary_db_id"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="@string/gene_primary_db_id"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/symbol_title"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:paddingTop="@dimen/small_padding"
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/gene_symbol"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="@string/gene_symbol"/>
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <LinearLayout
@@ -64,63 +84,72 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/default_padding"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/default_padding">
 
         <TextView
             android:id="@+id/name_value"
-            android:paddingTop="@dimen/small_padding"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:textColor="@color/text_medium"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"/>
-
+            android:textColor="@color/text_medium"/>
 
         <TextView
             android:id="@+id/organism_name_value"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/small_padding"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:textColor="@color/text_medium"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"/>
+            android:textColor="@color/text_medium"/>
 
 
         <TextView
             android:id="@+id/primary_db_id_value"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/small_padding"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:textColor="@color/text_medium"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"/>
+            android:textColor="@color/text_medium"/>
 
 
         <TextView
             android:id="@+id/symbol_value"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:maxLines="1"
-            android:paddingTop="@dimen/small_padding"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="@color/text_medium"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:paddingTop="3dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/text_medium"/>
 
         <TextView
             android:id="@+id/gene_mine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
             android:ellipsize="end"
             android:gravity="end"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:paddingTop="3dp"
             android:paddingRight="@dimen/small_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:textColor="@color/text_light"
+            android:text="Mine"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:text="Mine"/>
+            android:textColor="@color/text_light"/>
     </LinearLayout>
 </LinearLayout>
