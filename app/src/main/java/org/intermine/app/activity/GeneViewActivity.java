@@ -108,10 +108,15 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
 
     @Override
     public void onShowGeneReport(Gene gene) {
-        String mineWebAppUrl = generateGeneReportUrl(gene);
+        String geneReportUrl = generateGeneReportUrl(gene);
 
-        if (!Strs.isNullOrEmpty(mineWebAppUrl)) {
-            WebActivity.start(this, gene.getSymbol(), mineWebAppUrl);
+        if (!Strs.isNullOrEmpty(geneReportUrl)) {
+            String title = "Gene Report";
+
+            if (!Strs.isNullOrEmpty(gene.getSymbol())) {
+                title = "Gene " + gene.getSymbol() + " Report";
+            }
+            WebActivity.start(this, title, geneReportUrl);
         }
     }
 

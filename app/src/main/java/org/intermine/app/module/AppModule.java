@@ -91,7 +91,7 @@ import dagger.Provides;
 )
 public final class AppModule {
     /**
-     * Application context.
+     * Application gene_view_menu.
      */
     private final Context context;
 

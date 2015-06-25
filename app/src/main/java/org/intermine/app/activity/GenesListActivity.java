@@ -14,12 +14,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.intermine.app.R;
 import org.intermine.app.core.Gene;
 import org.intermine.app.core.List;
 import org.intermine.app.fragment.GenesListFragment;
 import org.intermine.app.listener.OnGeneSelectedListener;
+import org.intermine.app.util.Strs;
+import org.intermine.app.util.Uris;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -27,6 +34,8 @@ import org.intermine.app.listener.OnGeneSelectedListener;
 public class GenesListActivity extends BaseActivity implements OnGeneSelectedListener {
     public static final String LIST_KEY = "list_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
+
+    private static final String BAG_NAME_PARAM = "bagName";
 
     private List mList;
     private String mMineName;
@@ -41,10 +50,6 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
         intent.putExtra(MINE_NAME_KEY, mineName);
         context.startActivity(intent);
     }
-
-    // --------------------------------------------------------------------------------------------
-    // Inner Classes
-    // --------------------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
@@ -75,11 +80,48 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
     // --------------------------------------------------------------------------------------------
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.list_view_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.open_in_browser:
+                String listAnalysisUrl = generateListAnalysisUrl(mList, mMineName);
+
+                if (!Strs.isNullOrEmpty(listAnalysisUrl)) {
+                    String title = "List Analysis";
+
+                    if (!Strs.isNullOrEmpty(mList.getName())) {
+                        title = mList.getName();
+                    }
+                    WebActivity.start(this, title, listAnalysisUrl);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onGeneSelected(Gene gene) {
 
     }
-
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
+
+    private String generateListAnalysisUrl(List list, String mineName) {
+        String webAppUrl = mStorage.getMineWebAppUrl(mineName);
+
+        if (!Strs.isNullOrEmpty(webAppUrl)) {
+            Map<String, String> params = new HashMap<>();
+            params.put(BAG_NAME_PARAM, mList.getName());
+            return Uris.expandQuery(webAppUrl + getString(R.string.list_analysis_path), params);
+        }
+        return Strs.EMPTY_STRING;
+    }
 }

@@ -173,7 +173,7 @@ public class GeneViewFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.context, menu);
+        inflater.inflate(R.menu.gene_view_menu, menu);
     }
 
     @Override

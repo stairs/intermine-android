@@ -85,10 +85,8 @@ public class WebActivity extends BaseActivity {
     // --------------------------------------------------------------------------------------------
 
     protected void initContent() {
-        if (Strs.isNullOrEmpty(mTitle)) {
-            setTitle("Gene Report");
-        } else {
-            setTitle("Gene " + mTitle + " Report");
+        if (!Strs.isNullOrEmpty(mTitle)) {
+            setTitle(mTitle);
         }
         mWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
 

@@ -197,7 +197,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater menuInflater = mode.getMenuInflater();
-            menuInflater.inflate(R.menu.context, menu);
+            menuInflater.inflate(R.menu.gene_view_menu, menu);
 
             ((MainActivity) getActivity()).getSupportActionBar().hide();
             return true;
