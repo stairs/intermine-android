@@ -101,6 +101,7 @@ public class GeneViewFragment extends BaseFragment {
 
         void onGeneSelectedToBeShared(Gene gene);
 
+        void onShowGeneReport(Gene gene);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -186,6 +187,11 @@ public class GeneViewFragment extends BaseFragment {
             case R.id.share:
                 if (null != mCallbacks) {
                     mCallbacks.onGeneSelectedToBeShared(mGene);
+                }
+                return true;
+            case R.id.open_in_browser:
+                if (null != mCallbacks) {
+                    mCallbacks.onShowGeneReport(mGene);
                 }
                 return true;
             default:

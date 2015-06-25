@@ -19,11 +19,12 @@ import java.util.Set;
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public interface Storage {
-    public static final String USER_TOKEN_KEY = "user_token_key_";
-    public static final String SELECTED_MINE_NAMES_KEY = "selected_mine_names_key";
-    public static final String MINE_NAMES_KEY = "mine_names_key";
-    public static final String MINE_URL_KEY = "mine_url_key_";
-    public static final String USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    String USER_TOKEN_KEY = "user_token_key_";
+    String SELECTED_MINE_NAMES_KEY = "selected_mine_names_key";
+    String MINE_NAMES_KEY = "mine_names_key";
+    String MINE_URL_KEY = "mine_url_key_";
+    String MINE_URL_WEB_APP_KEY = "mine_url_web_app_key_";
+    String USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     String getUserToken(String mineName);
 
@@ -42,6 +43,10 @@ public interface Storage {
     void setMineUrl(String mine, String url);
 
     String getMineUrl(String mine);
+
+    void setMineWebAppUrl(String mine, String url);
+
+    String getMineWebAppUrl(String mine);
 
     Set<String> getSelectedMineNames();
 

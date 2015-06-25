@@ -13,7 +13,7 @@
         <item>PhytoMine</item>
         <item>MedicMine</item>
     </string-array>
-    <string-array name="mines_urls">
+    <string-array name="mines_service_urls">
         <item>http://www.flymine.org/query/service</item>
         <item>http://www.mousemine.org/mousemine/service</item>
         <item>http://ratmine.mcw.edu/ratmine/service</item>
@@ -25,5 +25,18 @@
         <item>https://apps.araport.org/thalemine/service</item>
         <item>http://phytozome.jgi.doe.gov/phytomine/service</item>
         <item>http://medicmine.jcvi.org/medicmine/service</item>
+    </string-array>
+    <string-array name="mines_web_app_urls">
+        <item>http://www.flymine.org/flymine</item>
+        <item>http://www.mousemine.org/mousemine</item>
+        <item>http://ratmine.mcw.edu/ratmine</item>
+        <item>http://yeastmine.yeastgenome.org/yeastmine</item>
+        <item>http://targetmine.mizuguchilab.org/targetmine</item>
+        <item>http://zebrafishmine.org</item>
+        <item>http://www.wormbase.org/tools/wormmine</item>
+        <item>http://human.intermine.org/human</item>
+        <item>https://apps.araport.org/thalemine</item>
+        <item>http://phytozome.jgi.doe.gov/phytomine</item>
+        <item>http://medicmine.jcvi.org/medicmine</item>
     </string-array>
 </resources>

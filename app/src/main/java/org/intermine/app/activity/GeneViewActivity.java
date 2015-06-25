@@ -26,10 +26,16 @@ import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
+import org.intermine.app.util.Uris;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GeneViewActivity extends MainActivity implements GeneViewFragment.GeneActionCallbacks {
+    private static final String CLASS_PARAM = "class";
+    private static final String CLASS_DEFAULT_VALUE = "Gene";
+    private static final String EXTERNALIDS = "externalids";
     private Gene mGene;
 
     private String mGeneFavoritesListName;
@@ -59,7 +65,6 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-
         Bundle bundle = intent.getExtras();
 
         if (null != bundle) {
@@ -101,6 +106,15 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
         shareText();
     }
 
+    @Override
+    public void onShowGeneReport(Gene gene) {
+        String mineWebAppUrl = generateGeneReportUrl(gene);
+
+        if (!Strs.isNullOrEmpty(mineWebAppUrl)) {
+            WebActivity.start(this, gene.getSymbol(), mineWebAppUrl);
+        }
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
@@ -117,5 +131,19 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
         } else {
             Toast.makeText(this, "No messenger installed.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String generateGeneReportUrl(Gene gene) {
+        if (!Strs.isNullOrEmpty(gene.getMine())) {
+            String webAppUrl = mStorage.getMineWebAppUrl(gene.getMine());
+
+            if (!Strs.isNullOrEmpty(webAppUrl)) {
+                Map<String, String> params = new HashMap<>();
+                params.put(CLASS_PARAM, CLASS_DEFAULT_VALUE);
+                params.put(EXTERNALIDS, gene.getPrimaryDBId());
+                return Uris.expandQuery(webAppUrl + getString(R.string.report_path), params);
+            }
+        }
+        return Strs.EMPTY_STRING;
     }
 }

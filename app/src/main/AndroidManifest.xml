@@ -45,6 +45,9 @@
             android:label="@string/settings"
             android:parentActivityName=".activity.MainActivity"/>
         <activity
+            android:name=".activity.WebActivity"
+            android:parentActivityName=".activity.GeneViewActivity"/>
+        <activity
             android:name=".activity.MinesActivity"
             android:label="@string/mines"
             android:parentActivityName=".activity.SettingsActivity"/>

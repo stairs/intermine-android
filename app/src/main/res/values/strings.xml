@@ -13,6 +13,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_share">Share</string>
+    <string name="open_in_browser">Open in browser</string>
     <string name="acction_add_2_favourites">Add to favourites</string>
     <string name="acction_delete_mine">Delete</string>
     <string name="action_settings">Settings</string>
@@ -50,6 +51,8 @@
     <string name="get_token_path">/user/tokens</string>
     <string name="model_path">/model</string>
     <string name="user_preferences_path">/user/preferences</string>
+    <string name="report_path">/portal.do</string>
+    <string name="list_analysis_path">/bagDetails.do</string>
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>
