@@ -17,7 +17,8 @@
     <string name="acction_add_2_favourites">Add to favourites</string>
     <string name="acction_delete_mine">Delete</string>
     <string name="action_settings">Settings</string>
-    <string name="search_hint">Enter gene name</string>
+    <string name="gene_search_hint">Enter gene name</string>
+    <string name="template_search_hint">Enter template name</string>
     <string name="mine_name_hint">Enter mine name</string>
     <string name="mine_url_hint">Enter mine API base url</string>
     <string name="not_found">No results found.</string>

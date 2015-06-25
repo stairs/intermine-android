@@ -12,7 +12,12 @@ package org.intermine.app.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,12 +35,15 @@ import org.intermine.app.core.templates.Template;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetTemplatesRequest;
 import org.intermine.app.net.request.get.GetTemplatesRequest.Templates;
+import org.intermine.app.util.Collections;
+import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
 import butterknife.InjectView;
 import butterknife.OnItemClick;
 
-public class TemplatesFragment extends BaseFragment {
+public class TemplatesFragment extends BaseFragment implements SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener {
     public static final String MINE_NAME_KEY = "mine_name";
 
     public static final long TEMPLATES_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
@@ -49,11 +57,14 @@ public class TemplatesFragment extends BaseFragment {
     @InjectView(R.id.progress_view)
     ProgressBar mProgressView;
 
+    private SearchView mSearchView;
+
     private TemplatesAdapter mTemplatesAdapter;
 
     private OnTemplateSelectedListener mOnTemplateSelectedListener;
 
     private String mMineName;
+    private String mQuery = Strs.EMPTY_STRING;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
@@ -72,42 +83,20 @@ public class TemplatesFragment extends BaseFragment {
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    public static interface OnTemplateSelectedListener {
-        void onTemplateSelected(Template template, String mineName);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
-
-    public class GetTemplatesListener implements RequestListener<Templates> {
-
-        @Override
-        public void onRequestFailure(SpiceException ex) {
-            setProgress(false);
-            ResponseHelper.handleSpiceException(ex, (BaseActivity) getActivity(), mMineName);
-        }
-
-        @Override
-        public void onRequestSuccess(Templates result) {
-            setProgress(false);
-
-            if (result == null || result.isEmpty()) {
-                Views.setVisible(mNotFoundView);
-                Views.setGone(mTemplates);
-            } else {
-                Views.setVisible(mTemplates);
-                Views.setGone(mNotFoundView);
-
-                mTemplatesAdapter.updateData(result.values());
-            }
-        }
-    }
-    // --------------------------------------------------------------------------------------------
-    // Fragment Lifecycle
-    // --------------------------------------------------------------------------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.templates_fragment, container, false);
     }
+    // --------------------------------------------------------------------------------------------
+    // Fragment Lifecycle
+    // --------------------------------------------------------------------------------------------
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -135,9 +124,69 @@ public class TemplatesFragment extends BaseFragment {
         ((MainActivity) activity).onSectionAttached(title);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.templates_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search_action);
+        MenuItemCompat.setOnActionExpandListener(menuItem, this);
+        mSearchView = (SearchView) menuItem.getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setQueryHint(getString(R.string.template_search_hint));
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        mSearchView = null;
+    }
+
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (null != mSearchView) {
+            mSearchView.clearFocus();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        if (null != mSearchView) {
+            mSearchView.clearFocus();
+        }
+
+        mTemplatesAdapter.filter(Strs.EMPTY_STRING);
+        Views.setVisible(mTemplates);
+        Views.setGone(mNotFoundView);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        mQuery = query;
+
+        if (!Strs.isNullOrEmpty(mQuery)) {
+            mTemplatesAdapter.filter(query);
+
+            if (Collections.isNullOrEmpty(mTemplatesAdapter.getFilteredTemplates())) {
+                Views.setVisible(mNotFoundView);
+                Views.setGone(mTemplates);
+            } else {
+                Views.setVisible(mTemplates);
+                Views.setGone(mNotFoundView);
+            }
+        }
+        return true;
+    }
 
     @OnItemClick(R.id.templates)
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -146,10 +195,6 @@ public class TemplatesFragment extends BaseFragment {
             mOnTemplateSelectedListener.onTemplateSelected(selected, mMineName);
         }
     }
-
-    // --------------------------------------------------------------------------------------------
-    // Helper Methods
-    // --------------------------------------------------------------------------------------------
 
     protected void fetchTemplates() {
         GetTemplatesRequest request = new GetTemplatesRequest(getActivity(), mMineName);
@@ -163,6 +208,37 @@ public class TemplatesFragment extends BaseFragment {
         } else {
             Views.setVisible(mTemplates);
             Views.setGone(mProgressView);
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Helper Methods
+    // --------------------------------------------------------------------------------------------
+
+    public static interface OnTemplateSelectedListener {
+        void onTemplateSelected(Template template, String mineName);
+    }
+    public class GetTemplatesListener implements RequestListener<Templates> {
+
+        @Override
+        public void onRequestFailure(SpiceException ex) {
+            setProgress(false);
+            ResponseHelper.handleSpiceException(ex, (BaseActivity) getActivity(), mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(Templates result) {
+            setProgress(false);
+
+            if (result == null || result.isEmpty()) {
+                Views.setVisible(mNotFoundView);
+                Views.setGone(mTemplates);
+            } else {
+                Views.setVisible(mTemplates);
+                Views.setGone(mNotFoundView);
+
+                mTemplatesAdapter.updateData(result.values());
+            }
         }
     }
 }
