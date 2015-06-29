@@ -79,12 +79,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @InjectView(R.id.progress_bar)
     protected ProgressBar mProgressBar;
-
-    private SearchView mSearchView;
-
     protected boolean mLoading;
-    private ApiPager mPager;
     protected LoadOnScrollViewController mViewController;
+    private SearchView mSearchView;
+    private ApiPager mPager;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private OnSearchRequestsFinishedAsyncTask mAsyncTask;
 
@@ -98,97 +96,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private OnGeneSelectedListener mListener;
 
     private String mGeneFavoritesListName;
-    private String mQuery = "";
-
-    public SearchFragment() {
-    }
-
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-        return fragment;
-    }
-
-    // --------------------------------------------------------------------------------------------
-    // Inner Classes
-    // --------------------------------------------------------------------------------------------
-    private class GeneSearchRequestListener implements RequestListener<GenesList> {
-
-        @Override
-        public void onRequestFailure(SpiceException e) {
-            mCountDownLatch.countDown();
-            ResponseHelper.handleSpiceException(e, (BaseActivity) getActivity(), null);
-        }
-
-        @Override
-        public void onRequestSuccess(GenesList result) {
-            mCountDownLatch.countDown();
-
-            // first page load
-            if (null == mPager) {
-                mGenes.clear();
-                mPager = new ApiPager(0, 0, GeneSearchRequest.DEFAULT_SIZE);
-                mMine2ResultsCount = new HashMap<>();
-            }
-
-            if (0 == mPager.getCurrentPage()) {
-                mPager = new ApiPager(mPager.getTotal() + result.getResultsCount(), 0, GeneSearchRequest.DEFAULT_SIZE);
-            }
-
-            if (null != result && !result.isEmpty()) {
-                mGenes.addAll(result);
-                Collections.sort(mGenes);
-                mGenesAdapter.notifyDataSetChanged();
-                mMine2ResultsCount.put(result.get(0).getMine(), result.getResultsCount());
-            }
-
-            if (!mGenes.isEmpty()) {
-                setProgress(false);
-            }
-        }
-    }
-
-    private class OnSearchRequestsFinishedAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            if (!mGenes.isEmpty()) {
-                Views.setVisible(mProgressBar);
-            }
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            while (0 < mCountDownLatch.getCount()) {
-                try {
-                    mCountDownLatch.await();
-                } catch (InterruptedException e) {
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            mViewController.onFinishLoad();
-            Views.setGone(mProgressBar);
-
-            if (mGenes.isEmpty()) {
-                Views.setGone(mGenesListView);
-                Views.setVisible(mNotFoundView);
-            } else {
-                Views.setVisible(mGenesListView);
-                Views.setGone(mNotFoundView);
-            }
-
-            setProgress(false);
-        }
-
-        @Override
-        protected void onCancelled() {
-            Views.setGone(mProgressBar);
-        }
-    }
-
+    private String mQuery = Strs.EMPTY_STRING;
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
@@ -197,7 +105,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater menuInflater = mode.getMenuInflater();
-            menuInflater.inflate(R.menu.context, menu);
+            menuInflater.inflate(R.menu.gene_view_menu, menu);
 
             ((MainActivity) getActivity()).getSupportActionBar().hide();
             return true;
@@ -233,9 +141,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             ((MainActivity) getActivity()).getSupportActionBar().show();
         }
     };
-    // --------------------------------------------------------------------------------------------
-    // Fragment Lifecycle
-    // --------------------------------------------------------------------------------------------
+
+    public SearchFragment() {
+    }
+
+    public static SearchFragment newInstance() {
+        SearchFragment fragment = new SearchFragment();
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -250,6 +163,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
+    // --------------------------------------------------------------------------------------------
+    // Fragment Lifecycle
+    // --------------------------------------------------------------------------------------------
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -299,17 +215,13 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     }
 
-    // --------------------------------------------------------------------------------------------
-    // Callbacks
-    // --------------------------------------------------------------------------------------------
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
             inflater.inflate(R.menu.gene_search_menu, menu);
             mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
             mSearchView.setOnQueryTextListener(this);
-            mSearchView.setQueryHint(getString(R.string.search_hint));
+            mSearchView.setQueryHint(getString(R.string.gene_search_hint));
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
@@ -319,6 +231,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         super.onDestroyOptionsMenu();
         mSearchView = null;
     }
+
+    // --------------------------------------------------------------------------------------------
+    // Callbacks
+    // --------------------------------------------------------------------------------------------
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -336,21 +252,17 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         return true;
     }
 
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return true;
+    }
+
     @OnItemClick(R.id.genes)
     public void onGeneSelected(int position) {
         if (null != mListener) {
             Gene gene = (Gene) mGenesAdapter.getItem(position);
             mListener.onGeneSelected(gene);
         }
-    }
-
-    // --------------------------------------------------------------------------------------------
-    // Helper Methods
-    // --------------------------------------------------------------------------------------------
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return true;
     }
 
     protected void setProgress(boolean loading) {
@@ -379,6 +291,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
         return genes;
     }
+
+    // --------------------------------------------------------------------------------------------
+    // Helper Methods
+    // --------------------------------------------------------------------------------------------
 
     protected Map<String, List<Gene>> getMineToSelectedGenesMap() {
         Map<String, List<Gene>> mineToSelectedGenesMap = org.intermine.app.util.Collections.newHashMap();
@@ -482,6 +398,86 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
                 execute(request, new GetListsListener((BaseActivity) getActivity(),
                         mine, mineToGenesMap.get(mine)));
             }
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Inner Classes
+    // --------------------------------------------------------------------------------------------
+    private class GeneSearchRequestListener implements RequestListener<GenesList> {
+
+        @Override
+        public void onRequestFailure(SpiceException e) {
+            mCountDownLatch.countDown();
+            ResponseHelper.handleSpiceException(e, (BaseActivity) getActivity(), null);
+        }
+
+        @Override
+        public void onRequestSuccess(GenesList result) {
+            mCountDownLatch.countDown();
+
+            // first page load
+            if (null == mPager) {
+                mGenes.clear();
+                mPager = new ApiPager(0, 0, GeneSearchRequest.DEFAULT_SIZE);
+                mMine2ResultsCount = new HashMap<>();
+            }
+
+            if (0 == mPager.getCurrentPage()) {
+                mPager = new ApiPager(mPager.getTotal() + result.getResultsCount(), 0, GeneSearchRequest.DEFAULT_SIZE);
+            }
+
+            if (null != result && !result.isEmpty()) {
+                mGenes.addAll(result);
+                Collections.sort(mGenes);
+                mGenesAdapter.notifyDataSetChanged();
+                mMine2ResultsCount.put(result.get(0).getMine(), result.getResultsCount());
+            }
+
+            if (!mGenes.isEmpty()) {
+                setProgress(false);
+            }
+        }
+    }
+    private class OnSearchRequestsFinishedAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            if (!mGenes.isEmpty()) {
+                Views.setVisible(mProgressBar);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            while (0 < mCountDownLatch.getCount()) {
+                try {
+                    mCountDownLatch.await();
+                } catch (InterruptedException e) {
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            mViewController.onFinishLoad();
+            Views.setGone(mProgressBar);
+
+            if (mGenes.isEmpty()) {
+                Views.setGone(mGenesListView);
+                Views.setVisible(mNotFoundView);
+            } else {
+                Views.setVisible(mGenesListView);
+                Views.setGone(mNotFoundView);
+            }
+
+            setProgress(false);
+        }
+
+        @Override
+        protected void onCancelled() {
+            Views.setGone(mProgressBar);
         }
     }
 }

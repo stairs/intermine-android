@@ -23,6 +23,7 @@ import org.intermine.app.activity.SettingsActivity;
 import org.intermine.app.activity.StartActivity;
 import org.intermine.app.activity.TemplateActivity;
 import org.intermine.app.activity.TemplateResultsActivity;
+import org.intermine.app.activity.WebActivity;
 import org.intermine.app.fragment.GeneViewFragment;
 import org.intermine.app.fragment.GenesListFragment;
 import org.intermine.app.fragment.ListsFragment;
@@ -84,12 +85,13 @@ import dagger.Provides;
                 FetchListResultsRequest.class,
                 NavigationDrawerFragment.class,
                 Storage.class,
-                MinesActivity.class
+                MinesActivity.class,
+                WebActivity.class
         }
 )
 public final class AppModule {
     /**
-     * Application context.
+     * Application gene_view_menu.
      */
     private final Context context;
 

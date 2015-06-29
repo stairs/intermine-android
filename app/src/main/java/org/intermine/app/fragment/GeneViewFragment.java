@@ -101,6 +101,7 @@ public class GeneViewFragment extends BaseFragment {
 
         void onGeneSelectedToBeShared(Gene gene);
 
+        void onShowGeneReport(Gene gene);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -172,7 +173,7 @@ public class GeneViewFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.context, menu);
+        inflater.inflate(R.menu.gene_view_menu, menu);
     }
 
     @Override
@@ -186,6 +187,11 @@ public class GeneViewFragment extends BaseFragment {
             case R.id.share:
                 if (null != mCallbacks) {
                     mCallbacks.onGeneSelectedToBeShared(mGene);
+                }
+                return true;
+            case R.id.open_in_browser:
+                if (null != mCallbacks) {
+                    mCallbacks.onShowGeneReport(mGene);
                 }
                 return true;
             default:

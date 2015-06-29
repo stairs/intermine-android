@@ -41,11 +41,12 @@ public abstract class BaseStorage implements Storage {
         app.inject(this);
 
         String[] mineNamesArr = ctx.getResources().getStringArray(R.array.mines_names);
-        String[] mineNamesUrls = ctx.getResources().getStringArray(R.array.mines_urls);
+        String[] mineNamesUrls = ctx.getResources().getStringArray(R.array.mines_service_urls);
+        String[] mineNamesWebAppUrls = ctx.getResources().getStringArray(R.array.mines_web_app_urls);
         mDefaultMineNames = new HashSet<>(Arrays.asList(mineNamesArr));
-
         for (int i = 0; i < mineNamesArr.length; i++) {
             setMineUrl(mineNamesArr[i], mineNamesUrls[i]);
+            setMineWebAppUrl(mineNamesArr[i], mineNamesWebAppUrls[i]);
         }
     }
 
@@ -62,15 +63,15 @@ public abstract class BaseStorage implements Storage {
     }
 
     @Override
+    public Set<String> getMineNames() {
+        return mPreferences.getStringSet(MINE_NAMES_KEY, mDefaultMineNames);
+    }
+
+    @Override
     public void setMineNames(Set<String> mineNames) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putStringSet(MINE_NAMES_KEY, new HashSet<>(mineNames));
         editor.commit();
-    }
-
-    @Override
-    public Set<String> getMineNames() {
-        return mPreferences.getStringSet(MINE_NAMES_KEY, mDefaultMineNames);
     }
 
     @Override
@@ -96,6 +97,19 @@ public abstract class BaseStorage implements Storage {
         editor.putString(MINE_URL_KEY + mine, url);
         editor.commit();
     }
+
+    @Override
+    public String getMineWebAppUrl(String mine) {
+        return mPreferences.getString(MINE_URL_WEB_APP_KEY + mine, Strs.EMPTY_STRING);
+    }
+
+    @Override
+    public void setMineWebAppUrl(String mine, String url) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(MINE_URL_WEB_APP_KEY + mine, url);
+        editor.commit();
+    }
+
 
     @Override
     public boolean hasUserLearnedDrawer() {
