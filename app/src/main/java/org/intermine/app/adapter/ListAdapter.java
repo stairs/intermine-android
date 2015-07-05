@@ -114,7 +114,7 @@ public class ListAdapter extends BaseAdapter {
 
                 if (!Strs.isNullOrEmpty(feature)) {
                     String featureName = featuresNames.get(i) + ": ";
-                    Spannable featureNameSpannable = Strs.spanWithBoldFont(featureName, 0,
+                    Spannable featureNameSpannable = Strs.spanWithBoldAndColorFont(featureName, 0,
                             featureName.length(), mAccentColor);
                     builder.append(featureNameSpannable).append(feature);
 

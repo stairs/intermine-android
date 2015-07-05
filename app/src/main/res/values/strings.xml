@@ -37,12 +37,15 @@
     <string name="gene_name_description">Name Description</string>
     <string name="gene_chromosomal_location">Chromosomal Location</string>
     <string name="gene_ontology_term">Ontology Term</string>
-    <string name="gene_name">Name</string>
+    <string name="gene_name_with_colon">Name:</string>
+    <string name="gene_secondary_id_with_colon">Secondary ID:</string>
     <string name="gene_secondary_id">Secondary ID</string>
+    <string name="gene_organism_name_with_colon">Organism Name:</string>
     <string name="gene_organism_name">Organism Name</string>
+    <string name="gene_organism_short_name_with_colon">Organism Short Name:</string>
     <string name="gene_organism_short_name">Organism Short Name</string>
-    <string name="gene_primary_db_id">Primary DBID</string>
-    <string name="gene_symbol">Symbol</string>
+    <string name="gene_primary_db_id_with_colon">Primary DBID:</string>
+    <string name="gene_symbol_with_colon">Symbol:</string>
 
     <string name="search_path">/query/results</string>
     <string name="lists_path">/lists</string>

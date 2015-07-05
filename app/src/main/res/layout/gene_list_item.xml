@@ -16,67 +16,68 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="2dp">
 
         <TextView
             android:id="@+id/name_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|right"
             android:maxLines="1"
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
-            android:text="@string/gene_name"
+            android:text="@string/gene_name_with_colon"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"/>
+            android:textColor="@color/im_green"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/organism_name_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|right"
             android:maxLines="1"
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
-            android:text="@string/gene_organism_name"
+            android:text="@string/gene_organism_name_with_colon"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"/>
+            android:textColor="@color/im_green"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/primary_db_id_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|right"
             android:maxLines="1"
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
-            android:text="@string/gene_primary_db_id"
+            android:text="@string/gene_primary_db_id_with_colon"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"/>
+            android:textColor="@color/im_green"/>
 
         <TextView
             android:id="@+id/symbol_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@color/im_green_transparent"
             android:ellipsize="end"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|right"
             android:maxLines="1"
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
-            android:text="@string/gene_symbol"
+            android:text="@string/gene_symbol_with_colon"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"/>
+            android:textColor="@color/im_green"/>
     </LinearLayout>
 
     <LinearLayout
@@ -84,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="center_vertical"
+        android:paddingTop="2dp"
         android:orientation="vertical"
         android:paddingLeft="@dimen/default_padding">
 
@@ -91,10 +93,10 @@
             android:id="@+id/name_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:layout_marginTop="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_medium"/>
@@ -103,10 +105,10 @@
             android:id="@+id/organism_name_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:layout_marginTop="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_medium"/>
@@ -116,10 +118,10 @@
             android:id="@+id/primary_db_id_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:layout_marginTop="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_medium"/>
@@ -129,10 +131,10 @@
             android:id="@+id/symbol_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:layout_marginTop="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_medium"/>
@@ -141,13 +143,13 @@
             android:id="@+id/gene_mine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:gravity="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:paddingTop="3dp"
             android:paddingRight="@dimen/small_padding"
+            android:paddingTop="3dp"
             android:text="Mine"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/text_light"/>

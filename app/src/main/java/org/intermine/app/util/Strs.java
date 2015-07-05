@@ -12,14 +12,16 @@ package org.intermine.app.util;
 
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 
 import java.util.Iterator;
 
 public class Strs {
     public final static String EMPTY_STRING = "";
     public final static String BR = "<br/>";
+    private final static StyleSpan sBoldStyle = new StyleSpan(android.graphics.Typeface.BOLD);
+
 
     /**
      * Capitalizes first letter of a string
@@ -46,17 +48,13 @@ public class Strs {
         return trimmed;
     }
 
-    public static Spannable spanWithBackgroundColor(String str, int start, int end, int color) {
+    public static Spannable spanWithBoldAndColorFont(String str, int start, int end, int color) {
         Spannable spannable = new SpannableString(str);
-        spannable.setSpan(new BackgroundColorSpan(color),
-                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannable;
-    }
 
-    public static Spannable spanWithBoldFont(String str, int start, int end, int color) {
-        Spannable spannable = new SpannableString(str);
         spannable.setSpan(new ForegroundColorSpan(color),
                 start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(sBoldStyle,
+                start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return spannable;
     }
 
