@@ -35,20 +35,25 @@ public class ListAdapter extends BaseAdapter {
     private final LayoutInflater mLayoutInflater;
     private final int mAccentColor;
 
+    private List<List<String>> mFilteredFeatures;
     private List<List<String>> mFeatures;
     private List<String> mFeaturesNames;
+
+    private String mQuery;
 
     public ListAdapter(Context ctx) {
         mContext = ctx;
         mAccentColor = ctx.getResources().getColor(R.color.im_green);
 
         mLayoutInflater = LayoutInflater.from(ctx);
-        mFeatures = new ArrayList<>();
+        mFilteredFeatures = Collections.newArrayList();
+        mFeatures = Collections.newArrayList();
     }
 
     public void addListItems(ListItems listItems) {
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
+            filter(mQuery);
         }
 
         if (!Collections.isNullOrEmpty(listItems.getFeaturesNames())) {
@@ -68,16 +73,16 @@ public class ListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (null != mFeatures) {
-            return mFeatures.size();
+        if (null != mFilteredFeatures) {
+            return mFilteredFeatures.size();
         }
         return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        if (null != mFeatures) {
-            return mFeatures.get(position);
+        if (null != mFilteredFeatures) {
+            return mFilteredFeatures.get(position);
         }
         return null;
     }
@@ -125,5 +130,29 @@ public class ListAdapter extends BaseAdapter {
             }
         }
         return builder;
+    }
+
+    public void filter(String query) {
+        mQuery = query;
+        mFilteredFeatures.clear();
+
+        if (Strs.isNullOrEmpty(query)) {
+            mFilteredFeatures.addAll(mFeatures);
+        } else {
+            query = query.toLowerCase();
+            for (List<String> featureSet : mFeatures) {
+                for (String feature : featureSet) {
+                    if ((!Strs.isNullOrEmpty(feature) && feature.toLowerCase().contains(query))) {
+                        mFilteredFeatures.add(featureSet);
+                        break;
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public boolean isFilteredResultsEmpty() {
+        return Collections.isNullOrEmpty(mFilteredFeatures);
     }
 }

@@ -13,7 +13,11 @@ package org.intermine.app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -30,6 +34,7 @@ import org.intermine.app.core.templates.TemplateParameter;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetTemplateResultsRequest;
 import org.intermine.app.util.Collections;
+import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
 import java.util.ArrayList;
@@ -40,12 +45,15 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class TemplateResultsActivity extends BaseActivity {
+public class TemplateResultsActivity extends BaseActivity implements SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener {
     public static final int ITEMS_PER_PAGE = 15;
 
     public static final String TEMPLATE_NAME_KEY = "template_name_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
     public static final String TEMPLATE_PARAMS_KEY = "template_params_key";
+    protected LoadOnScrollViewController mViewController;
+    protected boolean mLoading;
 
     @InjectView(R.id.list)
     ListView mListView;
@@ -56,17 +64,15 @@ public class TemplateResultsActivity extends BaseActivity {
     @InjectView(R.id.not_found_results_container)
     View mNotFoundView;
 
-    private ListAdapter mListAdapter;
+    private SearchView mSearchView;
 
-    protected LoadOnScrollViewController mViewController;
+    private ListAdapter mListAdapter;
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private ApiPager mPager;
-
     private String mTemplateName;
     private ArrayList<TemplateParameter> mTemplateParams;
     private String mMineName;
-
-    protected boolean mLoading;
+    private String mQuery = Strs.EMPTY_STRING;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
@@ -83,53 +89,6 @@ public class TemplateResultsActivity extends BaseActivity {
 
     // --------------------------------------------------------------------------------------------
     // Inner Classes
-    // --------------------------------------------------------------------------------------------
-
-    public class TemplateResultsListener implements RequestListener<ListItems> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            Views.setVisible(mNotFoundView);
-            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
-                    mMineName);
-        }
-
-        @Override
-        public void onRequestSuccess(ListItems result) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.addListItems(result);
-            } else {
-                Views.setVisible(mNotFoundView);
-            }
-        }
-    }
-
-    public class TemplateResultsCountListener implements RequestListener<Integer> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            Views.setVisible(mNotFoundView);
-            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
-                    mMineName);
-        }
-
-        @Override
-        public void onRequestSuccess(Integer count) {
-            mPager = new ApiPager(count, 0, ITEMS_PER_PAGE);
-            fetchTemplateResults();
-        }
-    }
-    // --------------------------------------------------------------------------------------------
-    // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
 
     @Override
@@ -160,13 +119,67 @@ public class TemplateResultsActivity extends BaseActivity {
             fetchTemplateResultsCount();
         }
     }
+
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.templates_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search_action);
+        MenuItemCompat.setOnActionExpandListener(menuItem, this);
+        mSearchView = (SearchView) menuItem.getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setQueryHint(getString(R.string.template_search_hint));
+        return true;
+    }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (null != mSearchView) {
+            mSearchView.clearFocus();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        if (null != mSearchView) {
+            mSearchView.clearFocus();
+        }
+
+        mListAdapter.filter(Strs.EMPTY_STRING);
+        Views.setVisible(mListView);
+        Views.setGone(mNotFoundView);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        mQuery = query;
+
+        if (!Strs.isNullOrEmpty(mQuery)) {
+            mListAdapter.filter(query);
+
+            if (mListAdapter.isFilteredResultsEmpty()) {
+                Views.setVisible(mNotFoundView);
+                Views.setGone(mListView);
+            } else {
+                Views.setVisible(mListView);
+                Views.setGone(mNotFoundView);
+            }
+        }
+        return true;
+    }
     // --------------------------------------------------------------------------------------------
-    // Helper Methods
+    // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
 
     protected LoadOnScrollViewController.LoadOnScrollDataController generateDataController() {
@@ -200,6 +213,11 @@ public class TemplateResultsActivity extends BaseActivity {
         return mDataController;
     }
 
+
+    // --------------------------------------------------------------------------------------------
+    // Helper Methods
+    // --------------------------------------------------------------------------------------------
+
     protected void fetchTemplateResults() {
         GetTemplateResultsRequest request = new GetTemplateResultsRequest(ListItems.class, this,
                 mTemplateName, mTemplateParams, mMineName,
@@ -222,6 +240,49 @@ public class TemplateResultsActivity extends BaseActivity {
         } else {
             Views.setVisible(mListView);
             Views.setGone(mProgressBar);
+        }
+    }
+
+    public class TemplateResultsListener implements RequestListener<ListItems> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(ListItems result) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
+                mListAdapter.addListItems(result);
+            } else {
+                Views.setVisible(mNotFoundView);
+            }
+        }
+    }
+    public class TemplateResultsCountListener implements RequestListener<Integer> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(Integer count) {
+            mPager = new ApiPager(count, 0, ITEMS_PER_PAGE);
+            fetchTemplateResults();
         }
     }
 }
