@@ -100,7 +100,7 @@ public class GenesListFragment extends BaseFragment {
             mViewController.onFinishLoad();
 
             if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.addListItems(result);
+                mListAdapter.addListItems(result, mList.getType());
             } else {
                 Views.setVisible(mNotFoundView);
             }

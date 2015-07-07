@@ -21,10 +21,10 @@ import android.widget.TextView;
 
 import org.intermine.app.R;
 import org.intermine.app.core.ListItems;
+import org.intermine.app.core.Tree;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +37,8 @@ public class ListAdapter extends BaseAdapter {
 
     private List<List<String>> mFilteredFeatures;
     private List<List<String>> mFeatures;
-    private List<String> mFeaturesNames;
+    private Tree<String> mFeaturesNames;
+    private String mRootAttribute;
 
     private String mQuery;
 
@@ -50,23 +51,16 @@ public class ListAdapter extends BaseAdapter {
         mFeatures = Collections.newArrayList();
     }
 
-    public void addListItems(ListItems listItems) {
+    public void addListItems(ListItems listItems, String rootAttribute) {
+        mRootAttribute = rootAttribute;
+
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
             filter(mQuery);
         }
 
         if (!Collections.isNullOrEmpty(listItems.getFeaturesNames())) {
-            if (!Strs.isNullOrEmpty(listItems.getRootClass())) {
-                String regExp = listItems.getRootClass() + " > ";
-                mFeaturesNames = Collections.newArrayList();
-
-                for (String featureName : listItems.getFeaturesNames()) {
-                    mFeaturesNames.add(featureName.replace(regExp, ""));
-                }
-            } else {
-                mFeaturesNames = new ArrayList<>(listItems.getFeaturesNames());
-            }
+            mFeaturesNames = generateAttributesTree(listItems.getFeaturesNames());
         }
         notifyDataSetChanged();
     }
@@ -110,28 +104,6 @@ public class ListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    protected SpannableStringBuilder generateText(List<String> featuresNames, List<String> features) {
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        if (!Collections.isNullOrEmpty(features)) {
-
-            for (int i = 0; i < featuresNames.size(); i++) {
-                String feature = features.get(i);
-
-                if (!Strs.isNullOrEmpty(feature)) {
-                    String featureName = featuresNames.get(i) + ": ";
-                    Spannable featureNameSpannable = Strs.spanWithBoldAndColorFont(featureName, 0,
-                            featureName.length(), mAccentColor);
-                    builder.append(featureNameSpannable).append(feature);
-
-                    if (i != featuresNames.size() - 1) {
-                        builder.append(", \n");
-                    }
-                }
-            }
-        }
-        return builder;
-    }
-
     public void filter(String query) {
         mQuery = query;
         mFilteredFeatures.clear();
@@ -154,5 +126,70 @@ public class ListAdapter extends BaseAdapter {
 
     public boolean isFilteredResultsEmpty() {
         return Collections.isNullOrEmpty(mFilteredFeatures);
+    }
+
+    protected SpannableStringBuilder generateText(final Tree<String> attributes, final List<String> values) {
+        if (!Collections.isNullOrEmpty(values)) {
+            AttributeNodeVisitor visitor = new AttributeNodeVisitor(values);
+            attributes.visitNodes(visitor);
+            return visitor.getResult();
+        }
+        return null;
+    }
+
+    private Tree<String> generateAttributesTree(List<String> attributes) {
+        Tree<String> tree = new Tree<>();
+
+        for (String attribute : attributes) {
+            String[] parts = attribute.split(" > ");
+
+            Tree.Node node = tree.getRootElement();
+            for (String part : parts) {
+                if (!part.equals(mRootAttribute)) {
+                    node = node.addChild(part);
+                }
+            }
+        }
+        return tree;
+    }
+
+    private class AttributeNodeVisitor implements Tree.NodeVisitor<String> {
+        private List<java.lang.String> mValues;
+
+        private SpannableStringBuilder mBuilder;
+        private int count = 0;
+
+        public AttributeNodeVisitor(List<String> values) {
+            this.mValues = values;
+            mBuilder = new SpannableStringBuilder();
+        }
+
+        @Override
+        public boolean visit(Tree.Node<String> node) {
+            if (!Strs.isNullOrEmpty(node.getValue())) {
+                if (Collections.isNullOrEmpty(node.getChildren())) {
+                    String featureName = node.getValue() + ": ";
+                    Spannable featureNameSpannable = Strs.spanWithBoldAndColorFont(featureName
+                            + mValues.get(count), 0, featureName.length(), mAccentColor);
+                    mBuilder.append(featureNameSpannable);
+                    count++;
+                } else {
+                    Spannable section = Strs.spanCenteredBoldAndColored(node.getValue().toString(),
+                            0, node.getValue().toString().length(), mAccentColor);
+                    mBuilder.append(section);
+                }
+                mBuilder.append('\n');
+            }
+            return true;
+        }
+
+        public SpannableStringBuilder getResult() {
+            int length = mBuilder.length();
+
+            if ('\n' == mBuilder.charAt(length - 1)) {
+                mBuilder.delete(length - 1, length);
+            }
+            return mBuilder;
+        }
     }
 }

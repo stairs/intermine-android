@@ -10,8 +10,10 @@ package org.intermine.app.util;
  *
  */
 
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
@@ -20,8 +22,6 @@ import java.util.Iterator;
 public class Strs {
     public final static String EMPTY_STRING = "";
     public final static String BR = "<br/>";
-    private final static StyleSpan sBoldStyle = new StyleSpan(android.graphics.Typeface.BOLD);
-
 
     /**
      * Capitalizes first letter of a string
@@ -48,13 +48,25 @@ public class Strs {
         return trimmed;
     }
 
+    public static Spannable spanCenteredBoldAndColored(String str, int start, int end, int color) {
+        Spannable spannable = new SpannableString(str);
+        spannable.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
+    }
+
     public static Spannable spanWithBoldAndColorFont(String str, int start, int end, int color) {
         Spannable spannable = new SpannableString(str);
-
+        spannable.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE),
+                end, str.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannable.setSpan(new ForegroundColorSpan(color),
                 start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannable.setSpan(sBoldStyle,
-                start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        spannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }
 
