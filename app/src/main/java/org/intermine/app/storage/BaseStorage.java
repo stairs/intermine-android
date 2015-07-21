@@ -13,12 +13,19 @@ package org.intermine.app.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.R;
+import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -32,10 +39,13 @@ public abstract class BaseStorage implements Storage {
 
     private Context mContext;
 
+    private Gson mMapper;
+
     private Set<String> mDefaultMineNames;
 
     public BaseStorage(Context ctx) {
         mContext = ctx;
+        mMapper = new Gson();
 
         InterMineApplication app = InterMineApplication.get(ctx);
         app.inject(this);
@@ -121,6 +131,26 @@ public abstract class BaseStorage implements Storage {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(USER_LEARNED_DRAWER, userLearnedDrawer);
         editor.commit();
+    }
+
+    @Override
+    public void setTypeFields(String mineName, Map<String, List<String>> typeFields) {
+        String json = mMapper.toJson(typeFields);
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(TYPE_FIELDS_KEY + mineName, json);
+        editor.commit();
+    }
+
+    @Override
+    public Map<String, List<String>> getTypeFields(String mineName) {
+        String json = mPreferences.getString(TYPE_FIELDS_KEY + mineName, Strs.EMPTY_STRING);
+
+        if (!json.isEmpty()) {
+            Type type = new TypeToken<Map<String, List<String>>>() {
+            }.getType();
+            return mMapper.fromJson(json, type);
+        }
+        return java.util.Collections.emptyMap();
     }
 
     protected Context getContext() {

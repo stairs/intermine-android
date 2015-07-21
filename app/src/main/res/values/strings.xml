@@ -54,6 +54,7 @@
     <string name="template_results_path">/template/results</string>
     <string name="get_token_path">/user/tokens</string>
     <string name="model_path">/model</string>
+    <string name="summary_fields">/summaryfields</string>
     <string name="user_preferences_path">/user/preferences</string>
     <string name="report_path">/portal.do</string>
     <string name="list_analysis_path">/bagDetails.do</string>

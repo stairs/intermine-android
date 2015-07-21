@@ -30,10 +30,14 @@ import org.intermine.app.controller.LoadOnScrollViewController;
 import org.intermine.app.core.ListItems;
 import org.intermine.app.listener.OnGeneSelectedListener;
 import org.intermine.app.net.ResponseHelper;
+import org.intermine.app.net.request.get.GetTypeFieldsRequest;
 import org.intermine.app.net.request.post.FetchListResultsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
+
+import java.util.List;
+import java.util.Map;
 
 import butterknife.InjectView;
 
@@ -80,6 +84,30 @@ public class GenesListFragment extends BaseFragment {
     // --------------------------------------------------------------------------------------------
     // Inner Classes
     // --------------------------------------------------------------------------------------------
+
+    private class TypeFieldsListener implements RequestListener<GetTypeFieldsRequest.TypeFields> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+            Views.setGone(mListView);
+            ResponseHelper.handleSpiceException(spiceException, (BaseActivity) getActivity(), mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(GetTypeFieldsRequest.TypeFields result) {
+            if (null != result && !result.isEmpty()) {
+                performGetListResultsRequest();
+            } else {
+                setProgress(false);
+                mViewController.onFinishLoad();
+                Views.setVisible(mNotFoundView);
+            }
+        }
+    }
 
     private class ListResultsListener implements RequestListener<ListItems> {
 
@@ -150,7 +178,15 @@ public class GenesListFragment extends BaseFragment {
             if (null == mPager) {
                 mPager = new ApiPager(mList.getSize(), 0, ITEMS_PER_PAGE);
             }
-            performGetListResultsRequest();
+
+
+            Map<String, List<String>> typeFields = getStorage().getTypeFields(mMineName);
+            if (null == typeFields || typeFields.isEmpty()) {
+                GetTypeFieldsRequest request = new GetTypeFieldsRequest(getActivity(), mMineName);
+                execute(request, new TypeFieldsListener());
+            } else {
+                performGetListResultsRequest();
+            }
         } else {
             setProgress(false);
             mViewController.onFinishLoad();
@@ -198,7 +234,7 @@ public class GenesListFragment extends BaseFragment {
     }
 
     protected void performGetListResultsRequest() {
-        FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), mMineName,
+        FetchListResultsRequest request = new FetchListResultsRequest(getActivity(), mMineName, mList.getType(),
                 mList.getName(), mPager.getCurrentPage() * mPager.getPerPage(), mPager.getPerPage());
         execute(request, new ListResultsListener());
     }

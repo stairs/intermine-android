@@ -16,6 +16,8 @@ import org.intermine.app.core.model.Model;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,9 +27,11 @@ import java.util.Set;
 public class MemoryStorage extends BaseStorage {
     private Map<String, Model> mMineToModelMap;
     private volatile Map<String, String> mMineNameToUrlMap;
+    private Map<String, Map<String, List<String>>> mMineNameToTypeFields;
 
     public MemoryStorage(Context ctx) {
         super(ctx);
+        mMineNameToTypeFields = new HashMap<>();
     }
 
     @Override
@@ -36,6 +40,17 @@ public class MemoryStorage extends BaseStorage {
             return mMineToModelMap.get(mineName);
         }
         return null;
+    }
+
+    @Override
+    public Map<String, List<String>> getTypeFields(String mineName) {
+        Map<String, List<String>> typeFields = mMineNameToTypeFields.get(mineName);
+
+        if (null == typeFields || typeFields.isEmpty()) {
+            typeFields = super.getTypeFields(mineName);
+            mMineNameToTypeFields.put(mineName, typeFields);
+        }
+        return typeFields;
     }
 
     @Override

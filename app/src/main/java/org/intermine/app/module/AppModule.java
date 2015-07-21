@@ -38,6 +38,7 @@ import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.net.request.get.GetModelRequest;
 import org.intermine.app.net.request.get.GetTemplateResultsRequest;
 import org.intermine.app.net.request.get.GetTemplatesRequest;
+import org.intermine.app.net.request.get.GetTypeFieldsRequest;
 import org.intermine.app.net.request.post.AppendGenesToListRequest;
 import org.intermine.app.net.request.post.CreateGenesList;
 import org.intermine.app.net.request.post.FetchListResultsRequest;
@@ -86,7 +87,8 @@ import dagger.Provides;
                 NavigationDrawerFragment.class,
                 Storage.class,
                 MinesActivity.class,
-                WebActivity.class
+                WebActivity.class,
+                GetTypeFieldsRequest.class
         }
 )
 public final class AppModule {

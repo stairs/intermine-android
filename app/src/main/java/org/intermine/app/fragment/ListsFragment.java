@@ -30,6 +30,7 @@ import org.intermine.app.adapter.ListsAdapter;
 import org.intermine.app.core.List;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetListsRequest;
+import org.intermine.app.util.Collections;
 import org.intermine.app.util.Views;
 
 import butterknife.InjectView;
@@ -45,6 +46,9 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
 
     @InjectView(R.id.lists)
     RecyclerView mRecyclerView;
+
+    @InjectView(R.id.not_found_results_container)
+    ViewGroup mNotFoundContainer;
 
     private String mMineName;
 
@@ -74,13 +78,21 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
         @Override
         public void onRequestFailure(SpiceException ex) {
             setProgress(false);
+            Views.setVisible(mNotFoundContainer);
+            Views.setGone(mRecyclerView);
             ResponseHelper.handleSpiceException(ex, (BaseActivity) getActivity(), mMineName);
         }
 
         @Override
         public void onRequestSuccess(GetListsRequest.Lists lists) {
             setProgress(false);
-            mRecyclerView.setAdapter(new ListsAdapter(lists, ListsFragment.this));
+
+            if (Collections.isNullOrEmpty(lists)) {
+                Views.setVisible(mNotFoundContainer);
+                Views.setGone(mRecyclerView);
+            } else {
+                mRecyclerView.setAdapter(new ListsAdapter(lists, ListsFragment.this));
+            }
         }
     }
 
@@ -143,6 +155,7 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
     protected void setProgress(boolean loading) {
         if (loading) {
             Views.setVisible(mProgressBar);
+            Views.setGone(mNotFoundContainer);
             Views.setGone(mRecyclerView);
         } else {
             Views.setVisible(mRecyclerView);
