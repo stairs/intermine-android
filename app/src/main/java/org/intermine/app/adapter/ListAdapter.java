@@ -153,7 +153,8 @@ public class ListAdapter extends BaseAdapter {
         public boolean visit(Tree.Node<String> node) {
             if (!Strs.isNullOrEmpty(node.getValue())) {
                 if (Collections.isNullOrEmpty(node.getChildren())) {
-                    TextView attributeValue = (TextView) mContainer.findViewWithTag(node.getValue());
+                    String tag = generateTag(node);
+                    TextView attributeValue = (TextView) mContainer.findViewWithTag(tag);
                     attributeValue.setText(mValues.get(count++));
                 }
             }
@@ -182,12 +183,23 @@ public class ListAdapter extends BaseAdapter {
                     LinearLayout row = (LinearLayout) inflater.inflate(R.layout.attribute_row, null);
                     TextView attributeTitle = (TextView) row.findViewById(R.id.attribute_title);
                     attributeTitle.setText(node.getValue());
+
                     TextView attributeValue = (TextView) row.findViewById(R.id.attribute_value);
-                    attributeValue.setTag(node.getValue());
+                    attributeValue.setTag(generateTag(node));
                     mContainer.addView(row);
                 }
             }
             return true;
         }
+    }
+
+    private String generateTag(Tree.Node<String> node) {
+        String tag = node.getValue();
+        Tree.Node<String> parent = node.getParent();
+
+        if (null != parent && !Strs.isNullOrEmpty(parent.getValue())) {
+            tag = parent.getValue() + node.getValue();
+        }
+        return tag;
     }
 }

@@ -8,7 +8,7 @@
         android:id="@+id/attribute_title"
         style="@style/InterMine.Theme.Text.Small.Bold"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:layout_height="match_parent"
         android:gravity="right"
         android:text="Title"
@@ -23,5 +23,5 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="left"
-        android:text="Value" />
+        android:text="none"/>
 </LinearLayout>
