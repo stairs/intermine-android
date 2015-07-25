@@ -11,12 +11,12 @@ package org.intermine.app.adapter;
  */
 
 import android.content.Context;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.intermine.app.R;
@@ -33,7 +33,6 @@ import java.util.List;
 public class ListAdapter extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
-    private final int mAccentColor;
 
     private List<List<String>> mFilteredFeatures;
     private List<List<String>> mFeatures;
@@ -44,7 +43,6 @@ public class ListAdapter extends BaseAdapter {
 
     public ListAdapter(Context ctx) {
         mContext = ctx;
-        mAccentColor = ctx.getResources().getColor(R.color.im_green);
 
         mLayoutInflater = LayoutInflater.from(ctx);
         mFilteredFeatures = Collections.newArrayList();
@@ -88,19 +86,16 @@ public class ListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView listItem;
-
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(R.layout.list_item, parent, false);
 
-            listItem = (TextView) convertView.findViewById(R.id.list_item);
-            convertView.setTag(R.id.list_item, listItem);
-        } else {
-            listItem = (TextView) convertView.getTag(R.id.list_item);
+            ViewCreatorVisitor visitor = new ViewCreatorVisitor((ViewGroup) convertView);
+            mFeaturesNames.visitNodes(visitor);
         }
 
         List<String> features = (List<String>) getItem(position);
-        listItem.setText(generateText(mFeaturesNames, features));
+        AttributeNodeVisitor visitor = new AttributeNodeVisitor(features, (ViewGroup) convertView);
+        mFeaturesNames.visitNodes(visitor);
         return convertView;
     }
 
@@ -128,15 +123,6 @@ public class ListAdapter extends BaseAdapter {
         return Collections.isNullOrEmpty(mFilteredFeatures);
     }
 
-    protected SpannableStringBuilder generateText(final Tree<String> attributes, final List<String> values) {
-        if (!Collections.isNullOrEmpty(values)) {
-            AttributeNodeVisitor visitor = new AttributeNodeVisitor(values);
-            attributes.visitNodes(visitor);
-            return visitor.getResult();
-        }
-        return null;
-    }
-
     private Tree<String> generateAttributesTree(List<String> attributes) {
         Tree<String> tree = new Tree<>();
 
@@ -154,42 +140,54 @@ public class ListAdapter extends BaseAdapter {
     }
 
     private class AttributeNodeVisitor implements Tree.NodeVisitor<String> {
+        private ViewGroup mContainer;
         private List<java.lang.String> mValues;
-
-        private SpannableStringBuilder mBuilder;
         private int count = 0;
 
-        public AttributeNodeVisitor(List<String> values) {
+        public AttributeNodeVisitor(List<String> values, ViewGroup container) {
             this.mValues = values;
-            mBuilder = new SpannableStringBuilder();
+            mContainer = container;
         }
 
         @Override
         public boolean visit(Tree.Node<String> node) {
             if (!Strs.isNullOrEmpty(node.getValue())) {
                 if (Collections.isNullOrEmpty(node.getChildren())) {
-                    String featureName = node.getValue() + ": ";
-                    Spannable featureNameSpannable = Strs.spanWithBoldAndColorFont(featureName
-                            + mValues.get(count), 0, featureName.length(), mAccentColor);
-                    mBuilder.append(featureNameSpannable);
-                    count++;
-                } else {
-                    Spannable section = Strs.spanCenteredBoldAndColored(node.getValue().toString(),
-                            0, node.getValue().toString().length(), mAccentColor);
-                    mBuilder.append(section);
+                    TextView attributeValue = (TextView) mContainer.findViewWithTag(node.getValue());
+                    attributeValue.setText(mValues.get(count++));
                 }
-                mBuilder.append('\n');
             }
             return true;
         }
+    }
 
-        public SpannableStringBuilder getResult() {
-            int length = mBuilder.length();
+    private class ViewCreatorVisitor implements Tree.NodeVisitor<String> {
+        private ViewGroup mContainer;
 
-            if ('\n' == mBuilder.charAt(length - 1)) {
-                mBuilder.delete(length - 1, length);
+        public ViewCreatorVisitor(ViewGroup container) {
+            mContainer = container;
+        }
+
+        @Override
+        public boolean visit(Tree.Node<String> node) {
+            if (!Strs.isNullOrEmpty(node.getValue())) {
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+
+                if (!Collections.isNullOrEmpty(node.getChildren())) {
+                    TextView rowTitle = (TextView) inflater.inflate(R.layout.attribute_class_title, null);
+                    rowTitle.setText(node.getValue());
+                    rowTitle.setGravity(Gravity.CENTER);
+                    mContainer.addView(rowTitle);
+                } else {
+                    LinearLayout row = (LinearLayout) inflater.inflate(R.layout.attribute_row, null);
+                    TextView attributeTitle = (TextView) row.findViewById(R.id.attribute_title);
+                    attributeTitle.setText(node.getValue());
+                    TextView attributeValue = (TextView) row.findViewById(R.id.attribute_value);
+                    attributeValue.setTag(node.getValue());
+                    mContainer.addView(row);
+                }
             }
-            return mBuilder;
+            return true;
         }
     }
 }
