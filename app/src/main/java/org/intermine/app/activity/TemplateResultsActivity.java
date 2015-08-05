@@ -29,15 +29,20 @@ import org.intermine.app.R;
 import org.intermine.app.adapter.ApiPager;
 import org.intermine.app.adapter.ListAdapter;
 import org.intermine.app.controller.LoadOnScrollViewController;
+import org.intermine.app.core.List;
 import org.intermine.app.core.ListItems;
 import org.intermine.app.core.templates.TemplateParameter;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GetTemplateResultsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
+import org.intermine.app.util.Templates;
+import org.intermine.app.util.Uris;
 import org.intermine.app.util.Views;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,6 +53,10 @@ import butterknife.InjectView;
 public class TemplateResultsActivity extends BaseActivity implements SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener {
     public static final int ITEMS_PER_PAGE = 15;
+
+    public static final String NAME_PARAM = "name";
+    public static final String METHOD_PARAM = "method";
+    public static final String METHOD_PARAM_DEFAULT_VALUE = "results";
 
     public static final String TEMPLATE_NAME_KEY = "template_name_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
@@ -73,6 +82,54 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     private ArrayList<TemplateParameter> mTemplateParams;
     private String mMineName;
     private String mQuery = Strs.EMPTY_STRING;
+
+    // --------------------------------------------------------------------------------------------
+    // Inner Classes
+    // --------------------------------------------------------------------------------------------
+
+    public class TemplateResultsListener implements RequestListener<ListItems> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(ListItems result) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
+                mListAdapter.addListItems(result, null);
+            } else {
+                Views.setVisible(mNotFoundView);
+            }
+        }
+    }
+
+    public class TemplateResultsCountListener implements RequestListener<Integer> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            setProgress(false);
+            mViewController.onFinishLoad();
+
+            Views.setVisible(mNotFoundView);
+            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
+                    mMineName);
+        }
+
+        @Override
+        public void onRequestSuccess(Integer count) {
+            mPager = new ApiPager(count, 0, ITEMS_PER_PAGE);
+            fetchTemplateResults();
+        }
+    }
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
@@ -127,13 +184,28 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.templates_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.search_action);
+        getMenuInflater().inflate(R.menu.templates_results_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.templates_results_search_action);
         MenuItemCompat.setOnActionExpandListener(menuItem, this);
         mSearchView = (SearchView) menuItem.getActionView();
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setQueryHint(getString(R.string.template_search_hint));
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.open_in_browser:
+                String webTemplatesUrl = generateListAnalysisUrl(mMineName);
+
+                if (!Strs.isNullOrEmpty(webTemplatesUrl)) {
+                    WebActivity.start(this, mTemplateName, webTemplatesUrl);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -243,46 +315,15 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
         }
     }
 
-    public class TemplateResultsListener implements RequestListener<ListItems> {
+    private String generateListAnalysisUrl(String mineName) {
+        String webAppUrl = mStorage.getMineWebAppUrl(mineName);
 
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            Views.setVisible(mNotFoundView);
-            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
-                    mMineName);
+        if (!Strs.isNullOrEmpty(webAppUrl)) {
+            Map<String, String> params = Templates.generateUrlParams(mTemplateParams);
+            params.put(NAME_PARAM, mTemplateName);
+            params.put(METHOD_PARAM, METHOD_PARAM_DEFAULT_VALUE);
+            return Uris.expandQuery(webAppUrl + getString(R.string.web_template_results_path), params);
         }
-
-        @Override
-        public void onRequestSuccess(ListItems result) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.addListItems(result, null);
-            } else {
-                Views.setVisible(mNotFoundView);
-            }
-        }
-    }
-    public class TemplateResultsCountListener implements RequestListener<Integer> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            setProgress(false);
-            mViewController.onFinishLoad();
-
-            Views.setVisible(mNotFoundView);
-            ResponseHelper.handleSpiceException(spiceException, TemplateResultsActivity.this,
-                    mMineName);
-        }
-
-        @Override
-        public void onRequestSuccess(Integer count) {
-            mPager = new ApiPager(count, 0, ITEMS_PER_PAGE);
-            fetchTemplateResults();
-        }
+        return Strs.EMPTY_STRING;
     }
 }

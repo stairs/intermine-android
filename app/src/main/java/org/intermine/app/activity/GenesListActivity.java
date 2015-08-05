@@ -82,7 +82,7 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.list_view_menu, menu);
+        getMenuInflater().inflate(R.menu.open_in_browser_menu, menu);
         return true;
     }
 

@@ -7,8 +7,8 @@ android {
         applicationId "org.intermine.app"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 9
-        versionName "1.0.2"
+        versionCode 10
+        versionName "1.0.3"
         signingConfig signingConfigs.debug
     }
     compileOptions {
