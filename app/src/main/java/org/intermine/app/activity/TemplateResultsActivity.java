@@ -59,6 +59,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     public static final String METHOD_PARAM_DEFAULT_VALUE = "results";
 
     public static final String TEMPLATE_NAME_KEY = "template_name_key";
+    public static final String TEMPLATE_TITLE_KEY = "template_title_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
     public static final String TEMPLATE_PARAMS_KEY = "template_params_key";
     protected LoadOnScrollViewController mViewController;
@@ -79,6 +80,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     private LoadOnScrollViewController.LoadOnScrollDataController mDataController;
     private ApiPager mPager;
     private String mTemplateName;
+    private String mTemplateTitle;
     private ArrayList<TemplateParameter> mTemplateParams;
     private String mMineName;
     private String mQuery = Strs.EMPTY_STRING;
@@ -135,10 +137,12 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     // Static Methods
     // --------------------------------------------------------------------------------------------
 
-    public static void start(Context context, String templateName, String mineName,
-                             ArrayList<TemplateParameter> params) {
+    public static void start(Context context, String templateName, String templateTitle,
+                             String mineName, ArrayList<TemplateParameter> params) {
         Intent intent = new Intent(context, TemplateResultsActivity.class);
         intent.putExtra(TEMPLATE_NAME_KEY, templateName);
+        intent.putExtra(TEMPLATE_TITLE_KEY, templateTitle);
+
         intent.putExtra(MINE_NAME_KEY, mineName);
         intent.putParcelableArrayListExtra(TEMPLATE_PARAMS_KEY, params);
         context.startActivity(intent);
@@ -159,6 +163,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTemplateName = getIntent().getStringExtra(TEMPLATE_NAME_KEY);
+        mTemplateTitle = getIntent().getStringExtra(TEMPLATE_TITLE_KEY);
         mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
         mTemplateParams = getIntent().getParcelableArrayListExtra(TEMPLATE_PARAMS_KEY);
 
@@ -169,8 +174,8 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
         mListView.setOnScrollListener(mViewController);
         mListView.addFooterView(mViewController.getFooterView());
 
-        if (null != mTemplateName) {
-            setTitle(mTemplateName);
+        if (null != mTemplateTitle) {
+            setTitle(mTemplateTitle);
             setProgress(true);
 
             fetchTemplateResultsCount();
@@ -200,7 +205,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
                 String webTemplatesUrl = generateListAnalysisUrl(mMineName);
 
                 if (!Strs.isNullOrEmpty(webTemplatesUrl)) {
-                    WebActivity.start(this, mTemplateName, webTemplatesUrl);
+                    WebActivity.start(this, mTemplateTitle, webTemplatesUrl);
                 }
                 return true;
             default:

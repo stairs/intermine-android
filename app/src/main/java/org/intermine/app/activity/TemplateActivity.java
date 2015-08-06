@@ -125,7 +125,8 @@ public class TemplateActivity extends BaseActivity {
                 parameters.add(generateTemplateParameter(pathConstraint));
             }
 
-            TemplateResultsActivity.start(this, mTemplate.getName(), mMineName, parameters);
+            TemplateResultsActivity.start(this, mTemplate.getName(), mTemplate.getTitle(),
+                    mMineName, parameters);
             finish();
         }
     }
