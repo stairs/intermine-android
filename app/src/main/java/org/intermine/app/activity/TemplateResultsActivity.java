@@ -107,7 +107,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
             mViewController.onFinishLoad();
 
             if (null != result && !Collections.isNullOrEmpty(result.getFeatures())) {
-                mListAdapter.addListItems(result, null);
+                mListAdapter.addListItems(result);
             } else {
                 Views.setVisible(mNotFoundView);
             }

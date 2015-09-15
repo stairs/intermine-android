@@ -34,6 +34,9 @@ public class List implements Parcelable {
     @SerializedName("size")
     private int mSize;
 
+    @SerializedName("authorized")
+    private boolean mAuthorized;
+
     public List() {
     }
 
@@ -47,6 +50,7 @@ public class List implements Parcelable {
         mDescription = parcel.readString();
         mType = parcel.readString();
         mSize = parcel.readInt();
+        mAuthorized = parcel.readByte() != 0;
     }
 
     public String getTitle() {
@@ -89,6 +93,14 @@ public class List implements Parcelable {
         mSize = size;
     }
 
+    public boolean isAuthorized() {
+        return mAuthorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        this.mAuthorized = authorized;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,6 +134,7 @@ public class List implements Parcelable {
                 ", mDescription='" + mDescription + '\'' +
                 ", mType='" + mType + '\'' +
                 ", mSize=" + mSize +
+                ", mAuthorized=" + mAuthorized +
                 '}';
     }
 
@@ -137,6 +150,7 @@ public class List implements Parcelable {
         dest.writeString(mDescription);
         dest.writeString(mType);
         dest.writeInt(mSize);
+        dest.writeByte((byte) (mAuthorized ? 1 : 0));
     }
 
     public static final Creator<List> CREATOR = new Creator<List>() {
