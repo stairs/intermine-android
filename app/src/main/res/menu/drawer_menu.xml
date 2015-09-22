@@ -23,14 +23,14 @@
             android:title="@string/search_all" />
 
         <item
-            android:id="@+id/drawer_templates"
-            android:icon="@drawable/ic_search_black_24dp"
-            android:title="@string/templates" />
-
-        <item
             android:id="@+id/drawer_lists"
             android:icon="@drawable/ic_view_list_black_24dp"
             android:title="@string/lists" />
+
+        <item
+            android:id="@+id/drawer_templates"
+            android:icon="@drawable/ic_templates"
+            android:title="@string/templates" />
 
         <item
             android:id="@+id/drawer_favourites"
@@ -39,7 +39,7 @@
 
         <item
             android:id="@+id/drawer_login"
-            android:icon="@drawable/ic_search_black_24dp"
+            android:icon="@drawable/ic_action_login"
             android:title="@string/log_in" />
 
         <item
