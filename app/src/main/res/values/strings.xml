@@ -5,6 +5,7 @@
     <string name="app_name">InterMine</string>
     <string name="gene_view">Gene View</string>
     <string name="search">Search</string>
+    <string name="search_all">Search All</string>
     <string name="lists">Lists</string>
     <string name="templates">Templates</string>
     <string name="favorites">Favorites</string>

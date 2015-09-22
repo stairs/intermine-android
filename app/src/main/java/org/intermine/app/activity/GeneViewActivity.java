@@ -73,9 +73,9 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
 
         populateContentFragment(GeneViewFragment.newInstance(mGene));
 
-        getNavigationDrawer().setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout), false);
+//        getNavigationDrawer().setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout), false);
 
         mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
     }

@@ -13,30 +13,33 @@ package org.intermine.app.activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
+import android.view.MenuItem;
 
 import org.intermine.app.R;
 import org.intermine.app.core.Gene;
 import org.intermine.app.core.List;
 import org.intermine.app.core.templates.Template;
-import org.intermine.app.fragment.GenesListFragment;
-import org.intermine.app.fragment.InfoFragment;
 import org.intermine.app.fragment.ListsFragment;
 import org.intermine.app.fragment.LogInFragment;
-import org.intermine.app.fragment.NavigationDrawerFragment;
-import org.intermine.app.fragment.SearchFragment;
 import org.intermine.app.fragment.TemplatesFragment;
 import org.intermine.app.listener.OnGeneSelectedListener;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class MainActivity extends BaseActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks, OnGeneSelectedListener,
+public class MainActivity extends BaseActivity implements OnGeneSelectedListener,
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
-    private NavigationDrawerFragment mNavigationDrawer;
+    @InjectView(R.id.default_toolbar)
+    protected Toolbar mToolbar;
+
+    @InjectView(R.id.drawer_layout)
+    protected DrawerLayout mDrawerLayout;
 
     private List mGeneFavoritesList;
 
@@ -50,60 +53,78 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        ButterKnife.inject(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
-        setSupportActionBar(toolbar);
-
-        mNavigationDrawer = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        DrawerLayout drawer = ButterKnife.findById(this, R.id.drawer_layout);
-        mNavigationDrawer.setUp(R.id.navigation_drawer, drawer, true);
+        initToolbar();
+        setupDrawerLayout();
+//        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
+//        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                Log.e("ddd", menuItem.getTitle() + "");
+////                switch (menuItem.getTitle()) {
+////                    case getString(R.string.search_all):
+////                        fragment = SearchFragment.newInstance();
+////                        break;
+////                    case R.id.:
+////                        fragment = TemplatesFragment.newInstance(mineName);
+////                        break;
+////                    case 2:
+////                        fragment = ListsFragment.newInstance(mineName);
+////                        break;
+////                    case 3:
+////                        fragment = GenesListFragment.newInstance(mGeneFavoritesList, mineName);
+////                        break;
+////                    case 4:
+////                        fragment = LogInFragment.newInstance();
+////                        break;
+////                    case 5:
+////                        fragment = InfoFragment.newInstance();
+////                        break;
+////                }
+//                return true;
+//            }
+//        });
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
         getStorage().getMineNameToUrlMap();
+    }
+
+    private void setupDrawerLayout() {
+        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
+        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Log.e("ddd", menuItem.getTitle() + "");
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
     }
 
     // --------------------------------------------------------------------------------------------
     // Event Listeners
     // --------------------------------------------------------------------------------------------
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position, String mineName) {
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = null;
-
-        switch (position) {
-            case 0:
-                fragment = SearchFragment.newInstance();
-                break;
-            case 1:
-                fragment = TemplatesFragment.newInstance(mineName);
-                break;
-            case 2:
-                fragment = ListsFragment.newInstance(mineName);
-                break;
-            case 3:
-                fragment = GenesListFragment.newInstance(mGeneFavoritesList, mineName);
-                break;
-            case 4:
-                fragment = LogInFragment.newInstance();
-                break;
-            case 5:
-                fragment = InfoFragment.newInstance();
-                break;
-        }
-
-        fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        if (!mNavigationDrawer.isDrawerOpen()) {
+//            restoreActionBar();
+//            return super.onCreateOptionsMenu(menu);
+//        }
+//        return true;
+//    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawer.isDrawerOpen()) {
-            restoreActionBar();
-            return super.onCreateOptionsMenu(menu);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
-        return true;
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void onSectionAttached(String title) {
@@ -139,18 +160,17 @@ public class MainActivity extends BaseActivity implements
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
+    private void initToolbar() {
+        setSupportActionBar(mToolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
     protected void populateContentFragment(Fragment fragment) {
         getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
-    public NavigationDrawerFragment getNavigationDrawer() {
-        return mNavigationDrawer;
     }
 }

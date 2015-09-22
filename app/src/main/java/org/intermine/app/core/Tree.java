@@ -10,28 +10,26 @@ package org.intermine.app.core;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class Tree<T> {
-    private final Node<T> rootElement;
+public class Tree {
+    private final Node rootElement;
 
     public Tree() {
-        this(null, null);
+        this(null);
     }
 
-    public Tree(final Comparator<? super T> comparator, final T rootValue) {
-        this.rootElement = new Node<T>(rootValue, null);
+    public Tree(final String rootValue) {
+        this.rootElement = new Node(rootValue, null);
     }
 
-    public Tree(final T rootValue) {
-        this.rootElement = new Node<T>(rootValue, null);
-    }
-
-    private static <T> boolean doVisit(final Node<T> node, final NodeVisitor<T> visitor) {
+    private static <T> boolean doVisit(final Node node, final NodeVisitor visitor) {
         boolean result = visitor.visit(node);
         if (result) {
-            for (final Node<T> subNode : node.children) {
+            for (final Node subNode : node.children) {
                 if (!doVisit(subNode, visitor)) {
                     result = false;
                     break;
@@ -41,70 +39,119 @@ public class Tree<T> {
         return result;
     }
 
-    public void visitNodes(final NodeVisitor<T> visitor) {
+    public void visitNodes(final NodeVisitor visitor) {
         doVisit(rootElement, visitor);
     }
 
-    public Node<T> getRootElement() {
+    public void compact(Node node) {
+        LinkedList<Node> children = node.children;
+
+        if (!children.isEmpty()) {
+            for (Node subNode : children) {
+                compact(subNode);
+            }
+
+            if (null != node.getValue() && 1 == children.size()) {
+                Node onlyChild = children.get(0);
+
+                if (!onlyChild.children.isEmpty()) {
+                    node.removeChild(onlyChild);
+                    node.setValue(node.getValue() + " > " + onlyChild.getValue());
+                    node.addChildren(onlyChild.children);
+                }
+            }
+        }
+    }
+
+    public void computeDepthOfEachNode(Node node) {
+        LinkedList<Node> children = node.children;
+
+        if (children.isEmpty()) {
+            node.depth = 0;
+        } else {
+            for (Node subNode : children) {
+                computeDepthOfEachNode(subNode);
+            }
+            Collections.sort(children, new Comparator<Node>() {
+                @Override
+                public int compare(Node lhs, Node rhs) {
+                    return lhs.depth - rhs.depth;
+                }
+            });
+            node.depth = node.children.getLast().depth + 1;
+        }
+    }
+
+    public Node getRootElement() {
         return rootElement;
     }
 
-    public interface NodeVisitor<T> {
+    public interface NodeVisitor {
 
-        boolean visit(Node<T> node);
+        boolean visit(Node node);
     }
-    private static final class NodeComparator<T> implements Comparator<Node<T>> {
 
-        private final Comparator<T> wrapped;
-
-        public NodeComparator(final Comparator<T> wrappedComparator) {
-            this.wrapped = wrappedComparator;
-        }
-
-        @Override
-        public int compare(final Node<T> o1, final Node<T> o2) {
-            return wrapped.compare(o1.value, o2.value);
-        }
-
-    }
-    public static class Node<T> {
-
-        private final LinkedList<Node<T>> children;
-
-        private final Node<T> parent;
-        private T value;
+    public static class Node {
+        private final LinkedList<Node> children;
+        private Node parent;
+        private String value;
+        private int depth;
+        private int number;
 
         @SuppressWarnings("unchecked")
-        Node(final T value, final Node<T> parent) {
+        Node(final String value, final Node parent) {
             this.value = value;
             this.parent = parent;
-            children = new LinkedList<Node<T>>();
+            children = new LinkedList<>();
         }
 
-        public ArrayList<Node<T>> getChildren() {
-            return new ArrayList<Node<T>>(children);
+        public ArrayList<Node> getChildren() {
+            return new ArrayList<>(children);
         }
 
-        public Node<T> getParent() {
+        public Node getParent() {
             return parent;
         }
 
-        public T getValue() {
+        public String getValue() {
             return value;
         }
 
-        public void setValue(final T value) {
+        public int getDepth() {
+            return depth;
+        }
+
+        public void setValue(final String value) {
             this.value = value;
         }
 
-        public Node<T> addChild(final T value) {
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
+        }
+
+        public Node addChild(final String value) {
             for (Node child : children) {
                 if (child.getValue().equals(value)) {
                     return child;
                 }
             }
-            final Node<T> node = new Node<T>(value, this);
+            final Node node = new Node(value, this);
             return children.add(node) ? node : null;
+        }
+
+        public void addChildren(final Collection<Node> children) {
+            for (Node node : children) {
+                node.parent = this;
+                this.children.add(node);
+            }
+        }
+
+        public void removeChild(final Node node) {
+            children.remove(node);
         }
     }
 }

@@ -36,8 +36,7 @@ public class ListAdapter extends BaseAdapter {
 
     private List<List<String>> mFilteredFeatures;
     private List<List<String>> mFeatures;
-    private Tree<String> mFeaturesNames;
-    private String mRootAttribute;
+    private Tree mFeaturesNames;
 
     private String mQuery;
 
@@ -49,9 +48,7 @@ public class ListAdapter extends BaseAdapter {
         mFeatures = Collections.newArrayList();
     }
 
-    public void addListItems(ListItems listItems, String rootAttribute) {
-        mRootAttribute = rootAttribute;
-
+    public void addListItems(ListItems listItems) {
         if (!Collections.isNullOrEmpty(listItems.getFeatures())) {
             mFeatures.addAll(listItems.getFeatures());
             filter(mQuery);
@@ -59,6 +56,8 @@ public class ListAdapter extends BaseAdapter {
 
         if (!Collections.isNullOrEmpty(listItems.getFeaturesNames())) {
             mFeaturesNames = generateAttributesTree(listItems.getFeaturesNames());
+            mFeaturesNames.compact(mFeaturesNames.getRootElement());
+            mFeaturesNames.computeDepthOfEachNode(mFeaturesNames.getRootElement());
         }
         notifyDataSetChanged();
     }
@@ -123,26 +122,25 @@ public class ListAdapter extends BaseAdapter {
         return Collections.isNullOrEmpty(mFilteredFeatures);
     }
 
-    private Tree<String> generateAttributesTree(List<String> attributes) {
-        Tree<String> tree = new Tree<>();
+    private Tree generateAttributesTree(List<String> attributes) {
+        Tree tree = new Tree();
+        int number = 0;
 
         for (String attribute : attributes) {
             String[] parts = attribute.split(" > ");
 
             Tree.Node node = tree.getRootElement();
             for (String part : parts) {
-                if (!part.equals(mRootAttribute)) {
-                    node = node.addChild(part);
-                }
+                node = node.addChild(part);
             }
+            node.setNumber(number++);
         }
         return tree;
     }
 
-    private class AttributeNodeVisitor implements Tree.NodeVisitor<String> {
+    private class AttributeNodeVisitor implements Tree.NodeVisitor {
         private ViewGroup mContainer;
         private List<java.lang.String> mValues;
-        private int count = 0;
 
         public AttributeNodeVisitor(List<String> values, ViewGroup container) {
             this.mValues = values;
@@ -150,19 +148,18 @@ public class ListAdapter extends BaseAdapter {
         }
 
         @Override
-        public boolean visit(Tree.Node<String> node) {
-            if (!Strs.isNullOrEmpty(node.getValue())) {
-                if (Collections.isNullOrEmpty(node.getChildren())) {
-                    String tag = generateTag(node);
-                    TextView attributeValue = (TextView) mContainer.findViewWithTag(tag);
-                    attributeValue.setText(mValues.get(count++));
+        public boolean visit(Tree.Node node) {
+            if (null != node.getValue()) {
+                if (node.getChildren().isEmpty()) {
+                    TextView attributeValue = (TextView) mContainer.findViewWithTag(node.getNumber());
+                    attributeValue.setText(mValues.get(node.getNumber()));
                 }
             }
             return true;
         }
     }
 
-    private class ViewCreatorVisitor implements Tree.NodeVisitor<String> {
+    private class ViewCreatorVisitor implements Tree.NodeVisitor {
         private ViewGroup mContainer;
 
         public ViewCreatorVisitor(ViewGroup container) {
@@ -170,7 +167,7 @@ public class ListAdapter extends BaseAdapter {
         }
 
         @Override
-        public boolean visit(Tree.Node<String> node) {
+        public boolean visit(Tree.Node node) {
             if (!Strs.isNullOrEmpty(node.getValue())) {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
 
@@ -185,21 +182,11 @@ public class ListAdapter extends BaseAdapter {
                     attributeTitle.setText(node.getValue());
 
                     TextView attributeValue = (TextView) row.findViewById(R.id.attribute_value);
-                    attributeValue.setTag(generateTag(node));
+                    attributeValue.setTag(node.getNumber());
                     mContainer.addView(row);
                 }
             }
             return true;
         }
-    }
-
-    private String generateTag(Tree.Node<String> node) {
-        String tag = node.getValue();
-        Tree.Node<String> parent = node.getParent();
-
-        if (null != parent && !Strs.isNullOrEmpty(parent.getValue())) {
-            tag = parent.getValue() + node.getValue();
-        }
-        return tag;
     }
 }

@@ -11,6 +11,7 @@ package org.intermine.app.activity;
  */
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -19,8 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
-
-import com.melnykov.fab.FloatingActionButton;
 
 import org.intermine.app.R;
 import org.intermine.app.adapter.MinesAdapter;
@@ -124,7 +123,6 @@ public class MinesActivity extends BaseActivity implements MineDialogFragment.Mi
         mMinesList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         mMinesList.setMultiChoiceModeListener(mMultiListener);
         updateMines();
-        mActionButton.attachToListView(mMinesList);
     }
 
     @Override

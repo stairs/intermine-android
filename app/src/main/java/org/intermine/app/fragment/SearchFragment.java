@@ -217,13 +217,11 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
-            inflater.inflate(R.menu.gene_search_menu, menu);
-            mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
-            mSearchView.setOnQueryTextListener(this);
-            mSearchView.setQueryHint(getString(R.string.gene_search_hint));
-            super.onCreateOptionsMenu(menu, inflater);
-        }
+        inflater.inflate(R.menu.gene_search_menu, menu);
+        mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setQueryHint(getString(R.string.gene_search_hint));
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -439,6 +437,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             }
         }
     }
+
     private class OnSearchRequestsFinishedAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override

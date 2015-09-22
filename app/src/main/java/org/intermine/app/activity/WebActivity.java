@@ -32,6 +32,7 @@ import butterknife.InjectView;
 public class WebActivity extends BaseActivity {
     public static final String LOAD_URL_EXTRA = "load_url";
     public static final String TITLE_EXTRA = "title";
+
     protected String mUrl;
     protected String mTitle;
     @InjectView(R.id.web_container)
