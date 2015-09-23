@@ -18,15 +18,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import org.intermine.app.R;
 import org.intermine.app.core.Gene;
 import org.intermine.app.core.List;
 import org.intermine.app.core.templates.Template;
+import org.intermine.app.fragment.GenesListFragment;
+import org.intermine.app.fragment.InfoFragment;
 import org.intermine.app.fragment.ListsFragment;
 import org.intermine.app.fragment.LogInFragment;
+import org.intermine.app.fragment.SearchFragment;
 import org.intermine.app.fragment.TemplatesFragment;
 import org.intermine.app.listener.OnGeneSelectedListener;
 
@@ -57,34 +59,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
 
         initToolbar();
         setupDrawerLayout();
-//        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
-//        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                Log.e("ddd", menuItem.getTitle() + "");
-////                switch (menuItem.getTitle()) {
-////                    case getString(R.string.search_all):
-////                        fragment = SearchFragment.newInstance();
-////                        break;
-////                    case R.id.:
-////                        fragment = TemplatesFragment.newInstance(mineName);
-////                        break;
-////                    case 2:
-////                        fragment = ListsFragment.newInstance(mineName);
-////                        break;
-////                    case 3:
-////                        fragment = GenesListFragment.newInstance(mGeneFavoritesList, mineName);
-////                        break;
-////                    case 4:
-////                        fragment = LogInFragment.newInstance();
-////                        break;
-////                    case 5:
-////                        fragment = InfoFragment.newInstance();
-////                        break;
-////                }
-//                return true;
-//            }
-//        });
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
         getStorage().getMineNameToUrlMap();
@@ -95,8 +69,30 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Log.e("ddd", menuItem.getTitle() + "");
-                menuItem.setChecked(true);
+                Fragment fragment = null;
+                String mineName = "FlyMine";
+                switch (menuItem.getItemId()) {
+                    case R.id.drawer_search_all:
+                        fragment = SearchFragment.newInstance();
+                        break;
+                    case R.id.drawer_templates:
+                        fragment = TemplatesFragment.newInstance(mineName);
+                        break;
+                    case R.id.drawer_lists:
+                        fragment = ListsFragment.newInstance(mineName);
+                        break;
+                    case R.id.drawer_favourites:
+                        fragment = GenesListFragment.newInstance(mGeneFavoritesList, mineName);
+                        break;
+                    case R.id.drawer_login:
+                        fragment = LogInFragment.newInstance();
+                        break;
+                    case R.id.drawer_info:
+                        fragment = InfoFragment.newInstance();
+                        break;
+                }
+                populateContentFragment(fragment);
+                //menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 return true;
             }
@@ -106,15 +102,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     // --------------------------------------------------------------------------------------------
     // Event Listeners
     // --------------------------------------------------------------------------------------------
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!mNavigationDrawer.isDrawerOpen()) {
-//            restoreActionBar();
-//            return super.onCreateOptionsMenu(menu);
-//        }
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
