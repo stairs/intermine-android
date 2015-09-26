@@ -120,6 +120,17 @@ public abstract class BaseStorage implements Storage {
         editor.commit();
     }
 
+    @Override
+    public void setWorkingMineName(String mineName) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(WORKING_MINE_NAME_KEY, mineName);
+        editor.commit();
+    }
+
+    @Override
+    public String getWorkingMineName() {
+        return mPreferences.getString(WORKING_MINE_NAME_KEY, "FlyMine");
+    }
 
     @Override
     public boolean hasUserLearnedDrawer() {
