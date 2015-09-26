@@ -30,7 +30,7 @@
         style="@style/InterMine.Theme.Text.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:paddingBottom="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/app_copyright"/>
