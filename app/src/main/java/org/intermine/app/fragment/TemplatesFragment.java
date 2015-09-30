@@ -13,6 +13,8 @@ package org.intermine.app.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,8 +22,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -40,16 +40,15 @@ import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
 import butterknife.InjectView;
-import butterknife.OnItemClick;
 
 public class TemplatesFragment extends BaseFragment implements SearchView.OnQueryTextListener,
-        MenuItemCompat.OnActionExpandListener {
+        MenuItemCompat.OnActionExpandListener, TemplatesAdapter.OnItemClickListener {
     public static final String MINE_NAME_KEY = "mine_name";
 
     public static final long TEMPLATES_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
     @InjectView(R.id.templates)
-    ListView mTemplates;
+    RecyclerView mTemplates;
 
     @InjectView(R.id.not_found_results_container)
     View mNotFoundView;
@@ -84,12 +83,6 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
     // --------------------------------------------------------------------------------------------
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.templates_fragment, container, false);
@@ -99,10 +92,20 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
     // --------------------------------------------------------------------------------------------
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTemplatesAdapter = new TemplatesAdapter(getActivity());
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mTemplates.setLayoutManager(manager);
+        mTemplates.scheduleLayoutAnimation();
+        mTemplatesAdapter = new TemplatesAdapter(this);
         mTemplates.setAdapter(mTemplatesAdapter);
 
         setProgress(true);
@@ -188,12 +191,9 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
         return true;
     }
 
-    @OnItemClick(R.id.templates)
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mOnTemplateSelectedListener) {
-            Template selected = (Template) mTemplatesAdapter.getItem(position);
-            mOnTemplateSelectedListener.onTemplateSelected(selected, mMineName);
-        }
+    @Override
+    public void onItemClick(Template template) {
+        mOnTemplateSelectedListener.onTemplateSelected(template, mMineName);
     }
 
     protected void fetchTemplates() {
@@ -218,6 +218,7 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
     public static interface OnTemplateSelectedListener {
         void onTemplateSelected(Template template, String mineName);
     }
+
     public class GetTemplatesListener implements RequestListener<Templates> {
 
         @Override
