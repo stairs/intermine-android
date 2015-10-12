@@ -65,7 +65,7 @@
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>
-    <string name="app_copyright">© Copyright 2014, University of Cambridge.</string>
+    <string name="app_copyright">© Copyright 2015, University of Cambridge.</string>
     <string name="app_description">\t\tUse InterMine App to quickly find fundamental information about
         genes and chromosomal features. Search gene names, gene descriptions, or browse the databases
         to find information about your favorite gene, as well as more detailed information.</string>

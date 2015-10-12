@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:background="?android:attr/activatedBackgroundIndicator"
-                android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-                android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <TextView
         android:id="@+id/template_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
         android:layout_marginTop="@dimen/margin"
-        android:textColor="@color/text_dark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        android:text="Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/text_dark" />
 
     <TextView
         android:id="@+id/template_description"
-        android:layout_below="@id/template_title"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginBottom="@dimen/margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_medium"
+        android:layout_below="@id/template_title"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:text="Description"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="Description"/>
+        android:textColor="@color/text_medium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray" />
 
 </RelativeLayout>

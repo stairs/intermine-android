@@ -9,7 +9,7 @@
               android:minHeight="200dp">
 
     <EditText
-        android:id="@+id/mine_name"
+        android:id="@+id/value"
         android:hint="@string/mine_name_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

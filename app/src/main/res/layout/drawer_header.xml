@@ -9,15 +9,16 @@
     android:id="@+id/drawer_header"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
+    <View
         android:id="@+id/avatar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="@dimen/spacing_large"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/spacing_large"
+        android:layout_marginTop="40dp"
         android:elevation="4dp" />
 
     <TextView
-        android:id="@+id/mine_name"
+        android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -48,9 +48,6 @@ public class MinesActivity extends BaseActivity implements MineDialogFragment.Mi
     @InjectView(R.id.mines_list)
     ListView mMinesList;
 
-    @InjectView(R.id.fab)
-    FloatingActionButton mActionButton;
-
     private MinesAdapter mAdapter;
 
     private AbsListView.MultiChoiceModeListener mMultiListener = new AbsListView.MultiChoiceModeListener() {

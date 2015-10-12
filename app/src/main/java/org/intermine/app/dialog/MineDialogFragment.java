@@ -33,7 +33,7 @@ public class MineDialogFragment extends DialogFragment {
     public static final String MINE_NAME_KEY = "mine_name_key";
     public static final String MINE_URL_KEY = "mine_url_key";
 
-    @InjectView(R.id.mine_name)
+    @InjectView(R.id.value)
     EditText mMineName;
 
     @InjectView(R.id.mine_url)

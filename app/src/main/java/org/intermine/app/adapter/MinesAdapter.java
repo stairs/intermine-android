@@ -73,10 +73,10 @@ public class MinesAdapter extends BaseAdapter {
         CheckBox checkBox;
 
         if (null == convertView) {
-            convertView = mLayoutInflater.inflate(R.layout.mines_list_item, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.checkbox_list_item, parent, false);
 
-            title = (TextView) convertView.findViewById(R.id.mine_name);
-            checkBox = (CheckBox) convertView.findViewById(R.id.mine_checkbox);
+            title = (TextView) convertView.findViewById(R.id.value);
+            checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -84,11 +84,11 @@ public class MinesAdapter extends BaseAdapter {
                 }
             });
 
-            convertView.setTag(R.id.mine_name, title);
-            convertView.setTag(R.id.mine_checkbox, checkBox);
+            convertView.setTag(R.id.value, title);
+            convertView.setTag(R.id.checkbox, checkBox);
         } else {
-            title = (TextView) convertView.getTag(R.id.mine_name);
-            checkBox = (CheckBox) convertView.getTag(R.id.mine_checkbox);
+            title = (TextView) convertView.getTag(R.id.value);
+            checkBox = (CheckBox) convertView.getTag(R.id.checkbox);
         }
 
         String mine = (String) getItem(position);

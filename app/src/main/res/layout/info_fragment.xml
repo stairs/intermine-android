@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/info_container"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/intermine_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_intermine_logo"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:paddingBottom="?attr/actionBarSize"
+        android:src="@drawable/ic_intermine_logo" />
 
     <TextView
         android:id="@+id/app_info"
         style="@style/InterMine.Theme.Text.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/spacing_large"
         android:autoLink="web|email"
-        android:text="@string/app_info"
-        android:layout_marginTop="36dp"
-        android:layout_alignParentTop="true"/>
+        android:gravity="center"
+        android:text="@string/app_info" />
 
     <TextView
+        android:layout_above="@+id/stub"
         android:id="@+id/copyright"
         style="@style/InterMine.Theme.Text.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/app_copyright"/>
+        android:paddingBottom="@dimen/spacing_large"
+        android:text="@string/app_copyright" />
 
+    <View
+        android:id="@id/stub"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.intermine.app.R;
@@ -51,14 +52,18 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @InjectView(R.id.navigation_view)
     protected NavigationView mNavigationView;
 
-    @InjectView(R.id.mine_name)
+    @InjectView(R.id.value)
     protected TextView mMineNameView;
+
+    @InjectView(R.id.avatar)
+    protected View mMineLogo;
 
     private List mGeneFavoritesList;
 
     protected CharSequence mTitle;
     private String mMineName;
     private boolean mMainMenuDisplayed;
+    private int mLastSelectedMenuItem;
 
     // --------------------------------------------------------------------------------------------
     // Activity Lifecycle
@@ -75,6 +80,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         setupDrawerLayout();
 
         mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
+        mGeneFavoritesList.setType("Gene");
     }
 
     @Override
@@ -96,36 +102,15 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 if (mMainMenuDisplayed) {
-                    Fragment fragment = null;
-
-                    switch (menuItem.getItemId()) {
-                        case R.id.drawer_search_all:
-                            fragment = SearchFragment.newInstance();
-                            break;
-                        case R.id.drawer_templates:
-                            fragment = TemplatesFragment.newInstance(mMineName);
-                            break;
-                        case R.id.drawer_lists:
-                            fragment = ListsFragment.newInstance(mMineName);
-                            break;
-                        case R.id.drawer_favourites:
-                            fragment = GenesListFragment.newInstance(mGeneFavoritesList, mMineName);
-                            break;
-                        case R.id.drawer_login:
-                            fragment = LogInFragment.newInstance();
-                            break;
-                        case R.id.drawer_info:
-                            fragment = InfoFragment.newInstance();
-                            break;
-                    }
-                    populateContentFragment(fragment);
-                    mDrawerLayout.closeDrawers();
+                    populateMainContent(menuItem.getItemId());
+                    mLastSelectedMenuItem = menuItem.getItemId();
                 } else {
                     mMineName = menuItem.getTitle().toString();
                     getStorage().setWorkingMineName(mMineName);
                     mMineNameView.setText(mMineName);
-                    onDrawerHeaderClick();
+                    populateMainContent(mLastSelectedMenuItem);
                 }
+                mDrawerLayout.closeDrawers();
                 return true;
             }
         });
@@ -139,6 +124,10 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setMainMenuDisplayed(false);
+                toggleExpandedView(false);
+
+                mMainMenuDisplayed = true;
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -228,5 +217,31 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
             mMineNameView.setCompoundDrawablesWithIntrinsicBounds(null, null,
                     getResources().getDrawable(R.drawable.ic_expand_more_white_24dp), null);
         }
+    }
+
+    private void populateMainContent(int menuItemId) {
+        Fragment fragment = null;
+
+        switch (menuItemId) {
+            case R.id.drawer_search_all:
+                fragment = SearchFragment.newInstance();
+                break;
+            case R.id.drawer_templates:
+                fragment = TemplatesFragment.newInstance(mMineName);
+                break;
+            case R.id.drawer_lists:
+                fragment = ListsFragment.newInstance(mMineName);
+                break;
+            case R.id.drawer_favourites:
+                fragment = GenesListFragment.newInstance(mGeneFavoritesList, mMineName);
+                break;
+            case R.id.drawer_login:
+                fragment = LogInFragment.newInstance();
+                break;
+            case R.id.drawer_info:
+                fragment = InfoFragment.newInstance();
+                break;
+        }
+        populateContentFragment(fragment);
     }
 }

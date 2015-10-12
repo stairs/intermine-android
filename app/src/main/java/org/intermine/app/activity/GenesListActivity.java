@@ -90,16 +90,19 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.open_in_browser:
-                String listAnalysisUrl = generateListAnalysisUrl(mList, mMineName);
+                String url = mStorage.getMineWebAppUrl(mMineName);
+                String title = "List Analysis";
 
-                if (!Strs.isNullOrEmpty(listAnalysisUrl)) {
-                    String title = "List Analysis";
-
-                    if (!Strs.isNullOrEmpty(mList.getName())) {
-                        title = mList.getName();
-                    }
-                    WebActivity.start(this, title, listAnalysisUrl);
+                if (!Strs.isNullOrEmpty(mList.getName())) {
+                    title = mList.getName();
                 }
+
+                if (mList.isAuthorized()) {
+                    url += "/login.do";
+                } else {
+                    url = generateListAnalysisPath(url, mList, mMineName);
+                }
+                WebActivity.start(this, title, url);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -114,14 +117,9 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
-    private String generateListAnalysisUrl(List list, String mineName) {
-        String webAppUrl = mStorage.getMineWebAppUrl(mineName);
-
-        if (!Strs.isNullOrEmpty(webAppUrl)) {
-            Map<String, String> params = new HashMap<>();
-            params.put(BAG_NAME_PARAM, mList.getName());
-            return Uris.expandQuery(webAppUrl + getString(R.string.list_analysis_path), params);
-        }
-        return Strs.EMPTY_STRING;
+    private String generateListAnalysisPath(String baseUrl, List list, String mineName) {
+        Map<String, String> params = new HashMap<>();
+        params.put(BAG_NAME_PARAM, mList.getName());
+        return Uris.expandQuery(baseUrl + getString(R.string.list_analysis_path), params);
     }
 }

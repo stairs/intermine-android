@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -18,14 +17,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/default_toolbar" />
+            <include layout="@layout/toolbar_in_appbarlayout" />
 
             <FrameLayout
                 android:id="@+id/main_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/white"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:background="@android:color/white" />
         </android.support.design.widget.CoordinatorLayout>
 
         <android.support.design.widget.NavigationView
