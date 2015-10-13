@@ -72,7 +72,9 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         setContentView(R.layout.main_activity);
         ButterKnife.inject(this);
 
-        populateContentFragment(SearchFragment.newInstance());
+        if (null == savedInstanceState) {
+            populateContentFragment(SearchFragment.newInstance(false));
+        }
         initToolbar();
         setupDrawerLayout();
     }
@@ -218,7 +220,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
 
         switch (menuItemId) {
             case R.id.drawer_search_all:
-                fragment = SearchFragment.newInstance();
+                fragment = SearchFragment.newInstance(true);
                 break;
             case R.id.drawer_templates:
                 fragment = TemplatesFragment.newInstance(mMineName);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_header"
     android:layout_width="match_parent"
     android:layout_height="172dp"
     android:background="@drawable/drawer_background"
     android:orientation="vertical"
     android:paddingTop="25dp"
-    android:id="@+id/drawer_header"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <View
@@ -25,10 +25,10 @@
         android:layout_marginBottom="@dimen/spacing_large"
         android:layout_marginLeft="@dimen/spacing_large"
         android:layout_marginStart="@dimen/spacing_large"
-        android:text="FlyMine"
+        android:drawableRight="@drawable/ic_expand_more_white_24dp"
         android:gravity="center_vertical"
         android:paddingRight="@dimen/spacing_large"
-        android:drawableRight="@drawable/ic_expand_more_white_24dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        android:text="FlyMine"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 </RelativeLayout>

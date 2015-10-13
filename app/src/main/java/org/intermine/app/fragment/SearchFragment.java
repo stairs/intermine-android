@@ -64,6 +64,7 @@ import roboguice.util.temp.Strings;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
+    private static final String EXPAND_SEARCH_VIEW_KEY = "expand_search_view_key";
 
     @InjectView(R.id.genes)
     protected ListView mGenesListView;
@@ -97,6 +98,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     private String mGeneFavoritesListName;
     private String mQuery = Strs.EMPTY_STRING;
+    private boolean mExpandSearchViewOnStartup;
+
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
@@ -142,27 +145,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     };
 
-    public SearchFragment() {
-    }
-
-    public static SearchFragment newInstance() {
+    public static SearchFragment newInstance(boolean expandSearchView) {
         SearchFragment fragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(EXPAND_SEARCH_VIEW_KEY, expandSearchView);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        return inflater.inflate(R.layout.search_fragment, container, false);
-    }
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -193,6 +183,25 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
+
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mExpandSearchViewOnStartup = bundle.getBoolean(EXPAND_SEARCH_VIEW_KEY);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        return inflater.inflate(R.layout.search_fragment, container, false);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mListener = (OnGeneSelectedListener) activity;
@@ -218,7 +227,13 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.gene_search_menu, menu);
-        mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
+        MenuItem item = menu.findItem(R.id.search_action);
+
+        if (mExpandSearchViewOnStartup) {
+            item.expandActionView();
+        }
+
+        mSearchView = (SearchView) item.getActionView();
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setQueryHint(getString(R.string.gene_search_hint));
         super.onCreateOptionsMenu(menu, inflater);
