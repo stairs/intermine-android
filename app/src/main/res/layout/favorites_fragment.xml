@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.GenesListFragment">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/default_toolbar"
+        android:footerDividersEnabled="false"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/login_required"
+        style="@style/InterMine.Theme.Text.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="?attr/actionBarSize"
+        android:paddingLeft="@dimen/spacing_large"
+        android:paddingRight="@dimen/spacing_large"
+        android:text="@string/login_to_see_favorites"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/not_found_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/sad_cloud_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"
+            android:src="@drawable/sad_face" />
+
+        <TextView
+            android:id="@+id/not_found_label"
+            style="@style/InterMine.Theme.Text.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sad_cloud_image"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/default_padding"
+            android:text="@string/not_found" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="?attr/actionBarSize"
+        android:visibility="gone" />
+</RelativeLayout>

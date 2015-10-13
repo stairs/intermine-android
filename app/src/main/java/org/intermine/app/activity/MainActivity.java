@@ -25,9 +25,8 @@ import android.widget.TextView;
 
 import org.intermine.app.R;
 import org.intermine.app.core.Gene;
-import org.intermine.app.core.List;
 import org.intermine.app.core.templates.Template;
-import org.intermine.app.fragment.GenesListFragment;
+import org.intermine.app.fragment.FavoritesListFragment;
 import org.intermine.app.fragment.InfoFragment;
 import org.intermine.app.fragment.ListsFragment;
 import org.intermine.app.fragment.LogInFragment;
@@ -58,8 +57,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @InjectView(R.id.avatar)
     protected View mMineLogo;
 
-    private List mGeneFavoritesList;
-
     protected CharSequence mTitle;
     private String mMineName;
     private boolean mMainMenuDisplayed;
@@ -78,9 +75,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         populateContentFragment(SearchFragment.newInstance());
         initToolbar();
         setupDrawerLayout();
-
-        mGeneFavoritesList = new List(getString(R.string.gene_favorites_list_name));
-        mGeneFavoritesList.setType("Gene");
     }
 
     @Override
@@ -233,7 +227,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
                 fragment = ListsFragment.newInstance(mMineName);
                 break;
             case R.id.drawer_favourites:
-                fragment = GenesListFragment.newInstance(mGeneFavoritesList, mMineName);
+                fragment = FavoritesListFragment.newInstance(mMineName);
                 break;
             case R.id.drawer_login:
                 fragment = LogInFragment.newInstance();
