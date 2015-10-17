@@ -247,7 +247,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         if (mExpandSearchViewOnStartup) {
             item.expandActionView();
         }
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 

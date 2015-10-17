@@ -34,6 +34,7 @@ import org.intermine.app.fragment.LogInFragment;
 import org.intermine.app.fragment.SearchFragment;
 import org.intermine.app.fragment.TemplatesFragment;
 import org.intermine.app.listener.OnGeneSelectedListener;
+import org.intermine.app.util.Strs;
 
 import java.util.Set;
 
@@ -96,30 +97,63 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     private void setupDrawerLayout() {
         mMainMenuDisplayed = true;
         mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                if (mMainMenuDisplayed && R.id.drawer_settings == mLastSelectedMenuItem) {
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                if (mMainMenuDisplayed) {
-                    populateMainContent(menuItem.getItemId());
-                    mLastSelectedMenuItem = menuItem.getItemId();
-                } else {
-                    mMineName = menuItem.getTitle().toString();
-                    getStorage().setWorkingMineName(mMineName);
-                    mMineNameView.setText(mMineName);
-                    populateMainContent(mLastSelectedMenuItem);
-                }
-                mDrawerLayout.closeDrawers();
-                return true;
-            }
-        });
+                                            @Override
+                                            public void onDrawerClosed(View drawerView) {
+                                                if (mMainMenuDisplayed) {
+                                                    if (R.id.drawer_settings == mLastSelectedMenuItem) {
+                                                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                                        startActivity(intent);
+                                                        mLastSelectedMenuItem = -1;
+                                                    } else if (R.id.drawer_login == mLastSelectedMenuItem) {
+                                                        if (Strs.isNullOrEmpty(getStorage().getUserToken(mMineName))) {
+                                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            getStorage().setUserToken(mMineName, null);
+                                                        }
+                                                        mLastSelectedMenuItem = -1;
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onDrawerOpened(View drawerView) {
+                                                Menu menu = mNavigationView.getMenu();
+                                                MenuItem item = menu.findItem(R.id.drawer_login);
+
+                                                if (Strs.isNullOrEmpty(getStorage().getUserToken(mMineName))) {
+                                                    item.setTitle(getString(R.string.log_in));
+                                                } else {
+                                                    item.setTitle(getString(R.string.logout));
+                                                }
+                                            }
+                                        }
+
+        );
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+
+                                                          {
+                                                              @Override
+                                                              public boolean onNavigationItemSelected(MenuItem menuItem) {
+                                                                  if (mMainMenuDisplayed) {
+                                                                      populateMainContent(menuItem.getItemId());
+                                                                      mLastSelectedMenuItem = menuItem.getItemId();
+                                                                  } else {
+                                                                      mMineName = menuItem.getTitle().toString();
+                                                                      getStorage().setWorkingMineName(mMineName);
+                                                                      mMineNameView.setText(mMineName);
+
+                                                                      if (menuItem.getItemId() != R.id.drawer_settings &&
+                                                                              menuItem.getItemId() != R.id.drawer_login) {
+                                                                          populateMainContent(mLastSelectedMenuItem);
+                                                                      }
+                                                                  }
+                                                                  mDrawerLayout.closeDrawers();
+                                                                  return true;
+                                                              }
+                                                          }
+
+        );
     }
 
     // --------------------------------------------------------------------------------------------
@@ -150,6 +184,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
 
     public void onSectionAttached(String title) {
         mTitle = title;
+        setTitle(mTitle);
     }
 
     @Override
@@ -240,9 +275,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
                 break;
             case R.id.drawer_favourites:
                 fragment = FavoritesListFragment.newInstance(mMineName);
-                break;
-            case R.id.drawer_login:
-                fragment = LogInFragment.newInstance();
                 break;
             case R.id.drawer_info:
                 fragment = InfoFragment.newInstance();

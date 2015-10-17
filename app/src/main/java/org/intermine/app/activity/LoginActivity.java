@@ -18,6 +18,7 @@ import android.view.Menu;
 
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.R;
+import org.intermine.app.fragment.LogInFragment;
 import org.intermine.app.fragment.PreferencesFragment;
 
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class SettingsActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     @InjectView(R.id.default_toolbar)
     Toolbar mToolbar;
 
@@ -47,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getFragmentManager().beginTransaction().replace(
-                R.id.fragment_container, new PreferencesFragment()).commit();
+                R.id.fragment_container, new LogInFragment()).commit();
     }
 
     @Override

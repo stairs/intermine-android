@@ -26,15 +26,15 @@
                     android:id="@+id/drawer_favourites"
                     android:icon="@drawable/ic_favorite_black_24dp"
                     android:title="@string/favorites" />
+
+                <item
+                    android:id="@+id/drawer_login"
+                    android:icon="@drawable/ic_action_login"
+                    android:title="@string/log_in" />
             </menu>
         </item>
     </group>
     <group android:id="@+id/rest">
-        <item
-            android:id="@+id/drawer_login"
-            android:icon="@drawable/ic_action_login"
-            android:title="@string/log_in" />
-
         <item
             android:id="@+id/drawer_settings"
             android:icon="@drawable/ic_settings_black_24dp"

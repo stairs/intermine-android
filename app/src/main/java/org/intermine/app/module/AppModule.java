@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.activity.GeneViewActivity;
 import org.intermine.app.activity.GenesListActivity;
+import org.intermine.app.activity.LoginActivity;
 import org.intermine.app.activity.MainActivity;
 import org.intermine.app.activity.MinesActivity;
 import org.intermine.app.activity.SettingsActivity;
@@ -90,7 +91,8 @@ import dagger.Provides;
                 MinesActivity.class,
                 WebActivity.class,
                 GetTypeFieldsRequest.class,
-                FavoritesListFragment.class
+                FavoritesListFragment.class,
+                LoginActivity.class
         }
 )
 public final class AppModule {

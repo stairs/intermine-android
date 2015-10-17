@@ -21,6 +21,13 @@
         <item name="rippleColor">@android:color/white</item>
     </style>
 
+    <style name="ColoredButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/im_green</item>
+        <item name="pressedTranslationZ">12dp</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="elevation">6dp</item>
+    </style>
+
     <!-- Font styles -->
 
     <style name="InterMine.Theme.Text">

@@ -102,13 +102,13 @@
     <string name="mines">Mines</string>
 
     <!-- Authorization -->
-    <string name="authorized_for_mines_label">You are authorized for mines:</string>
-    <string name="logged_in_for_all_mines_label">You\'ve successfully logged in for all mines!</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="login_button_label">Login</string>
+    <string name="login_button_label">Log in</string>
     <string name="incorrect_creds">Invalid username/password combination. Please, try again.</string>
+    <string name="empty_creds">Username and password fields should not be empty!</string>
     <string name="logout">Log out</string>
+    <string name="login_invitation">Please, use the same credentials as for the web mine!</string>
 
     <!-- Errors -->
     <string name="default_error_message">Internal error happened. Please, try again later.</string>
