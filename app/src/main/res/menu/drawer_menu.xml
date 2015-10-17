@@ -36,6 +36,11 @@
             android:title="@string/log_in" />
 
         <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/settings" />
+
+        <item
             android:id="@+id/drawer_info"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/info" />
