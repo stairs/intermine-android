@@ -25,8 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -49,6 +51,7 @@ import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -229,13 +232,22 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         inflater.inflate(R.menu.gene_search_menu, menu);
         MenuItem item = menu.findItem(R.id.search_action);
 
+        mSearchView = (SearchView) item.getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setQueryHint(getString(R.string.gene_search_hint));
+
+        final EditText searchTextView = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, 0);
+        } catch (Exception e) {
+        }
+
         if (mExpandSearchViewOnStartup) {
             item.expandActionView();
         }
 
-        mSearchView = (SearchView) item.getActionView();
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setQueryHint(getString(R.string.gene_search_hint));
         super.onCreateOptionsMenu(menu, inflater);
     }
 
