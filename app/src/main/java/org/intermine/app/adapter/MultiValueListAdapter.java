@@ -19,12 +19,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.google.common.collect.Sets;
-
 import org.intermine.app.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ public class MultiValueListAdapter extends RecyclerView.Adapter<MultiValueListAd
 
     public MultiValueListAdapter(Collection<String> values) {
         mValues = new ArrayList<>(values);
-        mSelected = Sets.newHashSet();
+        mSelected = new HashSet<>();
     }
 
     @Override

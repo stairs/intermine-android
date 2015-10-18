@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.intermine.app.R;
 import org.intermine.app.adapter.MultiValueListAdapter;
@@ -68,13 +69,12 @@ public class MultiValueConstraintView extends ConstraintView {
 
     @Override
     public boolean isValidConstraint() {
-        //return !Strs.isNullOrEmpty(mValue.getText().toString());
-        return true;
+        return !mAdapter.getSelected().isEmpty();
     }
 
     @Override
     public void highlightInvalid() {
-        //mValue.setError(getContext().getString(R.string.empty_value_em));
+        Toast.makeText(getContext(), "Please, select at least one value from the list!", Toast.LENGTH_SHORT).show();
     }
 
     private void init() {

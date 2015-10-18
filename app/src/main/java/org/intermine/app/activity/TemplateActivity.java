@@ -182,8 +182,7 @@ public class TemplateActivity extends BaseActivity {
         String code = constraint.getCode();
 
         if (!Collections.isNullOrEmpty(PathConstraint.getValues(constraint))) {
-            return new TemplateParameter(path, operation,
-                    (List<String>) PathConstraint.getValues(constraint), code);
+            return new TemplateParameter(path, operation, PathConstraint.getValues(constraint), code);
         } else {
             return new TemplateParameter(path, operation,
                     PathConstraint.getValue(constraint),
