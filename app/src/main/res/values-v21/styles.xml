@@ -7,6 +7,10 @@
         <item name="colorControlHighlight">@color/im_green_transparent</item>
     </style>
 
+    <style name="InterMine.BrandedLaunch" parent="InterMine.Theme">
+        <item name="android:windowBackground">@drawable/branded_logo</item>
+    </style>
+
     <!-- Font styles -->
 
     <style name="InterMine.Theme.Text">

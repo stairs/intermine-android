@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.InterMine_Theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.inject(this);
