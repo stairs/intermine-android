@@ -57,7 +57,7 @@ public class TemplateActivity extends BaseActivity {
     @InjectView(R.id.template_description)
     TextView mTemplateDescription;
 
-    @InjectView(R.id.description_card)
+    @InjectView(R.id.template_description)
     View mDescriptionContainer;
 
     private Template mTemplate;
@@ -92,14 +92,12 @@ public class TemplateActivity extends BaseActivity {
         mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
 
         if (null != mTemplate) {
-            setTitle(mTemplate.getTitle());
-
             if (Strs.isNullOrEmpty(mTemplate.getDescription())) {
                 Views.setGone(mDescriptionContainer);
             } else {
                 Views.setVisible(mDescriptionContainer);
                 Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
-                mTemplateDescription.setText(descriptionText);
+                mTemplateDescription.setText(mTemplate.getTitle());
             }
 
             List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(

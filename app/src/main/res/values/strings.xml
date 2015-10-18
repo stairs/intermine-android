@@ -8,6 +8,7 @@
     <string name="search_all">Search All</string>
     <string name="lists">Lists</string>
     <string name="templates">Templates</string>
+    <string name="template">Template</string>
     <string name="favorites">Favorites</string>
     <string name="info">Info</string>
     <string name="log_in">Log in</string>
@@ -31,6 +32,8 @@
     <string name="login_to_see_favorites">Please, login first to see the favorites.</string>
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">LOOKUP</string>
+    <string name="operator">Operator</string>
+    <string name="value">Value</string>
     <string name="show_results">Show Results</string>
     <string name="share_message">Share text via...</string>
 

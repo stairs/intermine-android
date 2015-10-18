@@ -1,40 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:gravity="center_vertical"
-    android:padding="@dimen/default_padding"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:text="Title"
-        android:id="@+id/constraint_path"
-        android:layout_width="match_parent"
-        android:padding="@dimen/small_padding"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="8dp"
+    card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_below="@id/constraint_path"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/default_padding">
 
-        <Spinner
-            android:id="@+id/operations_spinner"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat.Widget.DropDownItem"/>
-
-        <EditText
-            android:layout_toRightOf="@id/operations_spinner"
-            android:id="@+id/base_constraint_value"
-            android:layout_marginLeft="15dp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:layout_marginRight="5dp"
+        <TextView
+            android:id="@+id/constraint_path"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_padding"
+            android:text="Title" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/constraint_path">
+
+            <LinearLayout
+                android:id="@+id/operator_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/operator"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/spacing_medium"
+                    android:text="@string/operator" />
+
+                <Spinner
+                    android:id="@+id/operations_spinner"
+                    style="@style/Base.TextAppearance.AppCompat.Widget.DropDownItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_weight="4" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/value_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/operator_container"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/value"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/spacing_medium"
+                    android:text="@string/value" />
+
+                <EditText
+                    android:id="@+id/base_constraint_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</android.support.v7.widget.CardView>

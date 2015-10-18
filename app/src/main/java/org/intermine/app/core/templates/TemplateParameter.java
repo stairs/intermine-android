@@ -13,6 +13,8 @@ package org.intermine.app.core.templates;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.intermine.app.util.Collections;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -127,7 +129,7 @@ public class TemplateParameter implements Parcelable {
     }
 
     public boolean isMultiValue() {
-        return values != null;
+        return !Collections.isNullOrEmpty(values);
     }
 
     /**
