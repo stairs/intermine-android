@@ -15,23 +15,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.intermine.app.R;
 import org.intermine.app.adapter.MultiValueListAdapter;
 import org.intermine.app.adapter.SimpleAdapter;
-import org.intermine.app.adapter.TemplatesAdapter;
-import org.intermine.app.core.templates.constraint.Constraint;
 import org.intermine.app.core.templates.constraint.ConstraintOperation;
 import org.intermine.app.core.templates.constraint.PathConstraint;
-import org.intermine.app.core.templates.constraint.PathConstraintAttribute;
+import org.intermine.app.core.templates.constraint.PathConstraintMultiValue;
 import org.intermine.app.core.templates.constraint.PathConstraintSimpleMultiValue;
-import org.intermine.app.util.Strs;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -98,7 +94,6 @@ public class MultiValueConstraintView extends ConstraintView {
         mValues.setItemAnimator(new DefaultItemAnimator());
 
         if (null != mConstraint) {
-            //mValue.setText(mConstraint.getValue());
             mPath.setText(mConstraint.getPath());
 
             for (int i = 0; i < data.size(); i++) {
@@ -109,8 +104,8 @@ public class MultiValueConstraintView extends ConstraintView {
         }
     }
 
-    public String getValues() {
-        return null;
+    public Collection<String> getValues() {
+        return mAdapter.getSelected();
     }
 
     public ConstraintOperation getOperation() {
@@ -119,8 +114,8 @@ public class MultiValueConstraintView extends ConstraintView {
 
     @Override
     public PathConstraint getGeneratedConstraint() {
-        PathConstraintAttribute constraint = (PathConstraintAttribute) getPathConstraint();
-        return new PathConstraintAttribute(constraint.getPath(), getOperation(), getValues(),
+        PathConstraint constraint = getPathConstraint();
+        return new PathConstraintMultiValue(constraint.getPath(), getOperation(), getValues(),
                 constraint.getCode());
     }
 }

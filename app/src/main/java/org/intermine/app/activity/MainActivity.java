@@ -14,6 +14,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +37,7 @@ import org.intermine.app.fragment.TemplatesFragment;
 import org.intermine.app.listener.OnGeneSelectedListener;
 import org.intermine.app.util.Strs;
 
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -44,6 +46,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements OnGeneSelectedListener,
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
+    public static final int LOGIN_ACTIVITY_CODE = 0x3435;
+
     @InjectView(R.id.default_toolbar)
     protected Toolbar mToolbar;
 
@@ -92,68 +96,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
             getStorage().setWorkingMineName(mMineName);
         }
         mMineNameView.setText(mMineName);
-    }
-
-    private void setupDrawerLayout() {
-        mMainMenuDisplayed = true;
-        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                                            @Override
-                                            public void onDrawerClosed(View drawerView) {
-                                                if (mMainMenuDisplayed) {
-                                                    if (R.id.drawer_settings == mLastSelectedMenuItem) {
-                                                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                                                        startActivity(intent);
-                                                        mLastSelectedMenuItem = -1;
-                                                    } else if (R.id.drawer_login == mLastSelectedMenuItem) {
-                                                        if (Strs.isNullOrEmpty(getStorage().getUserToken(mMineName))) {
-                                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                                            startActivity(intent);
-                                                        } else {
-                                                            getStorage().setUserToken(mMineName, null);
-                                                        }
-                                                        mLastSelectedMenuItem = -1;
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onDrawerOpened(View drawerView) {
-                                                Menu menu = mNavigationView.getMenu();
-                                                MenuItem item = menu.findItem(R.id.drawer_login);
-
-                                                if (Strs.isNullOrEmpty(getStorage().getUserToken(mMineName))) {
-                                                    item.setTitle(getString(R.string.log_in));
-                                                } else {
-                                                    item.setTitle(getString(R.string.logout));
-                                                }
-                                            }
-                                        }
-
-        );
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-
-                                                          {
-                                                              @Override
-                                                              public boolean onNavigationItemSelected(MenuItem menuItem) {
-                                                                  if (mMainMenuDisplayed) {
-                                                                      populateMainContent(menuItem.getItemId());
-                                                                      mLastSelectedMenuItem = menuItem.getItemId();
-                                                                  } else {
-                                                                      mMineName = menuItem.getTitle().toString();
-                                                                      getStorage().setWorkingMineName(mMineName);
-                                                                      mMineNameView.setText(mMineName);
-
-                                                                      if (menuItem.getItemId() != R.id.drawer_settings &&
-                                                                              menuItem.getItemId() != R.id.drawer_login) {
-                                                                          populateMainContent(mLastSelectedMenuItem);
-                                                                      }
-                                                                  }
-                                                                  mDrawerLayout.closeDrawers();
-                                                                  return true;
-                                                              }
-                                                          }
-
-        );
     }
 
     // --------------------------------------------------------------------------------------------
@@ -212,6 +154,12 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLoginState();
+    }
+
     // --------------------------------------------------------------------------------------------
     // Helper Methods
     // --------------------------------------------------------------------------------------------
@@ -224,6 +172,62 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void setupDrawerLayout() {
+        mMainMenuDisplayed = true;
+        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                                            @Override
+                                            public void onDrawerClosed(View drawerView) {
+                                                if (mMainMenuDisplayed) {
+                                                    if (R.id.drawer_settings == mLastSelectedMenuItem) {
+                                                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                                        startActivity(intent);
+                                                        mLastSelectedMenuItem = -1;
+                                                    } else if (R.id.drawer_login == mLastSelectedMenuItem) {
+                                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                                        startActivityForResult(intent, LOGIN_ACTIVITY_CODE);
+                                                        mLastSelectedMenuItem = -1;
+                                                    } else if (R.id.drawer_logout == mLastSelectedMenuItem) {
+                                                        getStorage().setUserToken(mMineName, null);
+
+                                                        Menu menu = mNavigationView.getMenu();
+                                                        menu.findItem(R.id.drawer_login).setVisible(true);
+                                                        menu.findItem(R.id.drawer_logout).setVisible(false);
+                                                        updateNavigationView();
+                                                        mLastSelectedMenuItem = -1;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+        );
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+
+                                                          {
+                                                              @Override
+                                                              public boolean onNavigationItemSelected(MenuItem menuItem) {
+                                                                  if (mMainMenuDisplayed) {
+                                                                      populateMainContent(menuItem.getItemId());
+                                                                      mLastSelectedMenuItem = menuItem.getItemId();
+                                                                  } else {
+                                                                      mMineName = menuItem.getTitle().toString();
+                                                                      getStorage().setWorkingMineName(mMineName);
+                                                                      mMineNameView.setText(mMineName);
+                                                                      updateLoginState();
+
+                                                                      if (menuItem.getItemId() != R.id.drawer_settings &&
+                                                                              menuItem.getItemId() != R.id.drawer_login &&
+                                                                              menuItem.getItemId() != R.id.drawer_logout) {
+                                                                          populateMainContent(mLastSelectedMenuItem);
+                                                                      }
+                                                                  }
+                                                                  mDrawerLayout.closeDrawers();
+                                                                  return true;
+                                                              }
+                                                          }
+
+        );
     }
 
     protected void populateContentFragment(Fragment fragment) {
@@ -281,5 +285,26 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
                 break;
         }
         populateContentFragment(fragment);
+    }
+
+    private void updateLoginState() {
+        Menu menu = mNavigationView.getMenu();
+        boolean unauthorised = Strs.isNullOrEmpty(getStorage().getUserToken(mMineName));
+        menu.findItem(R.id.drawer_login).setVisible(unauthorised);
+        menu.findItem(R.id.drawer_logout).setVisible(!unauthorised);
+        updateNavigationView();
+    }
+
+    // HACK
+    private void updateNavigationView() {
+        try {
+            Field presenterField = NavigationView.class.getDeclaredField("mPresenter");
+            presenterField.setAccessible(true);
+            ((NavigationMenuPresenter) presenterField.get(mNavigationView)).updateMenuView(false);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

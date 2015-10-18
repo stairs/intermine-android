@@ -19,11 +19,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.common.collect.Sets;
+
 import org.intermine.app.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 
@@ -32,10 +35,11 @@ import butterknife.ButterKnife;
  */
 public class MultiValueListAdapter extends RecyclerView.Adapter<MultiValueListAdapter.ViewHolder> {
     private List<String> mValues;
-    private List<Boolean> mSelected;
+    private Set<String> mSelected;
 
     public MultiValueListAdapter(Collection<String> values) {
         mValues = new ArrayList<>(values);
+        mSelected = Sets.newHashSet();
     }
 
     @Override
@@ -51,7 +55,13 @@ public class MultiValueListAdapter extends RecyclerView.Adapter<MultiValueListAd
         holder.mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSelected.set(position, isChecked);
+                String value = mValues.get(position);
+
+                if (isChecked) {
+                    mSelected.add(value);
+                } else {
+                    mSelected.remove(value);
+                }
             }
         });
     }
@@ -64,6 +74,10 @@ public class MultiValueListAdapter extends RecyclerView.Adapter<MultiValueListAd
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public Set<String> getSelected() {
+        return mSelected;
     }
 
     public static final class ViewHolder extends RecyclerView.ViewHolder {

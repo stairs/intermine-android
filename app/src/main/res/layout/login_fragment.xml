@@ -11,15 +11,14 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:padding="40dp"
-        android:textColor="@color/im_green"
-        android:text="@string/login_invitation" />
+        android:text="@string/login_invitation"
+        android:textColor="@color/im_green" />
 
     <RelativeLayout
         android:id="@+id/login_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="?attr/actionBarSize">
+        android:layout_centerInParent="true">
 
         <EditText
             android:id="@+id/login"

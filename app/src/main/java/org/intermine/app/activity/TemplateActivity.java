@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import org.intermine.app.core.templates.TemplateParameter;
 import org.intermine.app.core.templates.constraint.PathConstraint;
 import org.intermine.app.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.app.core.templates.constraint.PathConstraintLookup;
-import org.intermine.app.core.templates.constraint.PathConstraintMultiValue;
 import org.intermine.app.core.templates.constraint.PathConstraintSimpleMultiValue;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
@@ -107,7 +105,6 @@ public class TemplateActivity extends BaseActivity {
             List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(
                     mTemplate.getConstraints(), getStorage().getMineModel(mMineName));
             Collection<View> views = generateViewsForConstraints(pathConstraints);
-            Log.e("ddd", "" + views.size());
             for (View view : views) {
                 mContainer.addView(view);
             }
