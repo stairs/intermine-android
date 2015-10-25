@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/favourites"
         android:title="@string/acction_add_2_favourites"
         android:icon="@drawable/ic_action_important"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/share"
         android:title="@string/action_share"
         android:icon="@drawable/ic_action_share"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/open_in_browser"
         android:title="@string/open_in_browser"
         android:icon="@drawable/ic_open_in_browser"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

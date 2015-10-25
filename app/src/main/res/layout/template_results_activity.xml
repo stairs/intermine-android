@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include layout="@layout/default_toolbar"/>
+    <include layout="@layout/default_toolbar" />
 
     <ListView
         android:id="@+id/list"
         android:layout_below="@id/default_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:footerDividersEnabled="false"/>
+        android:footerDividersEnabled="false" />
 
     <RelativeLayout
         android:layout_below="@id/default_toolbar"
@@ -25,7 +25,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:paddingTop="30dp"
-            android:src="@drawable/sad_face"/>
+            android:src="@drawable/sad_face" />
 
         <TextView
             style="@style/InterMine.Theme.Text.Large"
@@ -34,7 +34,7 @@
             android:layout_below="@id/sad_cloud_image"
             android:layout_centerHorizontal="true"
             android:paddingTop="10dp"
-            android:text="@string/not_found"/>
+            android:text="@string/not_found" />
     </RelativeLayout>
 
     <ProgressBar
@@ -42,5 +42,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

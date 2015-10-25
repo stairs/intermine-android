@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/intermine_logo"
@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_intermine_logo"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -22,14 +22,14 @@
             style="@style/InterMine.Theme.Text.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading_label"/>
+            android:text="@string/loading_label" />
 
         <ProgressBar
             android:id="@+id/progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/loading_label"/>
+            android:layout_below="@id/loading_label" />
     </RelativeLayout>
 
     <TextView
@@ -40,5 +40,5 @@
         android:padding="15dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/app_copyright"/>
+        android:text="@string/app_copyright" />
 </RelativeLayout>

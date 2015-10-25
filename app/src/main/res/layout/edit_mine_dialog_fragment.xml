@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="@dimen/default_padding"
-              android:gravity="center_vertical"
-              android:minWidth="300dp"
-              android:minHeight="200dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_padding"
+    android:gravity="center_vertical"
+    android:minWidth="300dp"
+    android:minHeight="200dp">
 
     <EditText
         android:id="@+id/value"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_marginLeft="@dimen/outer_margin"
-        android:layout_marginRight="@dimen/outer_margin"/>
+        android:layout_marginRight="@dimen/outer_margin" />
 
     <EditText
         android:id="@+id/mine_url"
@@ -25,25 +25,25 @@
         android:layout_marginRight="@dimen/outer_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin"/>
+        android:layout_marginBottom="@dimen/margin" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="horizontal"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center">
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
         <Button
             android:id="@+id/cancel"
             android:text="@android:string/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin"/>
+            android:layout_marginRight="@dimen/margin" />
 
         <Button
             android:id="@+id/save"
             android:text="@string/save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

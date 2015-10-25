@@ -1,3 +1,3 @@
 <resources>
-<string name="list_query" formatted="false"><![CDATA[<query model=\"genomic\" view=\"%s\" longDescription=\"\"><constraint path=\"%s\" op=\"IN\" value=\"%s\"/></query>]]></string>
+    <string name="list_query" formatted="false"><![CDATA[<query model=\"genomic\" view=\"%s\" longDescription=\"\"><constraint path=\"%s\" op=\"IN\" value=\"%s\"/></query>]]></string>
 </resources>
