@@ -177,7 +177,7 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
     public boolean onQueryTextChange(String query) {
         mQuery = query;
 
-        if (!Strs.isNullOrEmpty(mQuery)) {
+        if (!Strs.isNullOrEmpty(mQuery) && null != mTemplatesAdapter) {
             mTemplatesAdapter.filter(query);
 
             if (Collections.isNullOrEmpty(mTemplatesAdapter.getFilteredTemplates())) {
