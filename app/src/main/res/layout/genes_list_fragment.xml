@@ -1,15 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".fragment.GenesListFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.GenesListFragment">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/default_toolbar"
-        android:footerDividersEnabled="false"/>
+        android:footerDividersEnabled="false" />
 
     <RelativeLayout
         android:id="@+id/not_found_results_container"
@@ -23,7 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:paddingTop="30dp"
-            android:src="@drawable/sad_face"/>
+            android:src="@drawable/sad_face" />
 
         <TextView
             android:id="@+id/not_found_label"
@@ -33,7 +33,7 @@
             android:layout_below="@id/sad_cloud_image"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/default_padding"
-            android:text="@string/not_found"/>
+            android:text="@string/not_found" />
 
         <TextView
             android:id="@+id/auth_required_label"
@@ -45,7 +45,7 @@
             android:paddingTop="@dimen/default_padding"
             android:text="@string/favorites_requirement_label"
             android:textColor="@color/gray"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ProgressBar
@@ -53,5 +53,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

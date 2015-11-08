@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/main">
+        <item
+            android:id="@+id/drawer_search_all"
+            android:checked="true"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="@string/search_all" />
+
+        <item
+            android:id="@+id/section"
+            android:title="@string/mine_specific_header">
+            <menu>
+                <item
+                    android:id="@+id/drawer_lists"
+                    android:icon="@drawable/ic_view_list_black_24dp"
+                    android:title="@string/lists" />
+
+                <item
+                    android:id="@+id/drawer_templates"
+                    android:icon="@drawable/ic_templates"
+                    android:title="@string/templates" />
+
+                <item
+                    android:id="@+id/drawer_favourites"
+                    android:icon="@drawable/ic_favorite_black_24dp"
+                    android:title="@string/favorites" />
+
+                <item
+                    android:id="@+id/drawer_login"
+                    android:icon="@drawable/ic_action_login"
+                    android:title="@string/log_in" />
+
+                <item
+                    android:id="@+id/drawer_logout"
+                    android:icon="@drawable/ic_action_login"
+                    android:title="@string/logout"
+                    android:visible="false" />
+            </menu>
+        </item>
+    </group>
+    <group android:id="@+id/rest">
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/settings" />
+
+        <item
+            android:id="@+id/drawer_info"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="@string/info" />
+    </group>
+    <group
+        android:id="@+id/mines"
+        android:visible="false">
+        <item
+            android:id="@+id/sfd"
+            android:icon="@drawable/ic_action_login"
+            android:title="@string/log_in" />
+    </group>
+</menu>

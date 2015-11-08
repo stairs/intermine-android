@@ -3,6 +3,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceScreen
         android:key="mines"
-        android:title="Mines">
-    </PreferenceScreen>
+        android:title="Mines"></PreferenceScreen>
 </PreferenceScreen>

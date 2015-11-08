@@ -11,15 +11,16 @@ package org.intermine.app.adapter;
  */
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.intermine.app.R;
+import org.intermine.app.core.List;
 import org.intermine.app.core.templates.Template;
 import org.intermine.app.util.Strs;
 
@@ -29,16 +30,13 @@ import java.util.Collection;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class TemplatesAdapter extends BaseAdapter {
-    private final Context mContext;
-    private final LayoutInflater mLayoutInflater;
-
+public class TemplatesAdapter extends RecyclerView.Adapter<TemplatesAdapter.ViewHolder> {
     private ArrayList<Template> mFilteredTemplates;
     private ArrayList<Template> mTemplates;
+    private OnItemClickListener mListener;
 
-    public TemplatesAdapter(Context ctx) {
-        mContext = ctx;
-        mLayoutInflater = LayoutInflater.from(ctx);
+    public TemplatesAdapter(OnItemClickListener mListener) {
+        this.mListener = mListener;
     }
 
     public void updateData(Collection<Template> templates) {
@@ -48,19 +46,24 @@ public class TemplatesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        if (null != mFilteredTemplates) {
-            return mFilteredTemplates.size();
-        }
-        return 0;
+    public TemplatesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.templates_item, parent, false);
+        return ViewHolder.newInstance(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        if (null != mFilteredTemplates) {
-            return mFilteredTemplates.get(position);
-        }
-        return null;
+    public void onBindViewHolder(TemplatesAdapter.ViewHolder holder, int position) {
+        final Template template = getTemplate(position);
+        holder.mTitle.setText(template.getTitle());
+        Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(template.getDescription()));
+        holder.mDescription.setText(descriptionText);
+        holder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClick(template);
+            }
+        });
     }
 
     @Override
@@ -68,30 +71,19 @@ public class TemplatesAdapter extends BaseAdapter {
         return position;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView title, description;
-
-        if (null == convertView) {
-            convertView = mLayoutInflater.inflate(R.layout.templates_item, parent, false);
-
-            title = (TextView) convertView.findViewById(R.id.template_title);
-            description = (TextView) convertView.findViewById(R.id.template_description);
-
-            convertView.setTag(R.id.template_title, title);
-            convertView.setTag(R.id.template_description, description);
-        } else {
-            title = (TextView) convertView.getTag(R.id.template_title);
-            description = (TextView) convertView.getTag(R.id.template_description);
+    public Template getTemplate(int position) {
+        if (position < 0 || position >= mFilteredTemplates.size()) {
+            throw new IllegalArgumentException();
         }
+        return mFilteredTemplates.get(position);
+    }
 
-        Template template = (Template) getItem(position);
-
-        title.setText(template.getTitle());
-
-        Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(template.getDescription()));
-        description.setText(descriptionText);
-        return convertView;
+    @Override
+    public int getItemCount() {
+        if (null != mFilteredTemplates) {
+            return mFilteredTemplates.size();
+        }
+        return 0;
     }
 
     public void filter(String query) {
@@ -116,5 +108,40 @@ public class TemplatesAdapter extends BaseAdapter {
 
     public ArrayList<Template> getFilteredTemplates() {
         return mFilteredTemplates;
+    }
+
+    public static interface OnItemClickListener {
+        void onItemClick(Template template);
+    }
+
+    public static final class ViewHolder extends RecyclerView.ViewHolder {
+        private final View mParent;
+        private final TextView mTitle;
+        private final TextView mDescription;
+
+        public static ViewHolder newInstance(View parent) {
+            TextView title = (TextView) parent.findViewById(R.id.template_title);
+            TextView description = (TextView) parent.findViewById(R.id.template_description);
+            return new ViewHolder(parent, title, description);
+        }
+
+        private ViewHolder(View parent, TextView title, TextView description) {
+            super(parent);
+            this.mParent = parent;
+            this.mTitle = title;
+            this.mDescription = description;
+        }
+
+        public void setTitle(CharSequence text) {
+            mTitle.setText(text);
+        }
+
+        public void setDescription(CharSequence text) {
+            mDescription.setText(text);
+        }
+
+        public void setOnClickListener(View.OnClickListener listener) {
+            mParent.setOnClickListener(listener);
+        }
     }
 }

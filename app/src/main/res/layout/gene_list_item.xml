@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="?android:attr/activatedBackgroundIndicator"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:orientation="horizontal"
-              android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-              android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-              android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-              android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,7 +32,7 @@
             android:text="@string/gene_name_with_colon"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/im_green"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/organism_name_title"
@@ -47,7 +47,7 @@
             android:text="@string/gene_organism_name_with_colon"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/im_green"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/primary_db_id_title"
@@ -62,7 +62,7 @@
             android:text="@string/gene_primary_db_id_with_colon"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/im_green"/>
+            android:textColor="@color/im_green" />
 
         <TextView
             android:id="@+id/symbol_title"
@@ -77,7 +77,22 @@
             android:text="@string/gene_symbol_with_colon"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/im_green"/>
+            android:textColor="@color/im_green" />
+
+        <TextView
+            android:id="@+id/mine_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|right"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/mine"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/im_green" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,7 +114,7 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_medium"/>
+            android:textColor="@color/text_medium" />
 
         <TextView
             android:id="@+id/organism_name_value"
@@ -111,7 +126,7 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_medium"/>
+            android:textColor="@color/text_medium" />
 
 
         <TextView
@@ -124,7 +139,7 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_medium"/>
+            android:textColor="@color/text_medium" />
 
 
         <TextView
@@ -137,21 +152,19 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_medium"/>
+            android:textColor="@color/text_medium" />
 
         <TextView
-            android:id="@+id/gene_mine"
+            android:id="@+id/mine_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:ellipsize="end"
-            android:gravity="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:paddingRight="@dimen/small_padding"
             android:paddingTop="3dp"
-            android:text="Mine"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/text_light"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/text_medium" />
+
     </LinearLayout>
 </LinearLayout>

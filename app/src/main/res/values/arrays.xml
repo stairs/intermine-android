@@ -11,7 +11,6 @@
         <item>HumanMine</item>
         <item>ThaleMine</item>
         <item>PhytoMine</item>
-        <item>MedicMine</item>
     </string-array>
     <string-array name="mines_service_urls">
         <item>http://www.flymine.org/query/service</item>
@@ -24,7 +23,6 @@
         <item>http://human.intermine.org/human/service</item>
         <item>https://apps.araport.org/thalemine/service</item>
         <item>http://phytozome.jgi.doe.gov/phytomine/service</item>
-        <item>http://medicmine.jcvi.org/medicmine/service</item>
     </string-array>
     <string-array name="mines_web_app_urls">
         <item>http://www.flymine.org/flymine</item>
@@ -37,6 +35,5 @@
         <item>http://human.intermine.org/human</item>
         <item>https://apps.araport.org/thalemine</item>
         <item>http://phytozome.jgi.doe.gov/phytomine</item>
-        <item>http://medicmine.jcvi.org/medicmine</item>
     </string-array>
 </resources>

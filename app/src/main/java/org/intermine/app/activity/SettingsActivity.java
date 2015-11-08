@@ -12,6 +12,7 @@ package org.intermine.app.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
@@ -25,7 +26,7 @@ import butterknife.InjectView;
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends AppCompatActivity {
     @InjectView(R.id.default_toolbar)
     Toolbar mToolbar;
 
@@ -36,7 +37,7 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.container_activity);
         ButterKnife.inject(this);
 
         InterMineApplication app = InterMineApplication.get(this);

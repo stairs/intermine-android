@@ -25,6 +25,7 @@ import static org.intermine.app.core.templates.constraint.ConstraintOperation.LE
 import static org.intermine.app.core.templates.constraint.ConstraintOperation.LESS_THAN_EQUALS;
 import static org.intermine.app.core.templates.constraint.ConstraintOperation.MATCHES;
 import static org.intermine.app.core.templates.constraint.ConstraintOperation.NOT_EQUALS;
+import static org.intermine.app.core.templates.constraint.ConstraintOperation.ONE_OF;
 import static org.intermine.app.core.templates.constraint.ConstraintOperation.STRICT_NOT_EQUALS;
 
 public class PathConstraintAttribute extends PathConstraint {

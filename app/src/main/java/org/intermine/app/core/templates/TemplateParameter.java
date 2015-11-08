@@ -13,6 +13,9 @@ package org.intermine.app.core.templates;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.intermine.app.util.Collections;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -60,11 +63,11 @@ public class TemplateParameter implements Parcelable {
         this.code = code;
     }
 
-    public TemplateParameter(String pathId, String operation, List<String> values, String code) {
+    public TemplateParameter(String pathId, String operation, Collection<String> values, String code) {
         super();
         this.pathId = pathId;
         this.operation = operation;
-        this.values = values;
+        this.values = new ArrayList<>(values);
         this.value = null;
         this.extraValue = null;
         this.code = code;
@@ -92,8 +95,9 @@ public class TemplateParameter implements Parcelable {
         value = in.readString();
         pathId = in.readString();
         extraValue = in.readString();
-        values = in.readArrayList(null);
         code = in.readString();
+        values = new ArrayList<>();
+        in.readStringList(values);
     }
 
     /**
@@ -125,7 +129,7 @@ public class TemplateParameter implements Parcelable {
     }
 
     public boolean isMultiValue() {
-        return values != null;
+        return !Collections.isNullOrEmpty(values);
     }
 
     /**
@@ -155,8 +159,8 @@ public class TemplateParameter implements Parcelable {
         dest.writeString(value);
         dest.writeString(pathId);
         dest.writeString(extraValue);
-        dest.writeStringList(values);
         dest.writeString(code);
+        dest.writeStringList(values);
     }
 
     public static final Parcelable.Creator<TemplateParameter> CREATOR = new Parcelable.Creator<TemplateParameter>() {

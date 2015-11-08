@@ -1,12 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lists"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layoutAnimation="@anim/list_layout_animation"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/not_found_results_container"
@@ -20,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:paddingTop="30dp"
-            android:src="@drawable/sad_face"/>
+            android:src="@drawable/sad_face" />
 
         <TextView
             android:id="@+id/not_found_label"
@@ -30,12 +31,12 @@
             android:layout_below="@id/sad_cloud_image"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/default_padding"
-            android:text="@string/not_found"/>
+            android:text="@string/not_found" />
     </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 </RelativeLayout>

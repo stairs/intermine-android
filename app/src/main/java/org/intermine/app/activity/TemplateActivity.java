@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import org.intermine.app.core.templates.TemplateParameter;
 import org.intermine.app.core.templates.constraint.PathConstraint;
 import org.intermine.app.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.app.core.templates.constraint.PathConstraintLookup;
+import org.intermine.app.core.templates.constraint.PathConstraintSimpleMultiValue;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Templates;
@@ -33,6 +35,7 @@ import org.intermine.app.util.Views;
 import org.intermine.app.view.AttributeConstraintView;
 import org.intermine.app.view.ConstraintView;
 import org.intermine.app.view.LookupConstraintView;
+import org.intermine.app.view.MultiValueConstraintView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +58,7 @@ public class TemplateActivity extends BaseActivity {
     @InjectView(R.id.template_description)
     TextView mTemplateDescription;
 
-    @InjectView(R.id.description_card)
+    @InjectView(R.id.template_description)
     View mDescriptionContainer;
 
     private Template mTemplate;
@@ -86,28 +89,37 @@ public class TemplateActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
-        mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
+        if (null != savedInstanceState) {
+            mTemplate = savedInstanceState.getParcelable(TEMPLATE_KEY);
+            mMineName = savedInstanceState.getString(MINE_NAME_KEY);
+        } else {
+            mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
+            mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
+        }
 
         if (null != mTemplate) {
-            setTitle(mTemplate.getTitle());
-
             if (Strs.isNullOrEmpty(mTemplate.getDescription())) {
                 Views.setGone(mDescriptionContainer);
             } else {
                 Views.setVisible(mDescriptionContainer);
                 Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
-                mTemplateDescription.setText(descriptionText);
+                mTemplateDescription.setText(mTemplate.getTitle());
             }
 
             List<PathConstraint> pathConstraints = Templates.convertToPathConstraints(
                     mTemplate.getConstraints(), getStorage().getMineModel(mMineName));
             Collection<View> views = generateViewsForConstraints(pathConstraints);
-
             for (View view : views) {
                 mContainer.addView(view);
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(TEMPLATE_KEY, mTemplate);
+        outState.putString(MINE_NAME_KEY, mMineName);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -127,7 +139,6 @@ public class TemplateActivity extends BaseActivity {
 
             TemplateResultsActivity.start(this, mTemplate.getName(), mTemplate.getTitle(),
                     mMineName, parameters);
-            finish();
         }
     }
 
@@ -155,6 +166,8 @@ public class TemplateActivity extends BaseActivity {
             view = new LookupConstraintView(this, (PathConstraintLookup) pathConstraint);
         } else if (pathConstraint instanceof PathConstraintAttribute) {
             view = new AttributeConstraintView(this, (PathConstraintAttribute) pathConstraint);
+        } else if (pathConstraint instanceof PathConstraintSimpleMultiValue) {
+            view = new MultiValueConstraintView(this, (PathConstraintSimpleMultiValue) pathConstraint);
         }
         return view;
     }
@@ -179,8 +192,7 @@ public class TemplateActivity extends BaseActivity {
         String code = constraint.getCode();
 
         if (!Collections.isNullOrEmpty(PathConstraint.getValues(constraint))) {
-            return new TemplateParameter(path, operation,
-                    (List<String>) PathConstraint.getValues(constraint), code);
+            return new TemplateParameter(path, operation, PathConstraint.getValues(constraint), code);
         } else {
             return new TemplateParameter(path, operation,
                     PathConstraint.getValue(constraint),

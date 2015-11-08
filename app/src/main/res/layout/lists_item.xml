@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
         android:background="?android:attr/activatedBackgroundIndicator"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:minHeight="?android:attr/listPreferredItemHeight"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
         <TextView
             android:id="@+id/list_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/list_size"
-            android:layout_marginTop="@dimen/margin"
-            android:textColor="@color/text_dark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="Title"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_toLeftOf="@+id/list_size"
+            android:text="Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/text_dark" />
 
         <TextView
             android:id="@+id/list_description"
-            android:layout_below="@id/list_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/list_title"
             android:layout_marginBottom="@dimen/margin"
             android:layout_marginTop="@dimen/small_margin"
-            android:textColor="@color/text_medium"
+            android:text="Description"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="Description"/>
+            android:textColor="@color/text_medium" />
 
         <TextView
             android:id="@id/list_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:gravity="end"
-            android:textColor="@color/text_light"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="Size"
-            android:layout_alignTop="@+id/list_title"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignTop="@+id/list_title"
+            android:gravity="end"
+            android:singleLine="true"
+            android:text="Size"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/text_light" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"/>
-</FrameLayout>
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray" />
+</RelativeLayout>

@@ -5,11 +5,14 @@
     <string name="app_name">InterMine</string>
     <string name="gene_view">Gene View</string>
     <string name="search">Search</string>
+    <string name="search_all">Search All</string>
     <string name="lists">Lists</string>
     <string name="templates">Templates</string>
+    <string name="template">Template</string>
     <string name="favorites">Favorites</string>
     <string name="info">Info</string>
     <string name="log_in">Log in</string>
+    <string name="mine_specific_header">Mine Specific</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_share">Share</string>
@@ -26,8 +29,11 @@
     <string name="favorites_requirement_label">Please, login first to see your favorites.</string>
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
     <string name="login_to_add_to_favorites">Please, login first to add genes to favorites from mines:</string>
+    <string name="login_to_see_favorites">Please, login first to see the favorites.</string>
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">LOOKUP</string>
+    <string name="operator">Operator</string>
+    <string name="value">Value</string>
     <string name="show_results">Show Results</string>
     <string name="share_message">Share text via...</string>
 
@@ -63,7 +69,7 @@
 
     <!-- Info page -->
     <string name="app_info">InterMine App version: 1.0\nContact Information: <a href="mailto:info@intermine.org">info@intermine.org</a>\nWebsite: <a href="http://www.intermine.org">www.intermine.org</a></string>
-    <string name="app_copyright">© Copyright 2014, University of Cambridge.</string>
+    <string name="app_copyright">© Copyright 2015, University of Cambridge.</string>
     <string name="app_description">\t\tUse InterMine App to quickly find fundamental information about
         genes and chromosomal features. Search gene names, gene descriptions, or browse the databases
         to find information about your favorite gene, as well as more detailed information.</string>
@@ -97,15 +103,16 @@
     <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
     <string name="save">Save</string>
     <string name="mines">Mines</string>
+    <string name="mine">Mine:</string>
 
     <!-- Authorization -->
-    <string name="authorized_for_mines_label">You are authorized for mines:</string>
-    <string name="logged_in_for_all_mines_label">You\'ve successfully logged in for all mines!</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="login_button_label">Login</string>
+    <string name="login_button_label">Log in</string>
     <string name="incorrect_creds">Invalid username/password combination. Please, try again.</string>
+    <string name="empty_creds">Username and password fields should not be empty!</string>
     <string name="logout">Log out</string>
+    <string name="login_invitation">Please, use the same credentials as for the web mine!</string>
 
     <!-- Errors -->
     <string name="default_error_message">Internal error happened. Please, try again later.</string>

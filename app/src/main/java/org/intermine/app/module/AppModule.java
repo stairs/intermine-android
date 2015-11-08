@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.activity.GeneViewActivity;
 import org.intermine.app.activity.GenesListActivity;
+import org.intermine.app.activity.LoginActivity;
 import org.intermine.app.activity.MainActivity;
 import org.intermine.app.activity.MinesActivity;
 import org.intermine.app.activity.SettingsActivity;
@@ -24,11 +25,11 @@ import org.intermine.app.activity.StartActivity;
 import org.intermine.app.activity.TemplateActivity;
 import org.intermine.app.activity.TemplateResultsActivity;
 import org.intermine.app.activity.WebActivity;
+import org.intermine.app.fragment.FavoritesListFragment;
 import org.intermine.app.fragment.GeneViewFragment;
 import org.intermine.app.fragment.GenesListFragment;
 import org.intermine.app.fragment.ListsFragment;
 import org.intermine.app.fragment.LogInFragment;
-import org.intermine.app.fragment.NavigationDrawerFragment;
 import org.intermine.app.fragment.PreferencesFragment;
 import org.intermine.app.fragment.SearchFragment;
 import org.intermine.app.fragment.TemplatesFragment;
@@ -84,11 +85,12 @@ import dagger.Provides;
                 GetUserTokenRequest.class,
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
-                NavigationDrawerFragment.class,
                 Storage.class,
                 MinesActivity.class,
                 WebActivity.class,
-                GetTypeFieldsRequest.class
+                GetTypeFieldsRequest.class,
+                FavoritesListFragment.class,
+                LoginActivity.class
         }
 )
 public final class AppModule {

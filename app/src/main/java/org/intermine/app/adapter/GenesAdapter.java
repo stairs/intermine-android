@@ -76,7 +76,7 @@ public class GenesAdapter extends BaseAdapter {
             v.setTag(R.id.organism_name_value, v.findViewById(R.id.organism_name_value));
             v.setTag(R.id.symbol_title, v.findViewById(R.id.symbol_title));
             v.setTag(R.id.symbol_value, v.findViewById(R.id.symbol_value));
-            v.setTag(R.id.gene_mine, v.findViewById(R.id.gene_mine));
+            v.setTag(R.id.mine_value, v.findViewById(R.id.mine_value));
         }
 
         TextView primaryIdTitle = (TextView) v.getTag(R.id.primary_db_id_title);
@@ -87,7 +87,7 @@ public class GenesAdapter extends BaseAdapter {
         TextView organismNameValue = (TextView) v.getTag(R.id.organism_name_value);
         TextView symbolTitle = (TextView) v.getTag(R.id.symbol_title);
         TextView symbolValue = (TextView) v.getTag(R.id.symbol_value);
-        TextView mineName = (TextView) v.getTag(R.id.gene_mine);
+        TextView mineName = (TextView) v.getTag(R.id.mine_value);
 
         Gene gene = (Gene) getItem(position);
 

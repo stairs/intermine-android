@@ -33,6 +33,7 @@ public class Templates {
     private static final String VALUE_PARAM = "value";
     private static final String EXTRA_PARAM = "extra";
     private static final String CODE_PARAM = "code";
+    private static final String VALUES_PARAM = "values";
 
     private Templates() {
     }

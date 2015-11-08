@@ -1,88 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Spinner
-        android:layout_marginTop="@dimen/login_fragment_margin"
-        android:id="@+id/mine_spinner"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/login_invitation"
+        style="@style/InterMine.Theme.Text.Small.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:padding="40dp"
+        android:text="@string/login_invitation"
+        android:textColor="@color/im_green" />
 
     <RelativeLayout
         android:id="@+id/login_container"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
         <EditText
             android:id="@+id/login"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
             android:layout_marginLeft="@dimen/login_fragment_margin"
-            android:layout_marginRight="@dimen/login_fragment_margin"/>
+            android:layout_marginRight="@dimen/login_fragment_margin"
+            android:hint="@string/username"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/password"
-            android:inputType="textPassword"
-            android:layout_centerInParent="true"
-            android:layout_below="@id/login"
             android:layout_width="match_parent"
-            android:hint="@string/password"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/login_fragment_margin"
             android:layout_marginRight="@dimen/login_fragment_margin"
-            android:layout_height="wrap_content"/>
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
         <RelativeLayout
-            android:layout_below="@id/password"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="15dp">
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/login_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login_button_label"/>
+                android:layout_marginLeft="@dimen/login_fragment_margin"
+                android:layout_marginRight="@dimen/login_fragment_margin"
+                android:minHeight="60dp"
+                android:text="@string/login_button_label"
+                android:textColor="@color/white"
+                android:theme="@style/ColoredButton" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:layout_centerHorizontal="true"
+                android:visibility="gone" />
         </RelativeLayout>
-
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/logout_container"
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/logout_button"
-            android:paddingTop="@dimen/default_padding"
-            android:paddingBottom="@dimen/default_padding"
-            android:paddingLeft="60dp"
-            android:paddingRight="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/logout"/>
-    </RelativeLayout>
-
-    <TextView
-        android:padding="15dp"
-        android:id="@+id/authorized_for_mines_label"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"/>
 </RelativeLayout>

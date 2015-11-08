@@ -25,8 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -49,6 +51,7 @@ import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,6 +67,7 @@ import roboguice.util.temp.Strings;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
+    private static final String EXPAND_SEARCH_VIEW_KEY = "expand_search_view_key";
 
     @InjectView(R.id.genes)
     protected ListView mGenesListView;
@@ -97,6 +101,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     private String mGeneFavoritesListName;
     private String mQuery = Strs.EMPTY_STRING;
+    private boolean mExpandSearchViewOnStartup;
+
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
@@ -142,27 +148,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         }
     };
 
-    public SearchFragment() {
-    }
-
-    public static SearchFragment newInstance() {
+    public static SearchFragment newInstance(boolean expandSearchView) {
         SearchFragment fragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(EXPAND_SEARCH_VIEW_KEY, expandSearchView);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        return inflater.inflate(R.layout.search_fragment, container, false);
-    }
     // --------------------------------------------------------------------------------------------
     // Fragment Lifecycle
     // --------------------------------------------------------------------------------------------
@@ -193,6 +186,25 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
+
+        Bundle bundle = getArguments();
+
+        if (null != bundle) {
+            mExpandSearchViewOnStartup = bundle.getBoolean(EXPAND_SEARCH_VIEW_KEY);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        return inflater.inflate(R.layout.search_fragment, container, false);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mListener = (OnGeneSelectedListener) activity;
@@ -217,13 +229,25 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!((MainActivity) getActivity()).getNavigationDrawer().isDrawerOpen()) {
-            inflater.inflate(R.menu.gene_search_menu, menu);
-            mSearchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
-            mSearchView.setOnQueryTextListener(this);
-            mSearchView.setQueryHint(getString(R.string.gene_search_hint));
-            super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.gene_search_menu, menu);
+        MenuItem item = menu.findItem(R.id.search_action);
+
+        mSearchView = (SearchView) item.getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setQueryHint(getString(R.string.gene_search_hint));
+
+        final EditText searchTextView = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, 0);
+        } catch (Exception e) {
         }
+
+        if (mExpandSearchViewOnStartup) {
+            item.expandActionView();
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -439,6 +463,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             }
         }
     }
+
     private class OnSearchRequestsFinishedAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override

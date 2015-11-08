@@ -28,6 +28,7 @@ public interface Storage {
     String MINE_URL_WEB_APP_KEY = "mine_url_web_app_key_";
     String USER_LEARNED_DRAWER = "navigation_drawer_learned";
     String TYPE_FIELDS_KEY = "type_fields_key_";
+    String WORKING_MINE_NAME_KEY = "working_mine_name_key";
 
     String getUserToken(String mineName);
 
@@ -42,6 +43,9 @@ public interface Storage {
 
     void addMineModel(String mineName, Model model);
 
+    void setWorkingMineName(String mineName);
+
+    String getWorkingMineName();
 
     void setMineUrl(String mine, String url);
 

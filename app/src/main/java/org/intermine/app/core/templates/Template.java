@@ -42,6 +42,9 @@ public class Template implements Parcelable {
     @SerializedName("select")
     private java.util.List<String> mColumns;
 
+    @SerializedName("values")
+    private java.util.List<String> mValues;
+
     @SerializedName("where")
     private List<Constraint> mConstraints;
 
@@ -52,6 +55,7 @@ public class Template implements Parcelable {
         mDescription = in.readString();
         mColumns = in.readArrayList(null);
         mConstraints = in.readArrayList(Constraint.class.getClassLoader());
+        mValues = in.readArrayList(null);
     }
 
     public Template() {
@@ -98,6 +102,14 @@ public class Template implements Parcelable {
         mName = name;
     }
 
+    public List<String> getmValues() {
+        return mValues;
+    }
+
+    public void setmValues(List<String> mValues) {
+        this.mValues = mValues;
+    }
+
     public String getComment() {
         return mComment;
     }
@@ -127,6 +139,7 @@ public class Template implements Parcelable {
         dest.writeString(mDescription);
         dest.writeList(mColumns);
         dest.writeList(mConstraints);
+        dest.writeList(mValues);
     }
 
     public static final Creator<Template> CREATOR = new Creator<Template>() {

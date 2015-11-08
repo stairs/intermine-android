@@ -10,7 +10,7 @@ package org.intermine.app.fragment;
  *
  */
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,12 +145,12 @@ public class GenesListFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mListener = (OnGeneSelectedListener) activity;
+    public void onAttach(Context ctx) {
+        super.onAttach(ctx);
+        mListener = (OnGeneSelectedListener) ctx;
 
-        if (activity instanceof MainActivity) {
-            ((MainActivity) activity).onSectionAttached(getString(R.string.favorites));
+        if (ctx instanceof MainActivity) {
+            ((MainActivity) ctx).onSectionAttached(getString(R.string.favorites));
         }
     }
 
