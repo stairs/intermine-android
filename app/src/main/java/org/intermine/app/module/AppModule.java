@@ -30,7 +30,6 @@ import org.intermine.app.fragment.GeneViewFragment;
 import org.intermine.app.fragment.GenesListFragment;
 import org.intermine.app.fragment.ListsFragment;
 import org.intermine.app.fragment.LogInFragment;
-import org.intermine.app.fragment.NavigationDrawerFragment;
 import org.intermine.app.fragment.PreferencesFragment;
 import org.intermine.app.fragment.SearchFragment;
 import org.intermine.app.fragment.TemplatesFragment;
@@ -86,7 +85,6 @@ import dagger.Provides;
                 GetUserTokenRequest.class,
                 PostAuthRequest.class,
                 FetchListResultsRequest.class,
-                NavigationDrawerFragment.class,
                 Storage.class,
                 MinesActivity.class,
                 WebActivity.class,
