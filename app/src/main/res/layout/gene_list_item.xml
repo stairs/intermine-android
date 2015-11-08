@@ -78,6 +78,21 @@
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/im_green" />
+
+        <TextView
+            android:id="@+id/mine_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|right"
+            android:maxLines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="@string/mine"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/im_green" />
     </LinearLayout>
 
     <LinearLayout
@@ -140,18 +155,16 @@
             android:textColor="@color/text_medium" />
 
         <TextView
-            android:id="@+id/gene_mine"
+            android:id="@+id/mine_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:ellipsize="end"
-            android:gravity="end"
             android:maxLines="1"
             android:paddingBottom="3dp"
-            android:paddingRight="@dimen/small_padding"
             android:paddingTop="3dp"
-            android:text="Mine"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/text_light" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/text_medium" />
+
     </LinearLayout>
 </LinearLayout>

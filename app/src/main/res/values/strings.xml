@@ -103,6 +103,7 @@
     <string name="gene_favorites_list_name">org.intermine.android.favorites.gene</string>
     <string name="save">Save</string>
     <string name="mines">Mines</string>
+    <string name="mine">Mine:</string>
 
     <!-- Authorization -->
     <string name="username">Username</string>

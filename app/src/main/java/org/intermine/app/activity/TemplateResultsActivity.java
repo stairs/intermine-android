@@ -13,6 +13,7 @@ package org.intermine.app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -207,6 +208,9 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
                 if (!Strs.isNullOrEmpty(webTemplatesUrl)) {
                     WebActivity.start(this, mTemplateTitle, webTemplatesUrl);
                 }
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -88,8 +89,13 @@ public class TemplateActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
-        mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
+        if (null != savedInstanceState) {
+            mTemplate = savedInstanceState.getParcelable(TEMPLATE_KEY);
+            mMineName = savedInstanceState.getString(MINE_NAME_KEY);
+        } else {
+            mTemplate = getIntent().getParcelableExtra(TEMPLATE_KEY);
+            mMineName = getIntent().getStringExtra(MINE_NAME_KEY);
+        }
 
         if (null != mTemplate) {
             if (Strs.isNullOrEmpty(mTemplate.getDescription())) {
@@ -109,6 +115,13 @@ public class TemplateActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(TEMPLATE_KEY, mTemplate);
+        outState.putString(MINE_NAME_KEY, mMineName);
+    }
+
     // --------------------------------------------------------------------------------------------
     // Callbacks
     // --------------------------------------------------------------------------------------------
@@ -126,7 +139,6 @@ public class TemplateActivity extends BaseActivity {
 
             TemplateResultsActivity.start(this, mTemplate.getName(), mTemplate.getTitle(),
                     mMineName, parameters);
-            finish();
         }
     }
 

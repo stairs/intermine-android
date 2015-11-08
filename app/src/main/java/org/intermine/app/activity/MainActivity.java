@@ -57,11 +57,8 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @InjectView(R.id.navigation_view)
     protected NavigationView mNavigationView;
 
-    @InjectView(R.id.value)
+    @InjectView(R.id.mine_title)
     protected TextView mMineNameView;
-
-    @InjectView(R.id.avatar)
-    protected View mMineLogo;
 
     protected CharSequence mTitle;
     private String mMineName;

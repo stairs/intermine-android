@@ -36,6 +36,7 @@
         <activity
             android:name=".activity.TemplateActivity"
             android:label="@string/template"
+            android:launchMode="singleTop"
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.TemplateResultsActivity"

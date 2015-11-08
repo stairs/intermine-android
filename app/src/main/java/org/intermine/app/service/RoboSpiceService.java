@@ -76,11 +76,6 @@ public class RoboSpiceService extends SpringAndroidSpiceService {
     }
 
     @Override
-    public int getCoreThreadCount() {
-        return super.getCoreThreadCount();
-    }
-
-    @Override
     public int getThreadCount() {
         return THREAD_COUNT;
     }

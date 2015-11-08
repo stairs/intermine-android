@@ -73,11 +73,10 @@
                     android:layout_height="match_parent"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
-                    android:background="@color/im_green"
                     android:gravity="center_horizontal|center_vertical"
                     android:padding="5dp"
                     android:text="@string/gene_secondary_id"
-                    android:textColor="@color/white"
+                    android:textColor="@color/im_green"
                     android:textStyle="bold" />
 
                 <TextView
