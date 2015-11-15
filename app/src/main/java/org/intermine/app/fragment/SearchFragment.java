@@ -13,6 +13,7 @@ package org.intermine.app.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.SparseBooleanArray;
@@ -29,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -98,6 +100,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private String mQuery = Strs.EMPTY_STRING;
     private boolean mExpandSearchViewOnStartup;
 
+    private int mStatusBarColor;
+
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
@@ -108,7 +112,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             MenuInflater menuInflater = mode.getMenuInflater();
             menuInflater.inflate(R.menu.gene_view_menu, menu);
 
-            ((MainActivity) getActivity()).getSupportActionBar().hide();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mStatusBarColor = getActivity().getWindow().getStatusBarColor();
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.dark_gray));
+            }
             return true;
         }
 
@@ -122,6 +129,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             switch (item.getItemId()) {
                 case R.id.favourites:
                     addGenesToFavorites();
+                    Toast.makeText(getActivity(), R.string.genes_added_to_favorites, Toast.LENGTH_LONG).show();
                     mode.finish();
                     return true;
                 case R.id.share:
@@ -137,7 +145,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            ((MainActivity) getActivity()).getSupportActionBar().show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().getWindow().setStatusBarColor(mStatusBarColor);
+            }
         }
     };
 

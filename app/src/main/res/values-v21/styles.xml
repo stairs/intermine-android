@@ -5,10 +5,24 @@
         <item name="colorPrimaryDark">@color/im_green_dark</item>
         <item name="colorAccent">@color/im_green</item>
         <item name="colorControlHighlight">@color/im_green_transparent</item>
+        <item name="actionModeBackground">@color/im_green_dark</item>
+        <item name="actionBarPopupTheme">@style/PopupMenu</item>
+        <item name="actionModeStyle">@style/ActionMode</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorControlActivated">@color/im_green_transparent</item>
     </style>
 
     <style name="InterMine.BrandedLaunch" parent="InterMine.Theme">
         <item name="android:windowBackground">@drawable/branded_logo</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+    </style>
+
+    <style name="ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/gray</item>
+        <item name="titleTextStyle">@style/InterMine.Theme.Text.ActionMode</item>
     </style>
 
     <!-- Font styles -->
@@ -17,6 +31,10 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="InterMine.Theme.Text.ActionMode">
+        <item name="android:color">@color/white</item>
     </style>
 
     <style name="InterMine.Theme.Text.Small">
