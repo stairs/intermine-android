@@ -10,8 +10,8 @@ package org.intermine.app.storage;
  *
  */
 
+import org.intermine.app.core.Gene;
 import org.intermine.app.core.model.Model;
-import org.intermine.app.net.request.get.GetTypeFieldsRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,6 @@ public interface Storage {
     String MINE_NAMES_KEY = "mine_names_key";
     String MINE_URL_KEY = "mine_url_key_";
     String MINE_URL_WEB_APP_KEY = "mine_url_web_app_key_";
-    String USER_LEARNED_DRAWER = "navigation_drawer_learned";
     String TYPE_FIELDS_KEY = "type_fields_key_";
     String WORKING_MINE_NAME_KEY = "working_mine_name_key";
 
@@ -65,11 +64,11 @@ public interface Storage {
 
     Map<String, String> getMineNameToUrlMap();
 
-    boolean hasUserLearnedDrawer();
-
-    void setUserLearnedDrawer(boolean userLearnedDrawer);
-
     void setTypeFields(String mineName, Map<String, List<String>> typeFields);
 
     Map<String, List<String>> getTypeFields(String mineName);
+
+    List<Gene> getGeneFavorites();
+
+    void addGeneToFavorites(Gene gene);
 }

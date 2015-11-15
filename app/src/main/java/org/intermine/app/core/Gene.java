@@ -13,10 +13,15 @@ package org.intermine.app.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.intermine.app.util.Strs;
+
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class Gene implements Parcelable, Comparable<Gene> {
+    private static final String UNDEFINED = "undefined";
+    private static final String CACHE_KEY_TEMPLATE = "%s-%d";
+
     private long mId;
     private String mPrimaryDBId;
     private String mSymbol;
@@ -217,6 +222,11 @@ public class Gene implements Parcelable, Comparable<Gene> {
         long anotherBits = Double.doubleToLongBits(getRelevance());
 
         return (thisBits == anotherBits ? 0 : (thisBits < anotherBits ? 1 : -1));
+    }
+
+    public String generateCacheKey() {
+        String mine = Strs.isNullOrEmpty(mMine) ? UNDEFINED : mMine;
+        return String.format(CACHE_KEY_TEMPLATE, mine, mId);
     }
 
     @Override

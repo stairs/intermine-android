@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getFragmentManager().beginTransaction().replace(
+        getSupportFragmentManager().beginTransaction().replace(
                 R.id.fragment_container, new LogInFragment()).commit();
     }
 

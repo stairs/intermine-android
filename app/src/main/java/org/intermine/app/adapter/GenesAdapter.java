@@ -41,7 +41,6 @@ public class GenesAdapter extends BaseAdapter {
     }
 
     public void updateGenes(List<Gene> genes) {
-        ThreadPreconditions.checkOnMainThread();
         mGenes = genes;
         notifyDataSetChanged();
     }

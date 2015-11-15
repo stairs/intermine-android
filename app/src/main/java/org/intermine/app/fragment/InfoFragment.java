@@ -10,9 +10,9 @@ package org.intermine.app.fragment;
  *
  */
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +42,8 @@ public class InfoFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        ((MainActivity) activity).onSectionAttached(getString(R.string.info));
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) context).onSectionAttached(getString(R.string.info));
     }
 }

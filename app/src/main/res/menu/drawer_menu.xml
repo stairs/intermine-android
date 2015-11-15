@@ -9,6 +9,11 @@
             android:title="@string/search_all" />
 
         <item
+            android:id="@+id/drawer_favourites"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/favorites" />
+
+        <item
             android:id="@+id/section"
             android:title="@string/mine_specific_header">
             <menu>
@@ -21,11 +26,6 @@
                     android:id="@+id/drawer_templates"
                     android:icon="@drawable/ic_templates"
                     android:title="@string/templates" />
-
-                <item
-                    android:id="@+id/drawer_favourites"
-                    android:icon="@drawable/ic_favorite_black_24dp"
-                    android:title="@string/favorites" />
 
                 <item
                     android:id="@+id/drawer_login"
