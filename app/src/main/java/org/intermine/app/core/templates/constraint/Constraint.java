@@ -34,7 +34,7 @@ public class Constraint implements Parcelable {
     private boolean mSwitchable;
 
     @SerializedName("switched")
-    private String mSwitched;
+    private SwitchOffAbility mSwitched;
 
     @SerializedName("value")
     private String mValue;
@@ -51,7 +51,7 @@ public class Constraint implements Parcelable {
         mEditable = Boolean.parseBoolean(in.readString());
         mCode = in.readString();
         mSwitchable = Boolean.parseBoolean(in.readString());
-        mSwitched = in.readString();
+        mSwitched = SwitchOffAbility.valueOf(in.readString());
         mValue = in.readString();
         mExtraValue = in.readString();
         mValues = in.readArrayList(null);
@@ -101,11 +101,11 @@ public class Constraint implements Parcelable {
         mCode = code;
     }
 
-    public String getSwitched() {
+    public SwitchOffAbility getSwitched() {
         return mSwitched;
     }
 
-    public void setSwitched(String switched) {
+    public void setSwitched(SwitchOffAbility switched) {
         mSwitched = switched;
     }
 
@@ -145,7 +145,7 @@ public class Constraint implements Parcelable {
         dest.writeString(Boolean.toString(mEditable));
         dest.writeString(mCode);
         dest.writeString(Boolean.toString(mSwitchable));
-        dest.writeString(mSwitched);
+        dest.writeString(mSwitched.name());
         dest.writeString(mValue);
         dest.writeString(mExtraValue);
         dest.writeList(mValues);
