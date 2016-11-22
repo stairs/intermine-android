@@ -11,7 +11,6 @@ package org.intermine.app.activity;
  */
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,14 +19,15 @@ import org.intermine.app.InterMineApplication;
 import org.intermine.app.R;
 import org.intermine.app.fragment.PreferencesFragment;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class SettingsActivity extends AppCompatActivity {
-    @InjectView(R.id.default_toolbar)
+
+    @BindView(R.id.default_toolbar)
     Toolbar mToolbar;
 
     // --------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         InterMineApplication app = InterMineApplication.get(this);
         app.inject(this);

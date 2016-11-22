@@ -40,24 +40,24 @@ import org.intermine.app.util.Strs;
 import java.lang.reflect.Field;
 import java.util.Set;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.Optional;
 
 public class MainActivity extends BaseActivity implements OnGeneSelectedListener,
         ListsFragment.OnListSelectedListener, TemplatesFragment.OnTemplateSelectedListener {
     public static final int LOGIN_ACTIVITY_CODE = 0x3435;
 
-    @InjectView(R.id.default_toolbar)
+    @BindView(R.id.default_toolbar)
     protected Toolbar mToolbar;
 
-    @InjectView(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     protected DrawerLayout mDrawerLayout;
 
-    @InjectView(R.id.navigation_view)
+    @BindView(R.id.navigation_view)
     protected NavigationView mNavigationView;
 
-    @InjectView(R.id.mine_title)
     protected TextView mMineNameView;
 
     protected CharSequence mTitle;
@@ -74,12 +74,16 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         setTheme(R.style.InterMine_Theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (null == savedInstanceState) {
             populateContentFragment(SearchFragment.newInstance(false));
         }
         initToolbar();
+
+        View header = mNavigationView.getHeaderView(0);
+        mMineNameView = (TextView) header.findViewById(R.id.mine_title);
+
         setupDrawerLayout();
     }
 
@@ -114,6 +118,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         return super.onOptionsItemSelected(item);
     }
 
+    @Optional
     @OnClick(R.id.drawer_header)
     public void onDrawerHeaderClick() {
         setMainMenuDisplayed(mMainMenuDisplayed);

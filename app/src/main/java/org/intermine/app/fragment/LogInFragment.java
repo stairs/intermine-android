@@ -10,7 +10,6 @@ package org.intermine.app.fragment;
  *
  */
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,23 +24,15 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import org.intermine.app.R;
-import org.intermine.app.activity.BaseActivity;
-import org.intermine.app.activity.MainActivity;
-import org.intermine.app.adapter.SimpleAdapter;
 import org.intermine.app.net.request.post.GetUserTokenRequest;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -50,19 +40,19 @@ import butterknife.OnItemSelected;
 public class LogInFragment extends BaseFragment {
     private static final String TAG = LogInFragment.class.getSimpleName();
 
-    @InjectView(R.id.login_container)
+    @BindView(R.id.login_container)
     ViewGroup mLoginContainer;
 
-    @InjectView(R.id.login)
+    @BindView(R.id.login)
     TextView mLogin;
 
-    @InjectView(R.id.password)
+    @BindView(R.id.password)
     TextView mPassword;
 
-    @InjectView(R.id.login_button)
+    @BindView(R.id.login_button)
     Button mSubmit;
 
-    @InjectView(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
     public LogInFragment() {
@@ -115,7 +105,7 @@ public class LogInFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 

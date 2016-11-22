@@ -19,14 +19,14 @@ import org.intermine.app.core.templates.constraint.PathConstraint;
 import org.intermine.app.core.templates.constraint.PathConstraintLookup;
 import org.intermine.app.util.Strs;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class LookupConstraintView extends ConstraintView {
-    @InjectView(R.id.lookup_value)
+    @BindView(R.id.lookup_value)
     EditText mValue;
 
     public LookupConstraintView(Context context, PathConstraintLookup constraint) {
@@ -48,7 +48,7 @@ public class LookupConstraintView extends ConstraintView {
 
     private void init() {
         inflate(getContext(), R.layout.lookup_constraint_view, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

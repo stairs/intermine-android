@@ -59,26 +59,26 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnItemClick;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
     private static final String EXPAND_SEARCH_VIEW_KEY = "expand_search_view_key";
 
-    @InjectView(R.id.genes)
+    @BindView(R.id.genes)
     protected ListView mGenesListView;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     protected View mNotFoundView;
 
-    @InjectView(R.id.info_container)
+    @BindView(R.id.info_container)
     protected View mInfoContainer;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     protected ProgressBar mProgressView;
 
-    @InjectView(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     protected ProgressBar mProgressBar;
     protected boolean mLoading;
     protected LoadOnScrollViewController mViewController;

@@ -48,7 +48,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     @Override
@@ -68,14 +68,8 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
-
     // --------------------------------------------------------------------------------------------
-    // Helper Mehod
+    // Helper Methods
     // --------------------------------------------------------------------------------------------
 
     protected <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {

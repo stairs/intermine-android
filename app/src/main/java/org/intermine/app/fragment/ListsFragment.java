@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import org.intermine.app.R;
 import org.intermine.app.activity.BaseActivity;
 import org.intermine.app.activity.MainActivity;
-import org.intermine.app.adapter.DividerItemDecoration;
 import org.intermine.app.adapter.ListsAdapter;
 import org.intermine.app.core.List;
 import org.intermine.app.net.ResponseHelper;
@@ -34,7 +32,7 @@ import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Views;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemClickListener {
     public static final String TAG = ListsFragment.class.getSimpleName();
@@ -42,13 +40,13 @@ public class ListsFragment extends BaseFragment implements ListsAdapter.OnItemCl
 
     public static final long LISTS_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     ProgressBar mProgressBar;
 
-    @InjectView(R.id.lists)
+    @BindView(R.id.lists)
     RecyclerView mRecyclerView;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     ViewGroup mNotFoundContainer;
 
     private String mMineName;

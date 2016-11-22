@@ -31,15 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class GeneViewActivity extends BaseActivity implements GeneViewFragment.GeneActionCallbacks {
     private static final String CLASS_PARAM = "class";
     private static final String CLASS_DEFAULT_VALUE = "Gene";
     private static final String EXTERNALIDS = "externalids";
 
-    @InjectView(R.id.default_toolbar)
+    @BindView(R.id.default_toolbar)
     Toolbar mToolbar;
 
     private Gene mGene;
@@ -68,7 +68,7 @@ public class GeneViewActivity extends BaseActivity implements GeneViewFragment.G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gene_view_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         initToolbar();
 

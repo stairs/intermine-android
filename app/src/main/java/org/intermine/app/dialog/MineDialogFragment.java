@@ -22,8 +22,8 @@ import android.widget.EditText;
 import org.intermine.app.R;
 import org.intermine.app.util.Strs;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 
@@ -33,10 +33,10 @@ public class MineDialogFragment extends DialogFragment {
     public static final String MINE_NAME_KEY = "mine_name_key";
     public static final String MINE_URL_KEY = "mine_url_key";
 
-    @InjectView(R.id.value)
+    @BindView(R.id.value)
     EditText mMineName;
 
-    @InjectView(R.id.mine_url)
+    @BindView(R.id.mine_url)
     EditText mMineUrl;
 
     private String mOldMineName;
@@ -85,7 +85,7 @@ public class MineDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         Bundle bundle = getArguments();
 

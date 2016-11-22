@@ -11,7 +11,6 @@ package org.intermine.app.activity;
  */
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -33,8 +32,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 
@@ -45,7 +44,7 @@ public class MinesActivity extends BaseActivity implements MineDialogFragment.Mi
     @Inject
     Storage mStorage;
 
-    @InjectView(R.id.mines_list)
+    @BindView(R.id.mines_list)
     ListView mMinesList;
 
     private MinesAdapter mAdapter;
@@ -109,7 +108,7 @@ public class MinesActivity extends BaseActivity implements MineDialogFragment.Mi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mines_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);

@@ -39,7 +39,7 @@ import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class TemplatesFragment extends BaseFragment implements SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener, TemplatesAdapter.OnItemClickListener {
@@ -47,13 +47,13 @@ public class TemplatesFragment extends BaseFragment implements SearchView.OnQuer
 
     public static final long TEMPLATES_CACHE_EXPIRY_DURATION = 1000 * 60 * 10;
 
-    @InjectView(R.id.templates)
+    @BindView(R.id.templates)
     RecyclerView mTemplates;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     View mNotFoundView;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     ProgressBar mProgressView;
 
     private SearchView mSearchView;

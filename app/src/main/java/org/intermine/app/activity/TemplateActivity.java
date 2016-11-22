@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -31,7 +30,6 @@ import org.intermine.app.core.templates.constraint.PathConstraintSimpleMultiValu
 import org.intermine.app.util.Collections;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Templates;
-import org.intermine.app.util.Views;
 import org.intermine.app.view.AttributeConstraintView;
 import org.intermine.app.view.ConstraintView;
 import org.intermine.app.view.LookupConstraintView;
@@ -41,8 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
@@ -52,14 +50,11 @@ public class TemplateActivity extends BaseActivity {
     public static final String TEMPLATE_KEY = "template_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
 
-    @InjectView(R.id.constraints_container)
+    @BindView(R.id.constraints_container)
     ViewGroup mContainer;
 
-    @InjectView(R.id.template_description)
+    @BindView(R.id.template_description)
     TextView mTemplateDescription;
-
-    @InjectView(R.id.template_description)
-    View mDescriptionContainer;
 
     private Template mTemplate;
     private String mMineName;
@@ -83,7 +78,7 @@ public class TemplateActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.template_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
@@ -98,10 +93,7 @@ public class TemplateActivity extends BaseActivity {
         }
 
         if (null != mTemplate) {
-            if (Strs.isNullOrEmpty(mTemplate.getDescription())) {
-                Views.setGone(mDescriptionContainer);
-            } else {
-                Views.setVisible(mDescriptionContainer);
+            if (!Strs.isNullOrEmpty(mTemplate.getDescription())) {
                 Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
                 mTemplateDescription.setText(mTemplate.getTitle());
             }

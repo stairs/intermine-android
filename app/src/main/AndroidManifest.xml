@@ -14,7 +14,7 @@
         android:theme="@style/InterMine.Theme">
         <activity
             android:name=".activity.StartActivity"
-            android:label=""></activity>
+            android:label=""/>
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"

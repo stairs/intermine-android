@@ -29,16 +29,16 @@ import org.intermine.app.util.Views;
 
 import java.util.List;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class FavoritesListFragment extends BaseFragment {
-    @InjectView(R.id.list)
+    @BindView(R.id.list)
     protected ListView mListView;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     protected View mNotFoundView;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     protected ProgressBar mProgressView;
 
     private GenesAdapter mGenesAdapter;

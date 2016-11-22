@@ -30,7 +30,6 @@ import org.intermine.app.R;
 import org.intermine.app.adapter.ApiPager;
 import org.intermine.app.adapter.ListAdapter;
 import org.intermine.app.controller.LoadOnScrollViewController;
-import org.intermine.app.core.List;
 import org.intermine.app.core.ListItems;
 import org.intermine.app.core.templates.TemplateParameter;
 import org.intermine.app.net.ResponseHelper;
@@ -42,11 +41,10 @@ import org.intermine.app.util.Uris;
 import org.intermine.app.util.Views;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -66,13 +64,13 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     protected LoadOnScrollViewController mViewController;
     protected boolean mLoading;
 
-    @InjectView(R.id.list)
+    @BindView(R.id.list)
     ListView mListView;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     ProgressBar mProgressBar;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     View mNotFoundView;
 
     private SearchView mSearchView;
@@ -157,7 +155,7 @@ public class TemplateResultsActivity extends BaseActivity implements SearchView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.template_results_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);

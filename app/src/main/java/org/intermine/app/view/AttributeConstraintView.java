@@ -26,20 +26,20 @@ import org.intermine.app.util.Strs;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class AttributeConstraintView extends ConstraintView {
-    @InjectView(R.id.operations_spinner)
+    @BindView(R.id.operations_spinner)
     Spinner mOperationsSpinner;
 
-    @InjectView(R.id.base_constraint_value)
+    @BindView(R.id.base_constraint_value)
     EditText mValue;
 
-    @InjectView(R.id.constraint_path)
+    @BindView(R.id.constraint_path)
     TextView mPath;
 
     private PathConstraintAttribute mConstraint;
@@ -73,7 +73,7 @@ public class AttributeConstraintView extends ConstraintView {
 
     private void init() {
         inflate(getContext(), R.layout.attribute_constraint_view, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         SimpleAdapter<ConstraintOperation> adapter = new SimpleAdapter(getContext());
         List<ConstraintOperation> data = new ArrayList<>(PathConstraintAttribute.VALID_OPERATIONS);

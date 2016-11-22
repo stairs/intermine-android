@@ -39,20 +39,20 @@ import org.intermine.app.util.Views;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class GenesListFragment extends BaseFragment {
     public static final String LIST_KEY = "list_key";
     public static final String MINE_NAME_KEY = "mine_name_key";
     public static final int ITEMS_PER_PAGE = 15;
 
-    @InjectView(R.id.list)
+    @BindView(R.id.list)
     protected ListView mListView;
 
-    @InjectView(R.id.not_found_results_container)
+    @BindView(R.id.not_found_results_container)
     protected View mNotFoundView;
 
-    @InjectView(R.id.progress_view)
+    @BindView(R.id.progress_view)
     protected ProgressBar mProgressView;
 
     private ListAdapter mListAdapter;

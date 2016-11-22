@@ -25,57 +25,57 @@ import org.intermine.app.core.Gene;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class GeneViewFragment extends BaseFragment {
     public static final String GENE_EXTRA = "gene_extra";
 
-    @InjectView(R.id.standard_name_value)
+    @BindView(R.id.standard_name_value)
     TextView mStandardNameValue;
 
-    @InjectView(R.id.mine)
+    @BindView(R.id.mine)
     TextView mMine;
 
-    @InjectView(R.id.systematic_name_title)
+    @BindView(R.id.systematic_name_title)
     TextView mSystematicNameTitle;
 
-    @InjectView(R.id.systematic_name_value)
+    @BindView(R.id.systematic_name_value)
     TextView mSystematicNameValue;
 
-    @InjectView(R.id.secondary_id_title)
+    @BindView(R.id.secondary_id_title)
     TextView mSecondaryIdTitle;
 
-    @InjectView(R.id.secondary_id_value)
+    @BindView(R.id.secondary_id_value)
     TextView mSecondaryIdValue;
 
-    @InjectView(R.id.organism_name_title)
+    @BindView(R.id.organism_name_title)
     TextView mOrganismTitle;
 
-    @InjectView(R.id.organism_name_value)
+    @BindView(R.id.organism_name_value)
     TextView mOrganismValue;
 
-    @InjectView(R.id.organism_short_title)
+    @BindView(R.id.organism_short_title)
     TextView mOrganismShortTitle;
 
-    @InjectView(R.id.organism_short_value)
+    @BindView(R.id.organism_short_value)
     TextView mOrganismShortValue;
 
-    @InjectView(R.id.name_description_title)
+    @BindView(R.id.name_description_title)
     TextView mNameDescriptionTitle;
 
-    @InjectView(R.id.name_description_value)
+    @BindView(R.id.name_description_value)
     TextView mNameDescriptionValue;
 
-    @InjectView(R.id.chromosomal_location_title)
+    @BindView(R.id.chromosomal_location_title)
     TextView mChromosomalLocationTitle;
 
-    @InjectView(R.id.chromosomal_location_value)
+    @BindView(R.id.chromosomal_location_value)
     TextView mChromosomalLocationValue;
 
-    @InjectView(R.id.ontology_term_title)
+    @BindView(R.id.ontology_term_title)
     TextView mOntologyTermTitle;
 
-    @InjectView(R.id.ontology_term_value)
+    @BindView(R.id.ontology_term_value)
     TextView mOntologyTermValue;
 
     private GeneActionCallbacks mCallbacks;

@@ -31,20 +31,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
  */
 public class MultiValueConstraintView extends ConstraintView {
-    @InjectView(R.id.operations_spinner)
+    @BindView(R.id.operations_spinner)
     protected Spinner mOperationsSpinner;
 
-    @InjectView(R.id.constraint_path)
+    @BindView(R.id.constraint_path)
     protected TextView mPath;
 
-    @InjectView(R.id.values)
+    @BindView(R.id.values)
     protected RecyclerView mValues;
 
     private MultiValueListAdapter mAdapter;
@@ -79,7 +79,7 @@ public class MultiValueConstraintView extends ConstraintView {
 
     private void init() {
         inflate(getContext(), R.layout.multivalue_constraint_view, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         SimpleAdapter<ConstraintOperation> adapter = new SimpleAdapter(getContext());
         List<ConstraintOperation> data = Arrays.asList(ConstraintOperation.ONE_OF, ConstraintOperation.NONE_OF);

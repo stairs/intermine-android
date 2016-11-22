@@ -23,8 +23,8 @@ import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 import org.intermine.app.web.BaseWebClient;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -35,11 +35,11 @@ public class WebActivity extends BaseActivity {
 
     protected String mUrl;
     protected String mTitle;
-    @InjectView(R.id.web_container)
+    @BindView(R.id.web_container)
     WebView mWebView;
-    @InjectView(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-    @InjectView(R.id.default_toolbar)
+    @BindView(R.id.default_toolbar)
     Toolbar mToolbar;
     private Client mWebClient;
 
@@ -63,7 +63,7 @@ public class WebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.web_activity);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
