@@ -57,8 +57,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @InjectView(R.id.navigation_view)
     protected NavigationView mNavigationView;
 
-    @InjectView(R.id.mine_title)
-    protected TextView mMineNameView;
+    private TextView mMineNameView;
 
     protected CharSequence mTitle;
     private String mMineName;
@@ -75,6 +74,15 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.inject(this);
+
+        View headerLayout = mNavigationView.getHeaderView(0);
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDrawerHeaderClick();
+            }
+        });
+        mMineNameView = (TextView) headerLayout.findViewById(R.id.mine_title);
 
         if (null == savedInstanceState) {
             populateContentFragment(SearchFragment.newInstance(false));
@@ -114,7 +122,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.drawer_header)
     public void onDrawerHeaderClick() {
         setMainMenuDisplayed(mMainMenuDisplayed);
         toggleExpandedView(mMainMenuDisplayed);
