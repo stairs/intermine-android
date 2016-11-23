@@ -9,7 +9,6 @@
         <item>ZebrafishMine</item>
         <item>WormMine</item>
         <item>HumanMine</item>
-        <item>ThaleMine</item>
         <item>PhytoMine</item>
         <item>BovineMine</item>
         <item>HymenopteraMine</item>
@@ -21,9 +20,8 @@
         <item>http://yeastmine.yeastgenome.org/yeastmine/service</item>
         <item>http://targetmine.mizuguchilab.org/targetmine/service</item>
         <item>http://zebrafishmine.org/service</item>
-        <item>http://www.wormbase.org/tools/wormmine/service</item>
+        <item>http://intermine.wormbase.org/tools/wormmine/service</item>
         <item>http://human.intermine.org/human/service</item>
-        <item>https://apps.araport.org/thalemine/service</item>
         <item>http://phytozome.jgi.doe.gov/phytomine/service</item>
         <item>http://bovinegenome.org/bovinemine/service</item>
         <item>http://hymenopteragenome.org/hymenopteramine/service</item>
@@ -35,9 +33,8 @@
         <item>http://yeastmine.yeastgenome.org/yeastmine</item>
         <item>http://targetmine.mizuguchilab.org/targetmine</item>
         <item>http://zebrafishmine.org</item>
-        <item>http://www.wormbase.org/tools/wormmine</item>
+        <item>http://intermine.wormbase.org/tools/wormmine</item>
         <item>http://human.intermine.org/human</item>
-        <item>https://apps.araport.org/thalemine</item>
         <item>http://phytozome.jgi.doe.gov/phytomine</item>
         <item>http://bovinegenome.org/bovinemine</item>
         <item>http://hymenopteragenome.org/hymenopteramine</item>
