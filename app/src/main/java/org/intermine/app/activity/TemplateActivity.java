@@ -128,8 +128,6 @@ public class TemplateActivity extends BaseActivity {
         if (checkAllConstraintsValid()) {
             ArrayList<TemplateParameter> parameters = Collections.newArrayList();
 
-           // List<Constraint> lockedConstraints =
-
             for (int i = 0; i < mContainer.getChildCount(); i++) {
                 ConstraintView constraintView = (ConstraintView) mContainer.getChildAt(i);
                 PathConstraint pathConstraint = constraintView.getGeneratedConstraint();
