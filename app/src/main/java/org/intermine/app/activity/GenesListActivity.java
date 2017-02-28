@@ -71,7 +71,7 @@ public class GenesListActivity extends BaseActivity implements OnGeneSelectedLis
             setTitle(mList.getTitle());
 
             GenesListFragment fragment = GenesListFragment.newInstance(mList, mMineName);
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }
 

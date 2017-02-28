@@ -10,12 +10,12 @@ package org.intermine.app.activity;
  *
  */
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -57,8 +57,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @InjectView(R.id.navigation_view)
     protected NavigationView mNavigationView;
 
-    @InjectView(R.id.mine_title)
-    protected TextView mMineNameView;
+    private TextView mMineNameView;
 
     protected CharSequence mTitle;
     private String mMineName;
@@ -75,6 +74,15 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.inject(this);
+
+        View headerLayout = mNavigationView.getHeaderView(0);
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDrawerHeaderClick();
+            }
+        });
+        mMineNameView = (TextView) headerLayout.findViewById(R.id.mine_title);
 
         if (null == savedInstanceState) {
             populateContentFragment(SearchFragment.newInstance(false));
@@ -114,7 +122,6 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.drawer_header)
     public void onDrawerHeaderClick() {
         setMainMenuDisplayed(mMainMenuDisplayed);
         toggleExpandedView(mMainMenuDisplayed);
@@ -145,7 +152,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
     @Override
     public void onDialogDismissed(int code) {
         if (UNAUTHORIZED_CODE == code) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment fragment = LogInFragment.newInstance();
             fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
             setTitle(getString(R.string.log_in));
@@ -230,7 +237,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
 
     protected void populateContentFragment(Fragment fragment) {
         if (null != fragment) {
-            getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
         }
     }
 
@@ -276,7 +283,7 @@ public class MainActivity extends BaseActivity implements OnGeneSelectedListener
                 fragment = ListsFragment.newInstance(mMineName);
                 break;
             case R.id.drawer_favourites:
-                fragment = FavoritesListFragment.newInstance(mMineName);
+                fragment = FavoritesListFragment.newInstance();
                 break;
             case R.id.drawer_info:
                 fragment = InfoFragment.newInstance();

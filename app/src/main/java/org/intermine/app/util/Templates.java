@@ -18,11 +18,12 @@ import org.intermine.app.core.templates.constraint.PathConstraint;
 import org.intermine.app.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.app.core.templates.constraint.PathConstraintLookup;
 import org.intermine.app.core.templates.constraint.PathConstraintSimpleMultiValue;
-import org.intermine.app.core.templates.constraint.SwitchOffAbility;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static org.intermine.app.core.templates.constraint.SwitchOffAbility.OFF;
 
 /**
  * @author Daria Komkova <Daria_Komkova @ hotmail.com>
@@ -43,7 +44,7 @@ public class Templates {
         List<PathConstraint> typedConstraints = Collections.newArrayList();
 
         for (Constraint constraint : constraints) {
-            if (!SwitchOffAbility.OFF.toString().equals(constraint.getSwitched())) {
+            if (OFF != constraint.getSwitched() && constraint.isEditable()) {
                 typedConstraints.add(convertToPathConstraint(constraint, model));
             }
         }

@@ -15,15 +15,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import org.intermine.app.R;
 import org.intermine.app.core.Gene;
 import org.intermine.app.fragment.GeneViewFragment;
-import org.intermine.app.listener.GetListsListener;
-import org.intermine.app.net.request.get.GetListsRequest;
-import org.intermine.app.util.Collections;
 import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Uris;
@@ -32,13 +31,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GeneViewActivity extends MainActivity implements GeneViewFragment.GeneActionCallbacks {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public class GeneViewActivity extends BaseActivity implements GeneViewFragment.GeneActionCallbacks {
     private static final String CLASS_PARAM = "class";
     private static final String CLASS_DEFAULT_VALUE = "Gene";
     private static final String EXTERNALIDS = "externalids";
-    private Gene mGene;
 
-    private String mGeneFavoritesListName;
+    @InjectView(R.id.default_toolbar)
+    Toolbar mToolbar;
+
+    private Gene mGene;
 
     // --------------------------------------------------------------------------------------------
     // Static Methods
@@ -63,6 +67,10 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.gene_view_activity);
+        ButterKnife.inject(this);
+
+        initToolbar();
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -71,8 +79,10 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
             mGene = bundle.getParcelable(GeneViewFragment.GENE_EXTRA);
         }
 
-        populateContentFragment(GeneViewFragment.newInstance(mGene));
-        mGeneFavoritesListName = getString(R.string.gene_favorites_list_name);
+        if (null == savedInstanceState) {
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().add(R.id.main, GeneViewFragment.newInstance(mGene)).commit();
+        }
     }
 
     // --------------------------------------------------------------------------------------------
@@ -81,19 +91,8 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
 
     @Override
     public void onGeneAddedToFavorites(Gene gene) {
-        String token = getStorage().getUserToken(gene.getMine());
-
-        if (Strs.isNullOrEmpty(token)) {
-            Toast.makeText(this, R.string.unauthorized_gene_to_favorites_error_message,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            GetListsRequest request = new GetListsRequest(this, gene.getMine(),
-                    mGeneFavoritesListName);
-            List<Gene> genes = Collections.newArrayList();
-            genes.add(gene);
-            execute(request, new GetListsListener(this, gene.getMine(), genes));
-            Toast.makeText(this, R.string.gene_added_to_favorites, Toast.LENGTH_LONG).show();
-        }
+        getStorage().addGeneToFavorites(gene);
+        Toast.makeText(this, R.string.gene_added_to_favorites, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -145,5 +144,14 @@ public class GeneViewActivity extends MainActivity implements GeneViewFragment.G
             }
         }
         return Strs.EMPTY_STRING;
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(mToolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

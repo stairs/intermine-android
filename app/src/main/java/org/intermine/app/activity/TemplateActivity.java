@@ -14,9 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,6 +21,7 @@ import android.widget.TextView;
 import org.intermine.app.R;
 import org.intermine.app.core.templates.Template;
 import org.intermine.app.core.templates.TemplateParameter;
+import org.intermine.app.core.templates.constraint.Constraint;
 import org.intermine.app.core.templates.constraint.PathConstraint;
 import org.intermine.app.core.templates.constraint.PathConstraintAttribute;
 import org.intermine.app.core.templates.constraint.PathConstraintLookup;
@@ -102,7 +100,6 @@ public class TemplateActivity extends BaseActivity {
                 Views.setGone(mDescriptionContainer);
             } else {
                 Views.setVisible(mDescriptionContainer);
-                Spanned descriptionText = Html.fromHtml(Strs.nullToEmpty(mTemplate.getDescription()));
                 mTemplateDescription.setText(mTemplate.getTitle());
             }
 
@@ -199,4 +196,5 @@ public class TemplateActivity extends BaseActivity {
                     PathConstraint.getExtraValue(constraint), code);
         }
     }
+
 }

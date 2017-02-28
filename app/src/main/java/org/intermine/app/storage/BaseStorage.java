@@ -10,15 +10,25 @@ package org.intermine.app.storage;
  *
  */
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.octo.android.robospice.persistence.exception.CacheCreationException;
+import com.octo.android.robospice.persistence.exception.CacheLoadingException;
+import com.octo.android.robospice.persistence.exception.CacheSavingException;
+import com.octo.android.robospice.persistence.file.InFileObjectPersister;
+import com.octo.android.robospice.persistence.memory.CacheItem;
+import com.octo.android.robospice.persistence.memory.LruCache;
+import com.octo.android.robospice.persistence.memory.LruCacheObjectPersister;
+import com.octo.android.robospice.persistence.springandroid.json.gson.GsonObjectPersister;
 
 import org.intermine.app.InterMineApplication;
 import org.intermine.app.R;
-import org.intermine.app.util.Collections;
+import org.intermine.app.core.Gene;
 import org.intermine.app.util.Strs;
 
 import java.lang.reflect.Type;
@@ -34,6 +44,9 @@ import javax.inject.Inject;
  * @author Daria Komkova <Daria.Komkova @ hotmail.com>
  */
 public abstract class BaseStorage implements Storage {
+    public static final int DEFAULT_GENE_FAVORITES_CACHE_SIZE = 100;
+    public static final String TAG = BaseStorage.class.getSimpleName();
+
     @Inject
     SharedPreferences mPreferences;
 
@@ -43,12 +56,16 @@ public abstract class BaseStorage implements Storage {
 
     private Set<String> mDefaultMineNames;
 
+    private LruCacheObjectPersister<Gene> mGeneFavoritesPersister;
+
     public BaseStorage(Context ctx) {
+        InterMineApplication app = InterMineApplication.get(ctx);
+        app.inject(this);
+
         mContext = ctx;
         mMapper = new Gson();
 
-        InterMineApplication app = InterMineApplication.get(ctx);
-        app.inject(this);
+        mGeneFavoritesPersister = createGeneFavoritesPersister();
 
         String[] mineNamesArr = ctx.getResources().getStringArray(R.array.mines_names);
         String[] mineNamesUrls = ctx.getResources().getStringArray(R.array.mines_service_urls);
@@ -133,18 +150,6 @@ public abstract class BaseStorage implements Storage {
     }
 
     @Override
-    public boolean hasUserLearnedDrawer() {
-        return mPreferences.getBoolean(USER_LEARNED_DRAWER, false);
-    }
-
-    @Override
-    public void setUserLearnedDrawer(boolean userLearnedDrawer) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(USER_LEARNED_DRAWER, userLearnedDrawer);
-        editor.commit();
-    }
-
-    @Override
     public void setTypeFields(String mineName, Map<String, List<String>> typeFields) {
         String json = mMapper.toJson(typeFields);
         SharedPreferences.Editor editor = mPreferences.edit();
@@ -164,7 +169,45 @@ public abstract class BaseStorage implements Storage {
         return java.util.Collections.emptyMap();
     }
 
+    @Override
+    public List<Gene> getGeneFavorites() {
+        if (null != mGeneFavoritesPersister) {
+            try {
+                return mGeneFavoritesPersister.loadAllDataFromCache();
+            } catch (CacheLoadingException e) {
+                Log.e(TAG, "Failed to load gene favorites from cache!", e);
+            }
+        }
+        return null;
+    }
+
     protected Context getContext() {
         return mContext;
+    }
+
+    @Override
+    public void addGeneToFavorites(Gene gene) {
+        if (null != mGeneFavoritesPersister) {
+            try {
+                mGeneFavoritesPersister.saveDataToCacheAndReturnData(gene, gene.generateCacheKey());
+            } catch (CacheSavingException e) {
+                Log.e(TAG, String.format("Failed to save %s favorites to cache!", gene), e);
+            }
+        }
+    }
+
+
+    private LruCacheObjectPersister<Gene> createGeneFavoritesPersister() {
+        LruCache<Object, CacheItem<Gene>> geneCache = new LruCache<>(DEFAULT_GENE_FAVORITES_CACHE_SIZE);
+
+        try {
+            InFileObjectPersister<Gene> inFilePersister = new GsonObjectPersister((Application) mContext, Gene.class);
+            LruCacheObjectPersister<Gene> persister = new LruCacheObjectPersister<>(inFilePersister, geneCache);
+            persister.setAsyncSaveEnabled(true);
+            return persister;
+        } catch (CacheCreationException e) {
+            Log.e(TAG, "Failed to create gene favorites persister!", e);
+        }
+        return null;
     }
 }

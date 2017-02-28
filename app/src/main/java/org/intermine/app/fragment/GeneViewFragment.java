@@ -12,7 +12,6 @@ package org.intermine.app.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,11 +30,11 @@ import butterknife.InjectView;
 public class GeneViewFragment extends BaseFragment {
     public static final String GENE_EXTRA = "gene_extra";
 
-    @InjectView(R.id.standard_name)
-    CardView mStandardNameContainer;
-
     @InjectView(R.id.standard_name_value)
     TextView mStandardNameValue;
+
+    @InjectView(R.id.mine)
+    TextView mMine;
 
     @InjectView(R.id.systematic_name_title)
     TextView mSystematicNameTitle;
@@ -96,7 +95,7 @@ public class GeneViewFragment extends BaseFragment {
     // Inner Classes
     // --------------------------------------------------------------------------------------------
 
-    public static interface GeneActionCallbacks {
+    public interface GeneActionCallbacks {
         void onGeneAddedToFavorites(Gene gene);
 
         void onGeneSelectedToBeShared(Gene gene);
@@ -126,11 +125,12 @@ public class GeneViewFragment extends BaseFragment {
 
         if (null != mGene) {
             if (Strs.isNullOrEmpty(mGene.getSymbol())) {
-                Views.setGone(mStandardNameContainer);
+                Views.setGone(mStandardNameValue);
             } else {
-                Views.setVisible(mStandardNameContainer);
+                Views.setVisible(mStandardNameValue);
                 mStandardNameValue.setText(Strs.capitalize(mGene.getSymbol()));
             }
+            mMine.setText(mGene.getMine());
 
             showRowIfInfoAvailable(mGene.getPrimaryDBId(),
                     mSystematicNameTitle, mSystematicNameValue);

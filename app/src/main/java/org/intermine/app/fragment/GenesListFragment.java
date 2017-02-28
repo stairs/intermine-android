@@ -52,9 +52,6 @@ public class GenesListFragment extends BaseFragment {
     @InjectView(R.id.not_found_results_container)
     protected View mNotFoundView;
 
-    @InjectView(R.id.auth_required_label)
-    protected View mAuthRequiredView;
-
     @InjectView(R.id.progress_view)
     protected ProgressBar mProgressView;
 
@@ -191,10 +188,6 @@ public class GenesListFragment extends BaseFragment {
             setProgress(false);
             mViewController.onFinishLoad();
             Views.setVisible(mNotFoundView);
-
-            if (Strs.isNullOrEmpty(mMineName)) {
-                Views.setVisible(mAuthRequiredView);
-            }
         }
     }
 

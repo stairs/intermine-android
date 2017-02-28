@@ -10,9 +10,10 @@ package org.intermine.app.fragment;
  *
  */
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.SparseBooleanArray;
@@ -42,18 +43,15 @@ import org.intermine.app.adapter.GenesAdapter;
 import org.intermine.app.controller.LoadOnScrollViewController;
 import org.intermine.app.core.Gene;
 import org.intermine.app.core.GenesList;
-import org.intermine.app.listener.GetListsListener;
 import org.intermine.app.listener.OnGeneSelectedListener;
 import org.intermine.app.net.ResponseHelper;
 import org.intermine.app.net.request.get.GeneSearchRequest;
-import org.intermine.app.net.request.get.GetListsRequest;
 import org.intermine.app.util.Sharing;
 import org.intermine.app.util.Strs;
 import org.intermine.app.util.Views;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +61,6 @@ import java.util.concurrent.CountDownLatch;
 
 import butterknife.InjectView;
 import butterknife.OnItemClick;
-import roboguice.util.temp.Strings;
 
 public class SearchFragment extends BaseFragment implements SearchView.OnQueryTextListener {
     private static final String QUERY_KEY = "query_key";
@@ -103,6 +100,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     private String mQuery = Strs.EMPTY_STRING;
     private boolean mExpandSearchViewOnStartup;
 
+    private int mStatusBarColor;
+
     private MultiChoiceModeListener mMultiListener = new MultiChoiceModeListener() {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int pos, long id, boolean checked) {
@@ -113,7 +112,10 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
             MenuInflater menuInflater = mode.getMenuInflater();
             menuInflater.inflate(R.menu.gene_view_menu, menu);
 
-            ((MainActivity) getActivity()).getSupportActionBar().hide();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mStatusBarColor = getActivity().getWindow().getStatusBarColor();
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.dark_gray));
+            }
             return true;
         }
 
@@ -126,9 +128,8 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.favourites:
-                    Map<String, List<Gene>> mine2selectedGenes = getMineToSelectedGenesMap();
-                    remindUserToLoginIfRequired(mine2selectedGenes.keySet());
-                    checkFavoritesListExists(mine2selectedGenes);
+                    addGenesToFavorites();
+                    Toast.makeText(getActivity(), R.string.genes_added_to_favorites, Toast.LENGTH_LONG).show();
                     mode.finish();
                     return true;
                 case R.id.share:
@@ -144,7 +145,9 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            ((MainActivity) getActivity()).getSupportActionBar().show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().getWindow().setStatusBarColor(mStatusBarColor);
+            }
         }
     };
 
@@ -205,11 +208,11 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mListener = (OnGeneSelectedListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnGeneSelectedListener) context;
 
-        ((MainActivity) activity).onSectionAttached(getString(R.string.search));
+        ((MainActivity) context).onSectionAttached(getString(R.string.search));
     }
 
     @Override
@@ -320,24 +323,14 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
     // Helper Methods
     // --------------------------------------------------------------------------------------------
 
-    protected Map<String, List<Gene>> getMineToSelectedGenesMap() {
-        Map<String, List<Gene>> mineToSelectedGenesMap = org.intermine.app.util.Collections.newHashMap();
-
+    protected void addGenesToFavorites() {
         SparseBooleanArray checkedItemIds = mGenesListView.getCheckedItemPositions();
         for (int i = 0; i < mGenesAdapter.getCount(); i++) {
             if (checkedItemIds.get(i)) {
                 Gene gene = (Gene) mGenesAdapter.getItem(i);
-
-                List<Gene> genes = mineToSelectedGenesMap.get(gene.getMine());
-
-                if (null == genes) {
-                    genes = org.intermine.app.util.Collections.newArrayList();
-                    mineToSelectedGenesMap.put(gene.getMine(), genes);
-                }
-                genes.add(gene);
+                getStorage().addGeneToFavorites(gene);
             }
         }
-        return mineToSelectedGenesMap;
     }
 
     protected LoadOnScrollViewController.LoadOnScrollDataController getDataController() {
@@ -397,30 +390,6 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
                 execute(request, new GeneSearchRequestListener());
             } else {
                 mCountDownLatch.countDown();
-            }
-        }
-    }
-
-    protected void remindUserToLoginIfRequired(Collection<String> mines) {
-        List<String> userNotLoginedMines = new ArrayList<>(mines);
-        userNotLoginedMines.removeAll(getStorage().getMineToUserTokenMap().keySet());
-
-        if (!org.intermine.app.util.Collections.isNullOrEmpty(userNotLoginedMines)) {
-            String text = getString(R.string.login_to_add_to_favorites);
-            Toast.makeText(getActivity(), text.concat(" ").concat(Strings.join(", ", userNotLoginedMines)),
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-
-    protected void checkFavoritesListExists(Map<String, List<Gene>> mineToGenesMap) {
-        for (String mine : mineToGenesMap.keySet()) {
-            String token = getStorage().getUserToken(mine);
-
-            if (!Strs.isNullOrEmpty(token)) {
-                GetListsRequest request = new GetListsRequest(getActivity(), mine,
-                        mGeneFavoritesListName);
-                execute(request, new GetListsListener((BaseActivity) getActivity(),
-                        mine, mineToGenesMap.get(mine)));
             }
         }
     }

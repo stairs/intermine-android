@@ -12,18 +12,6 @@
         android:footerDividersEnabled="false"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/login_required"
-        style="@style/InterMine.Theme.Text.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="?attr/actionBarSize"
-        android:paddingLeft="@dimen/spacing_large"
-        android:paddingRight="@dimen/spacing_large"
-        android:text="@string/login_to_see_favorites"
-        android:visibility="gone" />
-
     <RelativeLayout
         android:id="@+id/not_found_results_container"
         android:layout_width="match_parent"

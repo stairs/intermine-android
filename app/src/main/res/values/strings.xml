@@ -26,10 +26,8 @@
     <string name="mine_name_hint">Enter mine name</string>
     <string name="mine_url_hint">Enter mine API base url</string>
     <string name="not_found">No results found.</string>
-    <string name="favorites_requirement_label">Please, login first to see your favorites.</string>
+    <string name="genes_added_to_favorites">Selected genes are added to favorites.</string>
     <string name="gene_added_to_favorites">The gene is added to favorites.</string>
-    <string name="login_to_add_to_favorites">Please, login first to add genes to favorites from mines:</string>
-    <string name="login_to_see_favorites">Please, login first to see the favorites.</string>
     <string name="loading_label">Loading models...</string>
     <string name="lookup_constraint">LOOKUP</string>
     <string name="operator">Operator</string>

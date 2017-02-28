@@ -60,9 +60,9 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:text="@string/gene_primary_db_id_with_colon"
-            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/im_green" />
+            android:textColor="@color/im_green"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/symbol_title"
@@ -75,24 +75,9 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:text="@string/gene_symbol_with_colon"
-            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/im_green" />
-
-        <TextView
-            android:id="@+id/mine_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical|right"
-            android:maxLines="1"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
-            android:text="@string/mine"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/im_green" />
+            android:textColor="@color/im_green"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,9 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="center_vertical"
-        android:paddingTop="2dp"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/default_padding">
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingTop="2dp">
 
         <TextView
             android:id="@+id/name_value"
@@ -155,16 +140,16 @@
             android:textColor="@color/text_medium" />
 
         <TextView
-            android:id="@+id/mine_value"
+            android:id="@+id/gene_mine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
             android:ellipsize="end"
+            android:gravity="end"
             android:maxLines="1"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_medium" />
-
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:text="Mine"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/text_light" />
     </LinearLayout>
 </LinearLayout>
